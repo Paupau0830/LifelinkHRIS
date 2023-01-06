@@ -1,0 +1,17 @@
+{
+    "require": {
+        "symfony/routing": "^5.4",
+        "bramus/router": "^1.6",
+        "selective/database": "^3.0",
+        "illuminate/database": "^8.83"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        },
+        "files": [
+            "app/Consts/index.php",
+            "app/Helpers/index.php"
+        ]
+    }
+}
