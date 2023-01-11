@@ -1,4 +1,5 @@
 <?php
+
 /**
  * page_footer.php
  *
@@ -8,20 +9,20 @@
  *
  */
 ?>
-            <!-- Footer -->
-            <footer class="clearfix">
-                <div class="pull-right">
-                    &copy; LEMI 2022
-                </div>
-                <div class="pull-left">
-                    Human Resources Information System
-                </div>
-            </footer>
-            <!-- END Footer -->
-        </div>
-        <!-- END Main Container -->
+<!-- Footer -->
+<footer class="clearfix">
+    <div class="pull-right">
+        &copy; LIFELINK 2022
     </div>
-    <!-- END Page Container -->
+    <div class="pull-left">
+        Human Resources Information System
+    </div>
+</footer>
+<!-- END Footer -->
+</div>
+<!-- END Main Container -->
+</div>
+<!-- END Page Container -->
 </div>
 <!-- END Page Wrapper -->
 
