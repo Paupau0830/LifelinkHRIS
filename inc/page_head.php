@@ -24,7 +24,7 @@
     <!-- Preloader functionality (initialized in js/app.js) - pageLoading() -->
     <!-- Used only if page preloader is enabled from inc/config (PHP version) or the class 'page-loading' is added in #page-wrapper element (HTML version) -->
     <div class="preloader themed-background">
-        <h1 class="push-top-bottom text-light text-center"><strong>LIFE LINK</strong></h1>
+        <h1 class="push-top-bottom text-light text-center"><strong>LIFELINK</strong></h1>
         <div class="inner">
             <h3 class="text-light visible-lt-ie10"><strong>Loading..</strong></h3>
             <div class="preloader-spinner hidden-lt-ie10"></div>
@@ -311,7 +311,7 @@
                     } else {
                     ?>
                         <a href="index.php" class="sidebar-brand" style="line-height: normal;height:auto;padding:10px;">
-                            <i class="gi gi-flash"></i><span class="sidebar-nav-mini-hide"><strong>Life Link</strong></span>
+                            <i class="gi gi-flash"></i><span class="sidebar-nav-mini-hide"><strong>Lifelink</strong></span>
                         </a>
                     <?php
                     }

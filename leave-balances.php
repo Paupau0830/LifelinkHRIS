@@ -86,7 +86,7 @@ if ($daynow == '2') {
                             <td class="text-center"><?= $row['employee_number'] ?></td>
                             <td class="text-center"><?= $row['SL'] ?></td>
                             <td class="text-center"><?= $row['VL'] ?></td>
-                            <td class="text-center"><?= $row['EL'] ?></td>
+                            <td class="text-center"><?= $row['others'] ?></td>
                             <td class="text-center"><?= $row['maternity'] ?></td>
                             <td class="text-center"><?= $row['paternity'] ?></td>
                             <?php

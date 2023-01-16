@@ -8,6 +8,22 @@ if (empty($_SESSION['hris_id'])) {
 
 $company_id = $_SESSION['hris_company_id'];
 $empnum = $_SESSION['hris_employee_number'];
+if (isset($_GET['selected_emp_name'])) {
+    $emp_name = $_GET['selected_emp_name'];
+} else {
+    $emp_name = '';
+}
+$monthyear = '';
+$monthName = '';
+$year = '';
+$month = '';
+if (isset($_GET['selected_monthyear'])) {
+    $monthyear = $_GET['selected_monthyear'];
+    $monthyear = explode('-', $monthyear);
+    $year = $monthyear[0];
+    $month = $monthyear[1];
+    $monthName = date("F", mktime(0, 0, 0, $month, 10));
+}
 ?>
 
 <div id="page-content">
@@ -26,7 +42,57 @@ $empnum = $_SESSION['hris_employee_number'];
             </div>
             <h2><strong>Leave Application</strong> Summary List</h2>
         </div>
+        <?php
+
+        $get_role = mysqli_query($db, "SELECT * FROM tbl_users WHERE employee_number = '$empnum'");
+        while ($row = mysqli_fetch_assoc($get_role)) {
+            $role = $row['role'];
+        }
+
+        if ($role != 'User') {
+        ?>
+            <form method="GET">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div class="col-md-3">
+                            <label style="margin-top: 8px;"> Month & Year: </label> &nbsp; &nbsp;
+                            <input type="month" name="selected_monthyear" class="form-control" required>
+                            <!-- <input type="text" value="<?= $monthName ?>"> -->
+                        </div>
+                        <div class="col-md-4">
+                            <label style="margin-top: 8px; padding-right:30px;">Employee Name: </label> &nbsp; &nbsp;
+
+                            <select name="selected_emp_name" id="selected_emp_name" class="form-control select-chosen">
+                                <option></option>
+                                <?php
+                                $sql = mysqli_query($db, "SELECT * FROM tbl_personal_information");
+                                while ($row = mysqli_fetch_assoc($sql)) {
+                                ?>
+                                    <option value="<?= $row['account_name'] ?>"><?= $row['account_name'] ?></option>
+
+                                <?php
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <button class="btn btn-warning" name="filter_out" style="margin-top: 32px; width:100px; font-weight:800; letter-spacing:1px;">Filter</button>
+                            <a href="leave-list" class="btn btn-danger" style="margin-top: 32px; width:100px; font-weight:800; letter-spacing:1px;">Clear</a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </form>
+            <br>
+
+        <?php
+        }
+
+        ?>
         <div class="table-responsive">
+
             <table id="leave-list" class="table table-vcenter table-condensed table-bordered">
                 <thead>
                     <tr>
@@ -41,13 +107,18 @@ $empnum = $_SESSION['hris_employee_number'];
                         <th class="text-center">Action</th>
                     </tr>
                 </thead>
-                <?php
-                $role = $_SESSION['hris_role'];
-                ?>
+
                 <tbody>
                     <?php
-                    if ($role == "Admin" || $role == "Supervisor") {
-                        $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests");
+
+                    if ($role == "Admin" || $role == "Supervisor" || $role == "Manager") {
+
+                        if ($emp_name != '' && $monthyear != '') {
+                            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE emp_name = '$emp_name' AND month_selected = '$monthName' AND year_selected = '$year'");
+                        } else {
+                            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests");
+                        }
+
                         while ($row = mysqli_fetch_assoc($sql)) {
                     ?>
                             <tr>
@@ -107,6 +178,12 @@ $empnum = $_SESSION['hris_employee_number'];
 
 <!-- Load and execute javascript code used only in this page -->
 <script src="js/pages/tablesDatatables.js"></script>
+<script>
+    function UnsetGet() {
+        unset($GLOBALS['emp_name']);
+        unset($GLOBALS['monthyear']);
+    }
+</script>
 <script>
     $(function() {
         TablesDatatables.init();

@@ -945,13 +945,13 @@ if (isset($_POST['btn_decline_leave_application'])) {
     $total_days = $_POST['la_total_days'];
     $employee_number = $_POST['la_emp_number'];
     $approver = $_POST['la_approver'];
-    $status = "Cancelled";
+    $status = "Declined";
     $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET status = '$status', approver = '$approver', approver_remarks = '$approver_remarks' WHERE ID = '$leaveapplication_id'");
     $at_name = $_SESSION['hris_account_name'];
 
     $res = '<div class="alert alert-success alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h4><i class="fa fa-check"></i> Leave Application for ' . $applied_by . ' has been declined.</h4>
+            <h4><i class="fa fa-check"></i> Leave Application for <strong>' . $applied_by . '<strong> has been declined.</h4>
         </div>';
     $cancellation_reason = $approver_remarks;
 
@@ -1505,67 +1505,6 @@ if (isset($_POST['update_testcase'])) {
         }
         $_SESSION['selected_editemp'] = $emp_num;
     }
-}
-if (isset($_POST['commute_leave'])) {
-    $employee_number = $_POST['employee_number'];
-    $employee_name = $_POST['employee_name'];
-    $leave_type = $_POST['leave_types'];
-    $amount_forfeit = $_POST['amount_forfeits'];
-    $amt_val = $_POST['amt_vals'];
-    $userid = $_SESSION['hris_id'];
-
-    $total_forfeit_leave = $amt_val - $amount_forfeit;
-    mysqli_query($db, "UPDATE tbl_leave_balances SET VL = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
-    mysqli_query($db, "INSERT INTO tbl_commute VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
-    $res = '<div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h4><i class="fa fa-check"></i> Commuted Leave for <strong>' . $employee_name . '</strong> has been registered.</h4>
-        </div>';
-}
-if (isset($_POST['forfeit_leave'])) {
-    $employee_number = $_POST['employee_number'];
-    $employee_name = $_POST['employee_name'];
-    $leave_type = $_POST['leave_type'];
-    $amount_forfeit = $_POST['amount_forfeit'];
-    $amt_val = $_POST['amt_val'];
-    $userid = $_SESSION['hris_id'];
-
-    $total_forfeit_leave = $amt_val - $amount_forfeit;
-    if ($leave_type == 'SL') {
-        mysqli_query($db, "UPDATE tbl_leave_balances SET SL = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
-        mysqli_query($db, "INSERT INTO tbl_forfeit VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
-    } else if ($leave_type == 'VL') {
-        mysqli_query($db, "UPDATE tbl_leave_balances SET VL = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
-        mysqli_query($db, "INSERT INTO tbl_forfeit VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
-    } else if ($leave_type == 'EL') {
-        mysqli_query($db, "UPDATE tbl_leave_balances SET EL = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
-        mysqli_query($db, "INSERT INTO tbl_forfeit VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
-    } else if ($leave_type == 'maternity') {
-        mysqli_query($db, "UPDATE tbl_leave_balances SET maternity = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
-        mysqli_query($db, "INSERT INTO tbl_forfeit VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
-    } else if ($leave_type == 'paternity') {
-        mysqli_query($db, "UPDATE tbl_leave_balances SET paternity = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
-        mysqli_query($db, "INSERT INTO tbl_forfeit VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
-    } else if ($leave_type == 'solo_parent') {
-        mysqli_query($db, "UPDATE tbl_leave_balances SET solo_parent = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
-        mysqli_query($db, "INSERT INTO tbl_forfeit VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
-    }
-    $res = '<div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h4><i class="fa fa-check"></i> Forfeited Leave for <strong>' . $employee_name . '</strong> has been registered.</h4>
-        </div>';
-}
-if (isset($_POST['forfeit_all'])) {
-    $employee_number = $_POST['employee_number'];
-    $employee_name = $_POST['employee_name'];
-    $userid = $_SESSION['hris_id'];
-
-
-    mysqli_query($db, "UPDATE tbl_leave_balances SET solo_parent = '0', SL = '0', VL = '0', EL = '0', maternity = '0', paternity = '0' WHERE employee_number = '$employee_number'");
-    $res = '<div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h4><i class="fa fa-check"></i> Forfeited Leave for <strong>' . $employee_name . '</strong> has been registered.</h4>
-        </div>';
 }
 if (isset($_POST['test_case'])) {
     $emp_num = $_POST['emp_num'];
@@ -2986,8 +2925,8 @@ if (isset($_POST['btn_onboarding'])) {
     if ($insert_personal_info) {
         $employee_number = mysqli_insert_id($db);
         $employee_number =  sprintf("%05d", $employee_number);
-        $update_emp_num = mysqli_query($db, "UPDATE tbl_personal_information
-        SET employee_number = '$employee_number'
+        $update_emp_num = mysqli_query($db, "UPDATE tbl_personal_information 
+        SET employee_number = '$employee_number' 
         WHERE employee_number = 'xxx-xxx'");
     }
     $employee_number =  sprintf("%05d", $employee_number);
@@ -3131,7 +3070,7 @@ if (isset($_POST['btn_onboarding'])) {
         mysqli_query($db, "INSERT INTO tbl_benefits_eligibility VALUES(
             '',
             '$employee_number',
-            '$parking',
+            '$parking', 
             '$gasoline',
             '$car_maintenance',
             '$medicine',
@@ -3244,10 +3183,10 @@ if (isset($_POST['btn_update_post_graduate'])) {
     $from_pgs = $_POST['from_pgs'];
     $to_pgs = $_POST['to_pgs'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_post_graduate SET
+    $sql = mysqli_query($db, "UPDATE tbl_post_graduate SET 
     school = '$post_graduate_school',
     from_date = '$from_pgs',
-    to_date = '$to_pgs'
+    to_date = '$to_pgs' 
     WHERE employee_number = '$employee_number'");
     if ($sql) {
         $res = '<div class="alert alert-success alert-dismissable">
@@ -3416,7 +3355,7 @@ if (isset($_POST['btn_update_emergency_contact'])) {
     $email = $_POST['email'];
     $relationship = $_POST['relationship'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_emergency_contacts SET
+    $sql = mysqli_query($db, "UPDATE tbl_emergency_contacts SET 
     contact_name = '$contact_name',
     contact_number = '$contact_number',
     email_address = '$email',
@@ -3694,7 +3633,65 @@ if (isset($_POST['btn_update_benefits_eligibility'])) {
         }
     }
 }
+if (isset($_POST['cancellation_emp'])) {
 
+    $applied_by = $_POST['applied_by'];
+    $la_emp_number = $_POST['la_emp_number'];
+    $leaveapplication_id = $_POST['la_id'];
+    $status = "For Cancellation";
+    $cancellation_remarks = $_POST['cancellation_remarks'];
+    $at_name = $_SESSION['hris_account_name'];
+
+    $sql = mysqli_query($db, "SELECT * FROM tbl_personal_information WHERE employee_number = '$la_emp_number'");
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $account_name = $row['account_name'];
+    }
+    $sql = mysqli_query($db, "INSERT INTO tbl_cancellation VALUES('','$la_emp_number','$account_name','$leaveapplication_id','$cancellation_remarks','$status','$at_name','$datetime')");
+
+    if ($sql) {
+        $res = '<div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="fa fa-check"></i> Leave Application for <strong>' . $account_name . ' </strong> has been updated.</h4>
+            </div>';
+        mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Employee: $account_name applied for Cancellation of Leave','$datetime')");
+    }
+}
+if (isset($_POST['transfer_of_leave_emp'])) {
+
+    if ($_POST['emp_totalnumDays'] == null || $_POST['emp_m_startDate'] == null || $_POST['emp_m_endDate'] == null || $_POST['emp_leave_duration'] == 'null') {
+        $res = '<div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="fa fa-times"></i> Complete all necessary fields to proceed.</h4>
+        </div>';
+    } else {
+        $leave_duration = $_POST['emp_leave_duration'];
+        $orig_startDate = $_POST['tol_startDate'];
+        $orig_endDate = $_POST['tol_endDate'];
+        $modified_startDate = $_POST['emp_m_startDate'];
+        $modified_endDate = $_POST['emp_m_endDate'];
+        $totalnumDays = $_POST['emp_totalnumDays'];
+        $leave_app_id = $_POST['leave_app_id'];
+        $la_emp_number = $_POST['la_emp_number'];
+        $reason = $_POST['reason'];
+        $status = 'Pending';
+        $at_name = $_SESSION['hris_account_name'];
+
+        $get_employee = mysqli_query($db, "SELECT * FROM tbl_users WHERE employee_number = '$la_emp_number'");
+        while ($row = mysqli_fetch_assoc($get_employee)) {
+            $account_name = $row['account_name'];
+        }
+
+        $sql = mysqli_query($db, "INSERT INTO tbl_transfer_of_leave VALUES('','$la_emp_number','$account_name','$leave_app_id','$orig_startDate','$orig_endDate','$modified_startDate','$modified_endDate','$leave_duration','$totalnumDays','$status','$at_name','$datetime','$reason')");
+
+        if ($sql) {
+            $res = '<div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="fa fa-check"></i> Leave Application for <strong>' . $account_name . ' </strong> has been updated.</h4>
+            </div>';
+            mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Employee: $account_name applied for Transfer of Leave','$datetime')");
+        }
+    }
+}
 if (isset($_POST['transfer_of_leave'])) {
 
     if ($_POST['totalnumDays'] == null || $_POST['m_startDate'] == null || $_POST['m_endDate'] == null || $_POST['leave_duration'] == 'null') {
@@ -3703,6 +3700,7 @@ if (isset($_POST['transfer_of_leave'])) {
             <h4><i class="fa fa-times"></i> Complete all necessary fields to proceed.</h4>
         </div>';
     } else {
+        $tol_id = $_POST['tol_id'];
         $leave_duration = $_POST['leave_duration'];
         $modified_startDate = $_POST['m_startDate'];
         $modified_endDate = $_POST['m_endDate'];
@@ -3717,6 +3715,11 @@ if (isset($_POST['transfer_of_leave'])) {
 
         $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET startDate = '$modified_startDate', endDate = '$modified_endDate', total_day = '$totalnumDays', duration = '$leave_duration' WHERE id = '$leave_app_id'");
 
+        if ($tol_id != '0') {
+            mysqli_query($db, "UPDATE tbl_transfer_of_leave SET status = 'Approved' WHERE id = '$tol_id'");
+        }
+
+
         if ($sql) {
             $res = '<div class="alert alert-success alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -3726,6 +3729,36 @@ if (isset($_POST['transfer_of_leave'])) {
             mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Updated Leave Application for Employee: $account_name','$datetime')");
         }
     }
+}
+
+if (isset($_POST['compute_leave_duration1'])) {
+    $emp_m_startDate = $_POST['emp_m_startDate'];
+    $emp_m_endDate = $_POST['emp_m_endDate'];
+    $la_leave_type = $_POST['la_leave_type'];
+
+    $emp_m_startDate = new DateTime($emp_m_startDate);
+    $emp_m_endDate = new DateTime($emp_m_endDate);
+    $emp_m_endDate->modify('+1 day');
+    $interval = $emp_m_endDate->diff($emp_m_startDate);
+    $days2 = $interval->days;
+    $period = new DatePeriod($emp_m_startDate, new DateInterval('P1D'), $emp_m_endDate);
+    $holidays = array();
+
+    // Get holidays
+    $sql = mysqli_query($db, "SELECT * FROM tbl_holidays");
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $holidays[] = $row['holiday_date'];
+    }
+    foreach ($period as $dt) {
+        $curr = $dt->format('D');
+        if ($curr == 'Sun') {
+            $days2--;
+        } elseif (in_array($dt->format('Y-m-d'), $holidays)) {
+            $days2--;
+        }
+    }
+
+    echo $days2;
 }
 if (isset($_POST['compute_leave_durationn'])) {
     $m_startDate1 = $_POST['m_startDate'];
@@ -3787,7 +3820,7 @@ if (isset($_POST['compute_leave_duration'])) {
     echo $days;
 }
 if (isset($_POST['select_leave_balances'])) {
-    $leaves = array('SL', 'VL', 'EL');
+    $leaves = array('SL', 'VL', 'others');
     $leave_type = $_POST['leave_type'];
     foreach ($leaves as $k => $v) {
         if ($leave_type == $v) {
@@ -3818,7 +3851,7 @@ if (isset($_POST['check_if_between_dates'])) {
     }
     $dates[] = $endDate;
 
-    $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests
+    $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests 
     WHERE endDate >= CURDATE() AND `status` LIKE 'Approved' AND delegated_emp_number = '$employee_number'
     OR endDate >= CURDATE() AND `status` LIKE 'Pending' AND delegated_emp_number = '$employee_number'");
     while ($row = mysqli_fetch_assoc($sql)) {
@@ -3841,6 +3874,68 @@ if (isset($_POST['check_if_between_dates'])) {
     }
     echo $conflict_dates;
 }
+if (isset($_POST['commute_leave'])) {
+    $employee_number = $_POST['employee_number'];
+    $employee_name = $_POST['employee_name'];
+    $leave_type = $_POST['leave_types'];
+    $amount_forfeit = $_POST['amount_forfeits'];
+    $amt_val = $_POST['amt_vals'];
+    $userid = $_SESSION['hris_id'];
+
+    $total_forfeit_leave = $amt_val - $amount_forfeit;
+    mysqli_query($db, "UPDATE tbl_leave_balances SET VL = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
+    mysqli_query($db, "INSERT INTO tbl_commute VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
+    $res = '<div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="fa fa-check"></i> Commuted Leave for <strong>' . $employee_name . '</strong> has been registered.</h4>
+        </div>';
+}
+if (isset($_POST['forfeit_leave'])) {
+    $employee_number = $_POST['employee_number'];
+    $employee_name = $_POST['employee_name'];
+    $leave_type = $_POST['leave_type'];
+    $amount_forfeit = $_POST['amount_forfeit'];
+    $amt_val = $_POST['amt_val'];
+    $userid = $_SESSION['hris_id'];
+
+    $total_forfeit_leave = $amt_val - $amount_forfeit;
+    if ($leave_type == 'SL') {
+        mysqli_query($db, "UPDATE tbl_leave_balances SET SL = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
+        mysqli_query($db, "INSERT INTO tbl_forfeit VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
+    } else if ($leave_type == 'VL') {
+        mysqli_query($db, "UPDATE tbl_leave_balances SET VL = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
+        mysqli_query($db, "INSERT INTO tbl_forfeit VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
+    } else if ($leave_type == 'EL') {
+        mysqli_query($db, "UPDATE tbl_leave_balances SET EL = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
+        mysqli_query($db, "INSERT INTO tbl_forfeit VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
+    } else if ($leave_type == 'maternity') {
+        mysqli_query($db, "UPDATE tbl_leave_balances SET maternity = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
+        mysqli_query($db, "INSERT INTO tbl_forfeit VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
+    } else if ($leave_type == 'paternity') {
+        mysqli_query($db, "UPDATE tbl_leave_balances SET paternity = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
+        mysqli_query($db, "INSERT INTO tbl_forfeit VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
+    } else if ($leave_type == 'solo_parent') {
+        mysqli_query($db, "UPDATE tbl_leave_balances SET solo_parent = '$total_forfeit_leave' WHERE employee_number = '$employee_number'");
+        mysqli_query($db, "INSERT INTO tbl_forfeit VALUES('','$employee_number','$employee_name','$leave_type','$amount_forfeit','$userid','$datetime')");
+    }
+    $res = '<div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="fa fa-check"></i> Forfeited Leave for <strong>' . $employee_name . '</strong> has been registered.</h4>
+        </div>';
+}
+if (isset($_POST['forfeit_all'])) {
+    $employee_number = $_POST['employee_number'];
+    $employee_name = $_POST['employee_name'];
+    $userid = $_SESSION['hris_id'];
+
+
+    mysqli_query($db, "UPDATE tbl_leave_balances SET solo_parent = '0', SL = '0', VL = '0', EL = '0', maternity = '0', paternity = '0' WHERE employee_number = '$employee_number'");
+    $res = '<div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="fa fa-check"></i> Forfeited Leave for <strong>' . $employee_name . '</strong> has been registered.</h4>
+        </div>';
+}
+
 if (isset($_POST['btn_leave_application'])) {
     $employee_name = $_SESSION['hris_account_name']; // row id
     $employee_num = $_SESSION['hris_employee_number'];
@@ -3863,17 +3958,19 @@ if (isset($_POST['btn_leave_application'])) {
             $employee_name = $row['account_name'];
         }
     }
-    $company_id = $_SESSION['hris_company_id'];
 
+    $company_id = $_SESSION['hris_company_id'];
+    $month = date('F');
+    $year = date('Y');
     // FILE UPLOAD
     if (empty($_FILES['attachment']['tmp_name']) || !is_uploaded_file($_FILES['attachment']['tmp_name'])) {
-        $sql = mysqli_query($db, "INSERT INTO tbl_leave_requests VALUES('','$company_id','$employee_num','$emp_name','$employee_name','$leave_type','$startDate','$endDate','$total_days','$reason','$duration','','$approver','$approver_remarks','Pending','$datetime','$late_filing_val','$reason')");
+        $sql = mysqli_query($db, "INSERT INTO tbl_leave_requests VALUES('','$company_id','$employee_num','$emp_name','$employee_name','$leave_type','$startDate','$endDate','$total_days','$reason','$duration','','$approver','$approver_remarks','Pending','$datetime','$late_filing_val','$reason','$month','$year')");
         $at_name = $_SESSION['hris_account_name'];
         mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Filed a leave application','$datetime')");
         $res = '<div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h4><i class="fa fa-check"></i> Leave Application for <strong>' . $employee_name . '</strong> has been reqested.</h4>
-        </div>';
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="fa fa-check"></i> Leave Application for <strong>' . $employee_name . '</strong> has been reqested.</h4>
+    </div>';
     } else {
         $attachment = $_FILES['attachment']['name'];
         $fileSize = $_FILES['attachment']['size'];
@@ -3881,33 +3978,102 @@ if (isset($_POST['btn_leave_application'])) {
         $initialExt = explode('.', $attachment);
         $fileExt = strtolower(end($initialExt));
 
-        // new edited
-        $allowed = array('pdf', '');
+        $la_attachment = uploadFile('attachment');
+        $sql = mysqli_query($db, "INSERT INTO tbl_leave_requests VALUES('','$company_id','$employee_num','$emp_name','$employee_name','$leave_type','$startDate','$endDate','$total_days','$reason','$duration','$la_attachment','$approver','$approver_remarks','Pending','$datetime','$late_filing_val','$approver_remarks','$month','$year')");
 
-        if (in_array($fileExt, $allowed)) {
-            $employefilename = preg_replace('/\s+/', '', $employee_name);
-            $fileNewName = $employefilename . date("YmdHms") .  '_' . '.' . $fileExt;
-            $target = 'uploads/' . $fileNewName;
-            move_uploaded_file($_FILES['attachment']['tmp_name'], $target);
-
-
-            $sql = mysqli_query($db, "INSERT INTO tbl_leave_requests VALUES('','$company_id','$employee_num','$emp_name','$employee_name','$leave_type','$startDate','$endDate','$total_days','$reason','$duration','$fileNewName','$approver','$approver_remarks','Pending','$datetime','$late_filing_val','$remarks')");
-            $leave_id = mysqli_insert_id($db);
-
+        if ($sql) {
             $at_name = $_SESSION['hris_account_name'];
             mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Filed a leave application','$datetime')");
             $res = '<div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h4><i class="fa fa-check"></i> Leave Application for <strong>' . $employee_name . '</strong> has been reqested.</h4>
-        </div>';
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="fa fa-check"></i> Leave Application for <strong>' . $employee_name . '</strong> has been reqested.</h4>
+                </div>';
         } else {
             $res = '<div class="alert alert-danger alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h4><i class="fa fa-check-circle"></i> You cannot upload files of this type. Only PDF</h4>
-        </div>';
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h4><i class="fa fa-check"></i> Failed to file the Leave Application.</h4>
+                </div>';
         }
     }
 }
+
+
+
+use Aws\S3\S3Client;
+
+function uploadFile($fieldName)
+{
+    require 'vendor/autoload.php';
+
+    // Instantiate an Amazon S3 client.
+    $s3Client = new S3Client([
+        'version' => 'latest',
+        'region'  => 'ap-southeast-1',
+        'credentials' => [
+            'key'    => 'AKIAR2IERYMVHI6C36NV',
+            'secret' => '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'
+        ]
+    ]);
+    // Check if file was uploaded without errors
+    if (isset($_FILES[$fieldName]) && $_FILES[$fieldName]["error"] == 0) {
+        $allowed = array("jpg" => "image/jpg", "jpeg" => "image/jpeg", "gif" => "image/gif", "png" => "image/png", "pdf" => "application/pdf");
+        $prefilename = $_FILES[$fieldName]["name"];
+        $filetype = $_FILES[$fieldName]["type"];
+        $filesize = $_FILES[$fieldName]["size"];
+
+        $ext = pathinfo($prefilename, PATHINFO_EXTENSION);
+
+        $info = pathinfo($prefilename);
+        $file_name =  $info['filename'];
+        $filename = $file_name . date("YmdHms") . '.' . $ext;
+
+        // Validate file extension
+        if (!array_key_exists($ext, $allowed)) die("Error: Please select a valid file format.");
+        // Validate file size - 10MB maximum
+        $maxsize = 10 * 1024 * 1024;
+        if ($filesize > $maxsize) die("Error: File size is larger than the allowed limit.");
+        // Validate type of the file
+        if (in_array($filetype, $allowed)) {
+            // Check whether file exists before uploading it
+            if (file_exists("uploads/" . $filename)) {
+                echo $filename . " is already exists.";
+            } else {
+                if (move_uploaded_file($_FILES[$fieldName]["tmp_name"], "uploads/" . $filename)) {
+                    $bucket = 'lifelink-storage';
+                    $file_Path = 'uploads/' . $filename;
+                    $key = basename($file_Path);
+                    try {
+                        $result = $s3Client->putObject([
+                            'Bucket' => $bucket,
+                            'Key'    => 'LA/' . $key,
+                            'Body'   => fopen($file_Path, 'r'),
+                            'ACL'    => 'public-read', // make file 'public'
+                        ]);
+                        $res = '<div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <h4><i class="fa fa-check-circle"></i> Image uploaded successfully. Image path is: ' . $result->get('ObjectURL') . ' .</h4>
+                                    </div>';
+                        // echo "Image uploaded successfully. Image path is: " . $result->get('ObjectURL');
+                    } catch (Aws\S3\Exception\S3Exception $e) {
+                        $res = '<div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <h4><i class="fa fa-times"></i> There was an error uploading the file. ' . $e->getMessage() . ' .</h4>
+                                    </div>';
+                    }
+                } else {
+                }
+            }
+        } else {
+        }
+    } else {
+        echo "Error: " . $_FILES[$fieldName]["error"];
+    }
+
+    return $filename;
+}
+
+
+
 if (isset($_POST['get_account_name'])) {
     $email = $_POST['email'];
     $sql = mysqli_query($db, "SELECT * FROM tbl_personal_information WHERE company_email = '$email'");
@@ -4004,7 +4170,7 @@ if (isset($_POST['btn_register'])) {
         '$leave_management',
         '$holiday_maintenance',
         '$generate_reports_emp',
-        '$payroll_management',
+        '$payroll_management',  
         '$password',
         '$datetime',
         '0'
@@ -4152,7 +4318,7 @@ if (isset($_POST['btn_approve_leave'])) {
         $name = $row['account_name'];
         $em = $row['company_email'];
     }
-    $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET
+    $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET 
     leave_type = '$leave_type',
     startDate = '$startDate',
     endDate = '$endDate',
@@ -4164,12 +4330,12 @@ if (isset($_POST['btn_approve_leave'])) {
         include('phpMailer.php');
         $available_leaves = array('SL', 'VL', 'EL', 'WFH', 'ECU', 'MNCS', 'MM', 'BL', 'PLA', 'PL', 'SPL', 'SLBANK');
         if (in_array($leave_type, $available_leaves)) {
-            $sql1 = mysqli_query($db, "UPDATE tbl_leave_balances
-            SET $leave_type = $leave_type - $total_days
+            $sql1 = mysqli_query($db, "UPDATE tbl_leave_balances 
+            SET $leave_type = $leave_type - $total_days 
             WHERE employee_number = '$employee_number'");
         }
         if ($leave_type == "CSR") {
-            mysqli_query($db, "UPDATE tbl_leave_balances
+            mysqli_query($db, "UPDATE tbl_leave_balances 
             SET VL = VL + ($total_days/2)
             WHERE employee_number = '$employee_number'");
         }
@@ -4209,7 +4375,7 @@ if (isset($_POST['btn_cancel_leave'])) {
         $em = $row['company_email'];
     }
     if ($stat == "Approved") {
-        $sql = "UPDATE tbl_leave_requests SET
+        $sql = "UPDATE tbl_leave_requests SET 
         `status` = 'Requested Cancellation',
         cancellation_reason = '$reason_for_cancellation'
         WHERE ID = '$leave_id'";
@@ -4255,7 +4421,7 @@ if (isset($_POST['btn_approve_cancellation'])) {
         $name = $row['account_name'];
         $em = $row['company_email'];
     }
-    $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET
+    $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET 
     leave_type = '$leave_type',
     startDate = '$startDate',
     endDate = '$endDate',
@@ -4267,12 +4433,12 @@ if (isset($_POST['btn_approve_cancellation'])) {
         include('phpMailer.php');
         $available_leaves = array('SL', 'VL', 'EL', 'WFH', 'ECU', 'MNCS', 'MM', 'BL', 'PLA', 'PL', 'SPL', 'SLBANK');
         if (in_array($leave_type, $available_leaves)) {
-            $sql1 = mysqli_query($db, "UPDATE tbl_leave_balances
-            SET $leave_type = $leave_type + $total_days
+            $sql1 = mysqli_query($db, "UPDATE tbl_leave_balances 
+            SET $leave_type = $leave_type + $total_days 
             WHERE employee_number = '$employee_number'");
         }
         if ($leave_type == "CSR") {
-            mysqli_query($db, "UPDATE tbl_leave_balances
+            mysqli_query($db, "UPDATE tbl_leave_balances 
             SET VL = VL - ($total_days/2)
             WHERE employee_number = '$employee_number'");
         }
@@ -4349,7 +4515,7 @@ if (isset($_POST['btn_ot_application'])) {
         '$remarks',
         '$attachment',
         '$approver',
-        '',
+        '', 
         '',
         'Pending',
         '$datetime'
@@ -4374,7 +4540,7 @@ if (isset($_POST['btn_cancel_ot'])) {
     $remarks = $_POST['remarks'];
     $per_info = get_personal_information($employee_number);
 
-    $sql = mysqli_query($db, "UPDATE tbl_ot_application
+    $sql = mysqli_query($db, "UPDATE tbl_ot_application 
     SET `status` = 'Cancelled'
     WHERE ID = '$id'");
     if ($sql) {
@@ -4402,7 +4568,7 @@ if (isset($_POST['btn_approve_ot'])) {
     $approver_attachment = md5($approver_attachment);
     $approver_attachment_tmp = $_FILES['approver_attachment']['tmp_name'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_ot_application
+    $sql = mysqli_query($db, "UPDATE tbl_ot_application 
     SET month_of_ot = '$month_of_ot',
     total_hours = '$total_hours',
     remarks = '$remarks',
@@ -4436,7 +4602,7 @@ if (isset($_POST['btn_decline_ot'])) {
     $approver_attachment = md5($approver_attachment);
     $approver_attachment_tmp = $_FILES['approver_attachment']['tmp_name'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_ot_application
+    $sql = mysqli_query($db, "UPDATE tbl_ot_application 
     SET month_of_ot = '$month_of_ot',
     total_hours = '$total_hours',
     remarks = '$remarks',
@@ -4523,7 +4689,7 @@ if (isset($_POST['btn_acknowledge_request'])) {
     $hr_remarks = $_POST['hr_remarks'];
     $acknowledged_by = $_POST['acknowledged_by'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_certificate_requests SET
+    $sql = mysqli_query($db, "UPDATE tbl_certificate_requests SET 
     certificate_type = '$certificate_type',
     date_required = '$date_required',
     purpose = '$purpose',
@@ -4553,7 +4719,7 @@ use setasign\Fpdi\PdfReader;
 if (isset($_POST['btn_download_certificate'])) {
     $certificate_type = $_POST['certificate_type'];
 
-    // changes $at_name
+    // changes $at_name 
     if ($certificate_type == "Certificate of Employment") {
         $id = $_POST['id'];
         // $at_name = $_POST['employee_name'];
@@ -4846,8 +5012,8 @@ if (isset($_POST['update_salary_loan_approver'])) {
     $email = $_POST['email'];
     $role = $_POST['role'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_loan_approvers SET
-    `name` = '$name',
+    $sql = mysqli_query($db, "UPDATE tbl_loan_approvers SET 
+    `name` = '$name', 
     email = '$email',
     `role` = '$role'
     WHERE ID = '$id'");
@@ -4889,8 +5055,8 @@ if (isset($_POST['update_benefits_approver'])) {
     $email = $_POST['email'];
     $role = $_POST['role'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_benefits_approvers SET
-    `name` = '$name',
+    $sql = mysqli_query($db, "UPDATE tbl_benefits_approvers SET 
+    `name` = '$name', 
     email = '$email',
     `role` = '$role'
     WHERE ID = '$id'");
@@ -5869,7 +6035,7 @@ if (isset($_POST['btn_update_benefits_reimbursement'])) {
     include('phpMailer.php');
     reimbursementApplicationStatus($benefits_id);
     if ($status == $last_approver) {
-        $sql = mysqli_query($db, "UPDATE tbl_benefits_reimbursement SET
+        $sql = mysqli_query($db, "UPDATE tbl_benefits_reimbursement SET 
         payment_for = '$payment_for', special_instruction = '$special_instruction', hr_remarks = '$hr_remarks', `status` = 'Approved'
         WHERE ID = '$benefits_id'");
 
@@ -5900,7 +6066,7 @@ if (isset($_POST['btn_update_benefits_reimbursement'])) {
         }
         echo '<script>alert("Benefits Reimbursement has been fully approved : BR-' . format_transaction_id($benefits_id) . '");window.location.replace("reimbursement-list")</script>';
     } else {
-        $sql = mysqli_query($db, "UPDATE tbl_benefits_reimbursement SET
+        $sql = mysqli_query($db, "UPDATE tbl_benefits_reimbursement SET 
         payment_for = '$payment_for', special_instruction = '$special_instruction', hr_remarks = '$hr_remarks', `status` = '$next_approver'
         WHERE ID = '$benefits_id'");
         echo '<script>alert("Benefits Reimbursement has been updated : BR-' . format_transaction_id($benefits_id) . '");window.location.replace("reimbursement-list")</script>';
@@ -5950,7 +6116,7 @@ if (isset($_POST['btn_user_update_benefits'])) {
     $payment_for = $_POST['payment_for'];
     $special_instruction = $_POST['special_instruction'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_benefits_reimbursement SET
+    $sql = mysqli_query($db, "UPDATE tbl_benefits_reimbursement SET 
         payment_for = '$payment_for', special_instruction = '$special_instruction', `status` = '1'
         WHERE ID = '$benefits_id'");
     if ($sql) {
@@ -6094,9 +6260,9 @@ if (isset($_POST['btn_approve_loan'])) {
     loanApplicationStatus($id);
 
     if ($old_status == $last_approver) {
-        mysqli_query($db, "UPDATE tbl_loan_application SET
-        amount_approved = '$amount_approved',
-        monthly_deduction = '$monthly_deduction',
+        mysqli_query($db, "UPDATE tbl_loan_application SET 
+        amount_approved = '$amount_approved', 
+        monthly_deduction = '$monthly_deduction', 
         date_approved = '$datetime',
         `start_date` = '$startDate',
         hr_remarks = '$hr_remarks',
@@ -6113,9 +6279,9 @@ if (isset($_POST['btn_approve_loan'])) {
             $y++;
         }
     } else {
-        mysqli_query($db, "UPDATE tbl_loan_application SET
-        amount_approved = '$amount_approved',
-        monthly_deduction = '$monthly_deduction',
+        mysqli_query($db, "UPDATE tbl_loan_application SET 
+        amount_approved = '$amount_approved', 
+        monthly_deduction = '$monthly_deduction', 
         date_approved = '$datetime',
         `start_date` = '$startDate',
         hr_remarks = '$hr_remarks',
@@ -6241,9 +6407,11 @@ if (isset($_POST['cancellation'])) {
     $leaveapplication_id = $_POST['la_id'];
     $approver = $_SESSION['approver'];
     $approver_remarks = $_POST['la_approver_remarks'];
+    $cancel_id = $_POST['cancel_id'];
     $status = "Cancelled";
 
     $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET status = '$status', approver_remarks = '$approver_remarks' WHERE ID = '$leaveapplication_id'");
+    $sql = mysqli_query($db, "UPDATE tbl_cancellation SET status = '$status' WHERE id = '$cancel_id'");
 
     $sql = mysqli_query($db, "SELECT * FROM tbl_personal_information WHERE employee_number = '$la_emp_number'");
     while ($row = mysqli_fetch_assoc($sql)) {
@@ -6912,7 +7080,7 @@ if (isset($_POST['btn_generate_report'])) {
     if ($category == "201 File") {
         $startDate = $_POST['start_date'];
         $endDate = $_POST['end_date'];
-        $sql = mysqli_query($db, "SELECT
+        $sql = mysqli_query($db, "SELECT 
             t.employee_number,
             t.company_email,
             t.last_name,
@@ -7017,9 +7185,9 @@ if (isset($_POST['btn_generate_report'])) {
     if ($category == "Benefits Reimbursement") {
         $startDate = $_POST['start_date'];
         $endDate = $_POST['end_date'];
-        $sql = mysqli_query($db, "SELECT t.*, t1.amount as cat_amount, t1.remarks, t1.cat
-            FROM tbl_benefits_reimbursement t
-            INNER JOIN tbl_benefits_form t1
+        $sql = mysqli_query($db, "SELECT t.*, t1.amount as cat_amount, t1.remarks, t1.cat 
+            FROM tbl_benefits_reimbursement t 
+            INNER JOIN tbl_benefits_form t1 
             ON t.ID = t1.benefits_id
             WHERE t.date_created BETWEEN '$startDate 00:00:00' AND '$endDate 23:59:59' AND t.company_id = '$company'
             ORDER BY ID DESC");
@@ -7999,7 +8167,7 @@ function get_approvers($company_id)
     $sql = mysqli_query($db, "SELECT t.*, t1.account_name FROM tbl_employment_information t
     INNER JOIN tbl_personal_information t1
     ON t.employee_number = t1.employee_number
-    WHERE t.company = '$company_id'
+    WHERE t.company = '$company_id' 
     AND is_approver = '1'
     ORDER BY ID DESC");
     while ($row = mysqli_fetch_assoc($sql)) {
@@ -8053,6 +8221,13 @@ function is_training_admin($email)
 {
     return '1';
 }
+
+
+
+
+
+
+
 $template = array(
     'name'              => 'HRIS',
     'version'           => '1.0',

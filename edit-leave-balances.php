@@ -68,7 +68,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label>Others</label>
-                                <input type="text" name="el" id="el" class="form-control" value="<?= $r['EL'] ?>">
+                                <input type="text" name="el" id="el" class="form-control" value="<?= $r['others'] ?>">
                             </div>
                         </div>
                     </div>

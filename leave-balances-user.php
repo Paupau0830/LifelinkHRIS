@@ -62,7 +62,7 @@ if ($daynow == '2') {
                         <tr>
                             <td style="padding: 5px; font-size:20px; padding-right:100px;"><?= $row['SL'] ?></td>
                             <td style="padding: 5px; font-size:20px; padding-right:100px;"><?= $row['VL'] ?></td>
-                            <td style="padding: 5px; font-size:20px; padding-right:100px;"><?= $row['EL'] ?></td>
+                            <td style="padding: 5px; font-size:20px; padding-right:100px;"><?= $row['others'] ?></td>
 
                         </tr>
                     <?php
