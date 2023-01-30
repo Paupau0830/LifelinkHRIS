@@ -73,9 +73,6 @@ while ($row = mysqli_fetch_assoc($sql)) {
                     if ($r['generate_reports_emp'] == '1') {
                         $pay = 'checked';
                     }
-                    if ($r['training'] == '1') {
-                        $tra = 'checked';
-                    }
                     if ($r['payroll_management'] == '1') {
                         $pr = 'checked';
                     }
@@ -104,15 +101,15 @@ while ($row = mysqli_fetch_assoc($sql)) {
                     <div class="row">
                         <?php
                         $role = $r['role'];
-                        $admin = '';
-                        $supervisor = '';
+                        $boss = '';
+                        $hr = '';
                         $user = '';
                         $manager = '';
                         if ($role == 'Admin') {
-                            $admin = 'checked';
+                            $boss = 'checked';
                         }
-                        if ($role == 'Supervisor') {
-                            $supervisor = 'checked';
+                        if ($role == 'HR Processing') {
+                            $hr = 'checked';
                         }
                         if ($role == 'Manager') {
                             $manager = 'checked';
@@ -124,13 +121,13 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="form-group">
                             <div class="container-fluid">
                                 <label class="radio-inline">
-                                    <input type="radio" name="role" value="Admin" required <?= $admin ?>> Admin
+                                    <input type="radio" name="role" value="Admin" required <?= $boss ?>> Boss
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="role" value="HR Processing" required <?= $hr ?>> HR Processing
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" name="role" value="Manager" required <?= $manager ?>> Manager
-                                </label>
-                                <label class="radio-inline">
-                                    <input type="radio" name="role" value="Supervisor" required <?= $supervisor ?>> Supervisor
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" name="role" value="User" required <?= $user ?>> User
@@ -165,7 +162,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
-                                    <input type="checkbox" id="201" name="file201" value="1">
+                                    <input type="checkbox" id="201" name="file201" value="1" <?= $file ?>>
                                     <span></span>
                                 </label>
                                 <label>201 Files</label>
@@ -174,7 +171,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
-                                    <input type="checkbox" id="leave" name="leave_management" value="1">
+                                    <input type="checkbox" id="leave" name="leave_management" value="1" <?= $lm ?>>
                                     <span></span>
                                 </label>
                                 <label>Leave Management</label>
@@ -183,7 +180,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
-                                    <input type="checkbox" id="cert" name="certificate_request" value="1">
+                                    <input type="checkbox" id="cert" name="certificate_request" value="1" <?= $cert ?>>
                                     <span></span>
                                 </label>
                                 <label>Certificate Requests</label>
@@ -192,7 +189,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
-                                    <input type="checkbox" id="holiday" name="holiday_maintenance" value="1">
+                                    <input type="checkbox" id="holiday" name="holiday_maintenance" value="1" <?= $hol ?>>
                                     <span></span>
                                 </label>
                                 <label>Holiday Maintenance</label>
@@ -201,7 +198,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
-                                    <input type="checkbox" id="generate" name="generate_reports" value="1">
+                                    <input type="checkbox" id="generate" name="generate_reports" value="1" <?= $rep ?>>
                                     <span></span>
                                 </label>
                                 <label>Generate Reports</label>
@@ -210,7 +207,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
-                                    <input type="checkbox" id="payslip" name="generate_reports_emp" value="1">
+                                    <input type="checkbox" id="payslip" name="generate_reports_emp" value="1" <?= $pay ?>>
                                     <span></span>
                                 </label>
                                 <label>Generate Payslip</label>
@@ -219,16 +216,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
-                                    <input type="checkbox" id="training" name="training" value="1">
-                                    <span></span>
-                                </label>
-                                <label>Training</label>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="switch switch-primary">
-                                    <input type="checkbox" id="payroll" name="payroll_management" value="1">
+                                    <input type="checkbox" id="payroll" name="payroll_management" value="1" <?= $pr ?>>
                                     <span></span>
                                 </label>
                                 <label>Payroll Management</label>
@@ -237,111 +225,108 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
-                                    <input type="checkbox" id="app" name="application_management" value="1">
+                                    <input type="checkbox" id="app" name="application_management" value="1" <?= $ap ?>>
                                     <span></span>
                                 </label>
                                 <label>Application Management</label>
                             </div>
-                    </div>
-                <?php
-                }
-                ?>
-                
-            
-        </div>
-        <button class="btn btn-primary" name="btn_update_account">Update</button>
-        </form>
-    </div>
-</div>
-<div id="modal-change-password" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header text-center">
-                <h2 class="modal-title"><i class="fa fa-lock"></i> Change Password</h2>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <form method="POST" class="form-horizontal form-bordered">
-                        <input type="hidden" name="id" value="<?= $rid ?>">
-                        <div class="form-group">
-                            <label>New Password</label>
-                            <input type="password" name="new_password" required minlength="6" class="form-control">
                         </div>
-                        <button class="btn btn-primary btn-block" name="account_change_password">Update</button>
-                        <br>
-                    </form>
+                    <?php
+                }
+                    ?>
+
+
+                    </div>
+                    <button class="btn btn-primary" name="btn_update_account">Update</button>
+            </form>
+        </div>
+    </div>
+    <div id="modal-change-password" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h2 class="modal-title"><i class="fa fa-lock"></i> Change Password</h2>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <form method="POST" class="form-horizontal form-bordered">
+                            <input type="hidden" name="id" value="<?= $rid ?>">
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" name="new_password" required minlength="6" class="form-control">
+                            </div>
+                            <button class="btn btn-primary btn-block" name="account_change_password">Update</button>
+                            <br>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<?php include 'inc/page_footer.php'; ?>
-<?php include 'inc/template_scripts.php'; ?>
-<?php include 'inc/template_end.php'; ?>
-<script src="js/pages/tablesDatatables.js"></script>
-<script>
-    $(function() {
-        TablesDatatables.init();
-        if ($('[name="role"]').val() == "Admin") {
-            $('input:checkbox').prop('checked', true);
-        }
-    });
-    $('#email').change(function() {
-        var email = $(this).val();
-        var get_account_name = '';
-        $.ajax({
-            url: "inc/config.php",
-            method: "POST",
-            data: {
-                get_account_name: get_account_name,
-                email: email
-            },
-            success: function(data) {
-                $('#account_name').val(data);
+    <?php include 'inc/page_footer.php'; ?>
+    <?php include 'inc/template_scripts.php'; ?>
+    <?php include 'inc/template_end.php'; ?>
+    <script src="js/pages/tablesDatatables.js"></script>
+    <script>
+        $(function() {
+            TablesDatatables.init();
+            if ($('[name="role"]').val() == "Admin") {
+                $('input:checkbox').prop('checked', true);
             }
         });
-    });
-    $('[name="role"]').click(function() {
-        if ($(this).val() == "Admin") {
-            $('#201').prop('checked', true);
-            $('#cert').prop('checked', true);
-            $('#leave').prop('checked', true);
-            $('#holiday').prop('checked', true);
-            $('#generate').prop('checked', true);
-            $('#training').prop('checked', true);
-            $('#payslip').prop('checked', true);
-            $('#app').prop('checked', true);
-            $('#payroll').prop('checked', true);
-        }else if ($(this).val() == "Manager" || $(this).val() == "Supervisor" ){
-            $('#201').prop('checked', false);
-            $('#cert').prop('checked', true);
-            $('#leave').prop('checked', true);
-            $('#holiday').prop('checked', false);
-            $('#generate').prop('checked', false);
-            $('#training').prop('checked', true);
-            $('#payslip').prop('checked', true);
-            $('#app').prop('checked', true);
-            $('#payroll').prop('checked', false);
-        }else{
-            $('#201').prop('checked', false);
-            $('#cert').prop('checked', true);
-            $('#leave').prop('checked', true);
-            $('#holiday').prop('checked', false);
-            $('#generate').prop('checked', false);
-            $('#training').prop('checked', false);
-            $('#payslip').prop('checked', true);
-            $('#app').prop('checked', false);
-            $('#payroll').prop('checked', false);
-        }
-        if ($(this).val() == "Processor") {
-            $('input:checkbox').prop('checked', true);
-            $('.ifnotprocessor').hide();
-            $('#handled_company').removeAttr('style');
-            $('#companies').prop('required', true);
-        } else {
-            $('.ifnotprocessor').show();
-            $('#handled_company').attr('style', 'display:none');
-            $('#companies').prop('required', false);
-        }
-    });
-</script>
+        $('#email').change(function() {
+            var email = $(this).val();
+            var get_account_name = '';
+            $.ajax({
+                url: "inc/config.php",
+                method: "POST",
+                data: {
+                    get_account_name: get_account_name,
+                    email: email
+                },
+                success: function(data) {
+                    $('#account_name').val(data);
+                }
+            });
+        });
+        $('[name="role"]').click(function() {
+            if ($(this).val() == "Admin") {
+                $('#201').prop('checked', true);
+                $('#cert').prop('checked', true);
+                $('#leave').prop('checked', true);
+                $('#holiday').prop('checked', true);
+                $('#generate').prop('checked', true);
+                $('#payslip').prop('checked', true);
+                $('#app').prop('checked', true);
+                $('#payroll').prop('checked', true);
+            } else if ($(this).val() == "Manager") {
+                $('#201').prop('checked', false);
+                $('#cert').prop('checked', true);
+                $('#leave').prop('checked', true);
+                $('#holiday').prop('checked', false);
+                $('#generate').prop('checked', false);
+                $('#payslip').prop('checked', true);
+                $('#app').prop('checked', true);
+                $('#payroll').prop('checked', false);
+            } else {
+                $('#201').prop('checked', false);
+                $('#cert').prop('checked', true);
+                $('#leave').prop('checked', true);
+                $('#holiday').prop('checked', false);
+                $('#generate').prop('checked', false);
+                $('#payslip').prop('checked', true);
+                $('#app').prop('checked', false);
+                $('#payroll').prop('checked', false);
+            }
+            if ($(this).val() == "Processor") {
+                $('input:checkbox').prop('checked', true);
+                $('.ifnotprocessor').hide();
+                $('#handled_company').removeAttr('style');
+                $('#companies').prop('required', true);
+            } else {
+                $('.ifnotprocessor').show();
+                $('#handled_company').attr('style', 'display:none');
+                $('#companies').prop('required', false);
+            }
+        });
+    </script>

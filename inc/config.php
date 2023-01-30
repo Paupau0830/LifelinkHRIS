@@ -2925,8 +2925,8 @@ if (isset($_POST['btn_onboarding'])) {
     if ($insert_personal_info) {
         $employee_number = mysqli_insert_id($db);
         $employee_number =  sprintf("%05d", $employee_number);
-        $update_emp_num = mysqli_query($db, "UPDATE tbl_personal_information 
-        SET employee_number = '$employee_number' 
+        $update_emp_num = mysqli_query($db, "UPDATE tbl_personal_information
+        SET employee_number = '$employee_number'
         WHERE employee_number = 'xxx-xxx'");
     }
     $employee_number =  sprintf("%05d", $employee_number);
@@ -3070,7 +3070,7 @@ if (isset($_POST['btn_onboarding'])) {
         mysqli_query($db, "INSERT INTO tbl_benefits_eligibility VALUES(
             '',
             '$employee_number',
-            '$parking', 
+            '$parking',
             '$gasoline',
             '$car_maintenance',
             '$medicine',
@@ -3183,10 +3183,10 @@ if (isset($_POST['btn_update_post_graduate'])) {
     $from_pgs = $_POST['from_pgs'];
     $to_pgs = $_POST['to_pgs'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_post_graduate SET 
+    $sql = mysqli_query($db, "UPDATE tbl_post_graduate SET
     school = '$post_graduate_school',
     from_date = '$from_pgs',
-    to_date = '$to_pgs' 
+    to_date = '$to_pgs'
     WHERE employee_number = '$employee_number'");
     if ($sql) {
         $res = '<div class="alert alert-success alert-dismissable">
@@ -3355,7 +3355,7 @@ if (isset($_POST['btn_update_emergency_contact'])) {
     $email = $_POST['email'];
     $relationship = $_POST['relationship'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_emergency_contacts SET 
+    $sql = mysqli_query($db, "UPDATE tbl_emergency_contacts SET
     contact_name = '$contact_name',
     contact_number = '$contact_number',
     email_address = '$email',
@@ -3851,7 +3851,7 @@ if (isset($_POST['check_if_between_dates'])) {
     }
     $dates[] = $endDate;
 
-    $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests 
+    $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests
     WHERE endDate >= CURDATE() AND `status` LIKE 'Approved' AND delegated_emp_number = '$employee_number'
     OR endDate >= CURDATE() AND `status` LIKE 'Pending' AND delegated_emp_number = '$employee_number'");
     while ($row = mysqli_fetch_assoc($sql)) {
@@ -4115,7 +4115,6 @@ if (isset($_POST['btn_register'])) {
     $file201 = '0';
     $certificate_request = '0';
     $generate_reports = '0';
-    $training = '0';
     $application_management = '0';
     $leave_management = '0';
     $holiday_maintenance = '0';
@@ -4140,9 +4139,6 @@ if (isset($_POST['btn_register'])) {
     if (isset($_POST['generate_reports'])) {
         $generate_reports = $_POST['generate_reports'];
     }
-    if (isset($_POST['training'])) {
-        $training = $_POST['training'];
-    }
     if (isset($_POST['payroll_management'])) {
         $payroll_management = $_POST['payroll_management'];
     }
@@ -4165,12 +4161,11 @@ if (isset($_POST['btn_register'])) {
         '$file201',
         '$certificate_request',
         '$generate_reports',
-        '$training',
         '$application_management',
         '$leave_management',
         '$holiday_maintenance',
         '$generate_reports_emp',
-        '$payroll_management',  
+        '$payroll_management',
         '$password',
         '$datetime',
         '0'
@@ -4198,7 +4193,6 @@ if (isset($_POST['btn_update_account'])) {
     $file201 = '0';
     $certificate_request = '0';
     $generate_reports = '0';
-    $training = '0';
     $application_management = '0';
     $leave_management = '0';
     $holiday_maintenance = '0';
@@ -4213,9 +4207,6 @@ if (isset($_POST['btn_update_account'])) {
     }
     if (isset($_POST['generate_reports'])) {
         $generate_reports = $_POST['generate_reports'];
-    }
-    if (isset($_POST['training'])) {
-        $training = $_POST['training'];
     }
     if (isset($_POST['application_management'])) {
         $application_management = $_POST['application_management'];
@@ -4243,7 +4234,6 @@ if (isset($_POST['btn_update_account'])) {
         file201 = '$file201',
         certificate_requests = '$certificate_request',
         generate_reports = '$generate_reports',
-        training = '$training',
         application_management = '$application_management',
         leave_management = '$leave_management',
         holiday_maintenance = '$holiday_maintenance',
@@ -4318,7 +4308,7 @@ if (isset($_POST['btn_approve_leave'])) {
         $name = $row['account_name'];
         $em = $row['company_email'];
     }
-    $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET 
+    $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET
     leave_type = '$leave_type',
     startDate = '$startDate',
     endDate = '$endDate',
@@ -4330,12 +4320,12 @@ if (isset($_POST['btn_approve_leave'])) {
         include('phpMailer.php');
         $available_leaves = array('SL', 'VL', 'EL', 'WFH', 'ECU', 'MNCS', 'MM', 'BL', 'PLA', 'PL', 'SPL', 'SLBANK');
         if (in_array($leave_type, $available_leaves)) {
-            $sql1 = mysqli_query($db, "UPDATE tbl_leave_balances 
-            SET $leave_type = $leave_type - $total_days 
+            $sql1 = mysqli_query($db, "UPDATE tbl_leave_balances
+            SET $leave_type = $leave_type - $total_days
             WHERE employee_number = '$employee_number'");
         }
         if ($leave_type == "CSR") {
-            mysqli_query($db, "UPDATE tbl_leave_balances 
+            mysqli_query($db, "UPDATE tbl_leave_balances
             SET VL = VL + ($total_days/2)
             WHERE employee_number = '$employee_number'");
         }
@@ -4375,7 +4365,7 @@ if (isset($_POST['btn_cancel_leave'])) {
         $em = $row['company_email'];
     }
     if ($stat == "Approved") {
-        $sql = "UPDATE tbl_leave_requests SET 
+        $sql = "UPDATE tbl_leave_requests SET
         `status` = 'Requested Cancellation',
         cancellation_reason = '$reason_for_cancellation'
         WHERE ID = '$leave_id'";
@@ -4421,7 +4411,7 @@ if (isset($_POST['btn_approve_cancellation'])) {
         $name = $row['account_name'];
         $em = $row['company_email'];
     }
-    $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET 
+    $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET
     leave_type = '$leave_type',
     startDate = '$startDate',
     endDate = '$endDate',
@@ -4433,12 +4423,12 @@ if (isset($_POST['btn_approve_cancellation'])) {
         include('phpMailer.php');
         $available_leaves = array('SL', 'VL', 'EL', 'WFH', 'ECU', 'MNCS', 'MM', 'BL', 'PLA', 'PL', 'SPL', 'SLBANK');
         if (in_array($leave_type, $available_leaves)) {
-            $sql1 = mysqli_query($db, "UPDATE tbl_leave_balances 
-            SET $leave_type = $leave_type + $total_days 
+            $sql1 = mysqli_query($db, "UPDATE tbl_leave_balances
+            SET $leave_type = $leave_type + $total_days
             WHERE employee_number = '$employee_number'");
         }
         if ($leave_type == "CSR") {
-            mysqli_query($db, "UPDATE tbl_leave_balances 
+            mysqli_query($db, "UPDATE tbl_leave_balances
             SET VL = VL - ($total_days/2)
             WHERE employee_number = '$employee_number'");
         }
@@ -4515,7 +4505,7 @@ if (isset($_POST['btn_ot_application'])) {
         '$remarks',
         '$attachment',
         '$approver',
-        '', 
+        '',
         '',
         'Pending',
         '$datetime'
@@ -4540,7 +4530,7 @@ if (isset($_POST['btn_cancel_ot'])) {
     $remarks = $_POST['remarks'];
     $per_info = get_personal_information($employee_number);
 
-    $sql = mysqli_query($db, "UPDATE tbl_ot_application 
+    $sql = mysqli_query($db, "UPDATE tbl_ot_application
     SET `status` = 'Cancelled'
     WHERE ID = '$id'");
     if ($sql) {
@@ -4568,7 +4558,7 @@ if (isset($_POST['btn_approve_ot'])) {
     $approver_attachment = md5($approver_attachment);
     $approver_attachment_tmp = $_FILES['approver_attachment']['tmp_name'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_ot_application 
+    $sql = mysqli_query($db, "UPDATE tbl_ot_application
     SET month_of_ot = '$month_of_ot',
     total_hours = '$total_hours',
     remarks = '$remarks',
@@ -4602,7 +4592,7 @@ if (isset($_POST['btn_decline_ot'])) {
     $approver_attachment = md5($approver_attachment);
     $approver_attachment_tmp = $_FILES['approver_attachment']['tmp_name'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_ot_application 
+    $sql = mysqli_query($db, "UPDATE tbl_ot_application
     SET month_of_ot = '$month_of_ot',
     total_hours = '$total_hours',
     remarks = '$remarks',
@@ -4689,7 +4679,7 @@ if (isset($_POST['btn_acknowledge_request'])) {
     $hr_remarks = $_POST['hr_remarks'];
     $acknowledged_by = $_POST['acknowledged_by'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_certificate_requests SET 
+    $sql = mysqli_query($db, "UPDATE tbl_certificate_requests SET
     certificate_type = '$certificate_type',
     date_required = '$date_required',
     purpose = '$purpose',
@@ -4719,7 +4709,7 @@ use setasign\Fpdi\PdfReader;
 if (isset($_POST['btn_download_certificate'])) {
     $certificate_type = $_POST['certificate_type'];
 
-    // changes $at_name 
+    // changes $at_name
     if ($certificate_type == "Certificate of Employment") {
         $id = $_POST['id'];
         // $at_name = $_POST['employee_name'];
@@ -5012,8 +5002,8 @@ if (isset($_POST['update_salary_loan_approver'])) {
     $email = $_POST['email'];
     $role = $_POST['role'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_loan_approvers SET 
-    `name` = '$name', 
+    $sql = mysqli_query($db, "UPDATE tbl_loan_approvers SET
+    `name` = '$name',
     email = '$email',
     `role` = '$role'
     WHERE ID = '$id'");
@@ -5055,8 +5045,8 @@ if (isset($_POST['update_benefits_approver'])) {
     $email = $_POST['email'];
     $role = $_POST['role'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_benefits_approvers SET 
-    `name` = '$name', 
+    $sql = mysqli_query($db, "UPDATE tbl_benefits_approvers SET
+    `name` = '$name',
     email = '$email',
     `role` = '$role'
     WHERE ID = '$id'");
@@ -6035,7 +6025,7 @@ if (isset($_POST['btn_update_benefits_reimbursement'])) {
     include('phpMailer.php');
     reimbursementApplicationStatus($benefits_id);
     if ($status == $last_approver) {
-        $sql = mysqli_query($db, "UPDATE tbl_benefits_reimbursement SET 
+        $sql = mysqli_query($db, "UPDATE tbl_benefits_reimbursement SET
         payment_for = '$payment_for', special_instruction = '$special_instruction', hr_remarks = '$hr_remarks', `status` = 'Approved'
         WHERE ID = '$benefits_id'");
 
@@ -6066,7 +6056,7 @@ if (isset($_POST['btn_update_benefits_reimbursement'])) {
         }
         echo '<script>alert("Benefits Reimbursement has been fully approved : BR-' . format_transaction_id($benefits_id) . '");window.location.replace("reimbursement-list")</script>';
     } else {
-        $sql = mysqli_query($db, "UPDATE tbl_benefits_reimbursement SET 
+        $sql = mysqli_query($db, "UPDATE tbl_benefits_reimbursement SET
         payment_for = '$payment_for', special_instruction = '$special_instruction', hr_remarks = '$hr_remarks', `status` = '$next_approver'
         WHERE ID = '$benefits_id'");
         echo '<script>alert("Benefits Reimbursement has been updated : BR-' . format_transaction_id($benefits_id) . '");window.location.replace("reimbursement-list")</script>';
@@ -6116,7 +6106,7 @@ if (isset($_POST['btn_user_update_benefits'])) {
     $payment_for = $_POST['payment_for'];
     $special_instruction = $_POST['special_instruction'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_benefits_reimbursement SET 
+    $sql = mysqli_query($db, "UPDATE tbl_benefits_reimbursement SET
         payment_for = '$payment_for', special_instruction = '$special_instruction', `status` = '1'
         WHERE ID = '$benefits_id'");
     if ($sql) {
@@ -6260,9 +6250,9 @@ if (isset($_POST['btn_approve_loan'])) {
     loanApplicationStatus($id);
 
     if ($old_status == $last_approver) {
-        mysqli_query($db, "UPDATE tbl_loan_application SET 
-        amount_approved = '$amount_approved', 
-        monthly_deduction = '$monthly_deduction', 
+        mysqli_query($db, "UPDATE tbl_loan_application SET
+        amount_approved = '$amount_approved',
+        monthly_deduction = '$monthly_deduction',
         date_approved = '$datetime',
         `start_date` = '$startDate',
         hr_remarks = '$hr_remarks',
@@ -6279,9 +6269,9 @@ if (isset($_POST['btn_approve_loan'])) {
             $y++;
         }
     } else {
-        mysqli_query($db, "UPDATE tbl_loan_application SET 
-        amount_approved = '$amount_approved', 
-        monthly_deduction = '$monthly_deduction', 
+        mysqli_query($db, "UPDATE tbl_loan_application SET
+        amount_approved = '$amount_approved',
+        monthly_deduction = '$monthly_deduction',
         date_approved = '$datetime',
         `start_date` = '$startDate',
         hr_remarks = '$hr_remarks',
@@ -7080,7 +7070,7 @@ if (isset($_POST['btn_generate_report'])) {
     if ($category == "201 File") {
         $startDate = $_POST['start_date'];
         $endDate = $_POST['end_date'];
-        $sql = mysqli_query($db, "SELECT 
+        $sql = mysqli_query($db, "SELECT
             t.employee_number,
             t.company_email,
             t.last_name,
@@ -7185,9 +7175,9 @@ if (isset($_POST['btn_generate_report'])) {
     if ($category == "Benefits Reimbursement") {
         $startDate = $_POST['start_date'];
         $endDate = $_POST['end_date'];
-        $sql = mysqli_query($db, "SELECT t.*, t1.amount as cat_amount, t1.remarks, t1.cat 
-            FROM tbl_benefits_reimbursement t 
-            INNER JOIN tbl_benefits_form t1 
+        $sql = mysqli_query($db, "SELECT t.*, t1.amount as cat_amount, t1.remarks, t1.cat
+            FROM tbl_benefits_reimbursement t
+            INNER JOIN tbl_benefits_form t1
             ON t.ID = t1.benefits_id
             WHERE t.date_created BETWEEN '$startDate 00:00:00' AND '$endDate 23:59:59' AND t.company_id = '$company'
             ORDER BY ID DESC");
@@ -8167,7 +8157,7 @@ function get_approvers($company_id)
     $sql = mysqli_query($db, "SELECT t.*, t1.account_name FROM tbl_employment_information t
     INNER JOIN tbl_personal_information t1
     ON t.employee_number = t1.employee_number
-    WHERE t.company = '$company_id' 
+    WHERE t.company = '$company_id'
     AND is_approver = '1'
     ORDER BY ID DESC");
     while ($row = mysqli_fetch_assoc($sql)) {

@@ -521,7 +521,7 @@
                         <?php
 
                         //                        if ($userrole != "Processor") {
-                        //                            
+                        //
                         ?>
                         <!--                            <li>-->
                         <!--                                <a href="#" class="sidebar-nav-menu"><i-->
@@ -539,7 +539,7 @@
                         <!--                            </li>-->
                         <!--                            --><?php
                                                             //                        }
-                                                            //                        
+                                                            //
                                                             ?>
                         <li>
                             <a href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-file sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Certificate Requests</span></a>
@@ -563,7 +563,7 @@
                         <!--                                --><?php
                                                                 //                                if ($userrole != "Processor") {
                                                                 //                                    if ($userrole != "Admin") {
-                                                                //                                        
+                                                                //
                                                                 ?>
                         <!--                                        <li>-->
                         <!--                                            <a href="loan-application">Loan Application</a>-->
@@ -571,7 +571,7 @@
                         <!--                                        --><?php
                                                                         //                                    }
                                                                         //                                }
-                                                                        //                                
+                                                                        //
                                                                         ?>
                         <!--                                <li>-->
                         <!--                                    <a href="loan-application-list">Loan Application List</a>-->
@@ -579,7 +579,7 @@
                         <!--                                --><?php
                                                                 //                                if ($userrole != 'User') {
                                                                 //                                    if ($userrole != "Processor") {
-                                                                //                                        
+                                                                //
                                                                 ?>
                         <!--                                        <li>-->
                         <!--                                            <a href="loan-approvers">Loan Approvers</a>-->
@@ -587,7 +587,7 @@
                         <!--                                        --><?php
                                                                         //                                    }
                                                                         //                                }
-                                                                        //                                
+                                                                        //
                                                                         ?>
                         <!--                            </ul>-->
                         <!--                        </li>-->
@@ -598,14 +598,14 @@
                         <!--                            <ul>-->
                         <!--                                --><?php
                                                                 //                                if ($userrole != "Processor") {
-                                                                //                                    
+                                                                //
                                                                 ?>
                         <!--                                    <li>-->
                         <!--                                        <a href="reimbursement-application">Reimbursement Application</a>-->
                         <!--                                    </li>-->
                         <!--                                    --><?php
                                                                     //                                }
-                                                                    //                                
+                                                                    //
                                                                     ?>
                         <!--                                <li>-->
                         <!--                                    <a href="reimbursement-list">Reimbursement List</a>-->
@@ -613,7 +613,7 @@
                         <!--                                --><?php
                                                                 //                                if ($userrole != 'User') {
                                                                 //                                    if ($userrole != "Processor") {
-                                                                //                                        
+                                                                //
                                                                 ?>
                         <!--                                        <li>-->
                         <!--                                            <a href="bond-management">Bond Management</a>-->
@@ -630,7 +630,7 @@
                         <!--                                        --><?php
                                                                         //                                    }
                                                                         //                                }
-                                                                        //                                
+                                                                        //
                                                                         ?>
                         <!--                            </ul>-->
                         <!--                        </li>-->
@@ -644,40 +644,36 @@
                         }
                         if ($userrole != 'User') {
                             //                                if ($get_permissions['timekeeping'] == '1') {
-                            //                                    
+                            //
                         ?>
                             <!--                                    <li>-->
                             <!--                                        <a href="timekeeping"><i class="fa fa-clock-o sidebar-nav-icon"></i><span-->
                             <!--                                                    class="sidebar-nav-mini-hide">Timekeeping</span></a>-->
                             <!--                                    </li>-->
-                            <!--                                    --><?php
-                                                                        //                                }
-                                                                        if ($get_permissions['training'] == '1') {
-                                                                        ?>
+                            <!--                                    -->
 
                             <?php
-                                                                        }
-                                                                        if ($get_permissions['holiday_maintenance'] == '1') {
+                            if ($get_permissions['holiday_maintenance'] == '1') {
                             ?>
                                 <li>
                                     <a href="holiday-maintenance"><i class="fa fa-calendar sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Holiday Maintenance</span></a>
                                 </li>
                             <?php
-                                                                        }
-                                                                        if ($get_permissions['generate_reports'] == '1') {
+                            }
+                            if ($get_permissions['generate_reports'] == '1') {
                             ?>
                                 <li>
                                     <a href="generate-reports"><i class="fa fa-files-o sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Generate Reports</span></a>
                                 </li>
                             <?php
-                                                                        }
-                                                                        if ($userrole == 'Admin') {
+                            }
+                            if ($userrole == 'Admin') {
                             ?>
                                 <li>
                                     <a href="audit-trail"><i class="fa fa-sliders sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Audit Trail</span></a>
                                 </li>
                             <?php
-                                                                        }
+                            }
                             ?>
                             <li>
                                 <a style="font-size: 13px;" href="#" class="sidebar-nav-menu"><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i><i class="fa fa-users sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Account Management</span></a>

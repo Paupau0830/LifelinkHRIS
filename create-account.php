@@ -28,25 +28,25 @@ if (empty($_SESSION['hris_id'])) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Email Address</label>
-                            <input type="email" readonly name="email_address" class="form-control" value ="<?= $_SESSION['create_emp_email'] ?>">
+                            <input type="email" readonly name="email_address" class="form-control" value="<?= $_SESSION['create_emp_email'] ?>">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Account Name</label>
-                            <input type="text" readonly name="account_name" class="form-control" value ="<?= $_SESSION['create_emp_name'] ?>">
+                            <input type="text" readonly name="account_name" class="form-control" value="<?= $_SESSION['create_emp_name'] ?>">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Company</label>
-                            <input type="text" readonly name="company_name" class="form-control" value ="<?= $_SESSION['create_emp_comp'] ?>">
+                            <input type="text" readonly name="company_name" class="form-control" value="<?= $_SESSION['create_emp_comp'] ?>">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Employee Number</label>
-                            <input type="text" readonly name="employee_number" class="form-control" value ="<?= $_SESSION['create_emp_num'] ?>">
+                            <input type="text" readonly name="employee_number" class="form-control" value="<?= $_SESSION['create_emp_num'] ?>">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -79,13 +79,13 @@ if (empty($_SESSION['hris_id'])) {
                     <div class="form-group">
                         <div class="container-fluid">
                             <label class="radio-inline">
-                                <input type="radio" name="role" value="Admin" required> Admin
+                                <input type="radio" name="role" value="Admin" required> Boss
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="role" value="HR Processing" required> HR Processing
                             </label>
                             <label class="radio-inline">
                                 <input type="radio" name="role" value="Manager" required> Manager
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="role" value="Supervisor" required> Supervisor
                             </label>
                             <label class="radio-inline">
                                 <input type="radio" name="role" value="User" required> User
@@ -140,7 +140,7 @@ if (empty($_SESSION['hris_id'])) {
                                 <label>Leave Management</label>
                             </div>
                         </div>
-<!--                         <div class="col-md-6">
+                        <!--                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
                                     <input type="checkbox" name="ot_management" value="1">
@@ -212,7 +212,7 @@ if (empty($_SESSION['hris_id'])) {
                                 <label>Timekeeping</label>
                             </div>
                         </div> -->
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
                                     <input type="checkbox" id="training" name="training" value="1">
@@ -220,7 +220,7 @@ if (empty($_SESSION['hris_id'])) {
                                 </label>
                                 <label>Training</label>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
@@ -283,27 +283,24 @@ if (empty($_SESSION['hris_id'])) {
             $('#leave').prop('checked', true);
             $('#holiday').prop('checked', true);
             $('#generate').prop('checked', true);
-            $('#training').prop('checked', true);
             $('#payslip').prop('checked', true);
             $('#app').prop('checked', true);
             $('#payroll').prop('checked', true);
-        }else if ($(this).val() == "Manager" || $(this).val() == "Supervisor" ){
+        } else if ($(this).val() == "Manager") {
             $('#201').prop('checked', false);
             $('#cert').prop('checked', true);
             $('#leave').prop('checked', true);
             $('#holiday').prop('checked', false);
             $('#generate').prop('checked', false);
-            $('#training').prop('checked', true);
             $('#payslip').prop('checked', true);
             $('#app').prop('checked', true);
             $('#payroll').prop('checked', false);
-        }else{
+        } else {
             $('#201').prop('checked', false);
             $('#cert').prop('checked', true);
             $('#leave').prop('checked', true);
             $('#holiday').prop('checked', false);
             $('#generate').prop('checked', false);
-            $('#training').prop('checked', false);
             $('#payslip').prop('checked', true);
             $('#app').prop('checked', false);
             $('#payroll').prop('checked', false);
