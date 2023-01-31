@@ -6425,40 +6425,51 @@ if (isset($_POST['btn_approve_leave_application'])) {
 
     $total_days = $_POST['la_total_days'];
     $employee_number = $_POST['la_emp_number'];
-    $approver = $_SESSION['approver'];
-    $status = "Approved";
+    $next_approver = $_POST['next_approver'];
 
-    $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET status = '$status', approver = '$approver', approver_remarks = '$approver_remarks' WHERE ID = '$leaveapplication_id'");
-    $at_name = $_SESSION['hris_account_name'];
+    if ($_SESSION['hris_role'] == 'Admin') {
+        $status = 'Approved';
 
-    $res = '<div class="alert alert-success alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h4><i class="fa fa-check"></i> Leave Application for ' . $applied_by . ' has been approved.</h4>
-        </div>';
-    $_SESSION['la_status'] = $status;
+        $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET status = '$status', approver_remarks = '$approver_remarks' WHERE ID = '$leaveapplication_id'");
+        $at_name = $_SESSION['hris_account_name'];
 
+        $res = '<div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="fa fa-check"></i> Leave Application for ' . $applied_by . ' has been approved.</h4>
+            </div>';
 
-    $sql = mysqli_query($db, "SELECT * FROM tbl_leave_balances WHERE employee_number = '$employee_number'");
-    while ($row = mysqli_fetch_assoc($sql)) {
-        $rid = $row['ID'];
-        $empnum = $row['employee_number'];
-        $num_vl = $row['VL'];
-        $num_sl = $row['SL'];
-        $num_el = $row['EL'];
-    }
+        $sql = mysqli_query($db, "SELECT * FROM tbl_leave_balances WHERE employee_number = '$employee_number'");
+        while ($row = mysqli_fetch_assoc($sql)) {
+            $rid = $row['ID'];
+            $empnum = $row['employee_number'];
+            $num_vl = $row['VL'];
+            $num_sl = $row['SL'];
+        }
 
-    if ($leave_type == "SL") {
-        $num_sick_leave = $num_sl;
-        $num_sick_leave = $num_sick_leave - $total_days;
-        $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET SL = '$num_sick_leave' WHERE employee_number = '$empnum'");
-    } else if ($leave_type == "VL") {
-        $num_vacation_leave = $num_vl;
-        $num_vacation_leave = $num_vacation_leave - $total_days;
-        $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET VL = '$num_vacation_leave' WHERE employee_number = '$empnum'");
-    } else if ($leave_type == "EL") {
-        $num_emergency_leave = $num_el;
-        $num_emergency_leave = $num_emergency_leave - $total_days;
-        $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET EL = '$num_emergency_leave' WHERE employee_number = '$empnum'");
+        if ($leave_type == "SL") {
+            $num_sick_leave = $num_sl;
+            $num_sick_leave = $num_sick_leave - $total_days;
+            $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET SL = '$num_sick_leave' WHERE employee_number = '$empnum'");
+        } else if ($leave_type == "VL") {
+            $num_vacation_leave = $num_vl;
+            $num_vacation_leave = $num_vacation_leave - $total_days;
+            $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET VL = '$num_vacation_leave' WHERE employee_number = '$empnum'");
+        }
+    } else {
+        if ($next_approver == 'Manager') {
+            $status = 'Manager Approval';
+        } else if ($next_approver == 'HR Processing') {
+            $status = 'HR Approval';
+        } else {
+            $status = 'Boss Approval';
+        }
+
+        mysqli_query($db, "UPDATE tbl_leave_requests SET status = '$status', approver_remarks = '$approver_remarks' WHERE ID = '$leaveapplication_id'");
+
+        $res = '<div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="fa fa-check"></i> Leave Application has been proceeded to the next step: ' . $status . '</h4>
+    </div>';
     }
 }
 if (isset($_POST['btn_generate_report'])) {

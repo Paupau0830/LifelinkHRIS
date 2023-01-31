@@ -243,24 +243,27 @@ while ($row = mysqli_fetch_assoc($sql)) {
                 $status = $_SESSION['status'];
                 $approver = $_SESSION['approver'];
                 $role = $_SESSION['hris_role'];
-                if ($status != "Approved" && ($role == "Admin" || $role == "Manager" || $role == "Supervisor")) {
+                if ($status != "Approved" && ($role != "User")) {
                 ?>
                     <div class="row">
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label>Approver</label>
-                                <input type="text" id="approver" value="<?= $_SESSION['approver'] ?>" name="la_approver" class="form-control">
-                            </div>
-                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Remarks</label>
                                 <input type="text" id="app_remarks" value="<?= $_SESSION['approver_remarks'] ?>" name="la_approver_remarks" class="form-control">
                             </div>
                         </div>
-
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Next Approver</label>
+                                <select name="next_approver" class="select-chosen" data-placeholder="Choose an approvers..." style="width: 250px;">
+                                    <option value="Manager">Manager</option>
+                                    <option value="HR Processing">HR (Processing)</option>
+                                    <option value="Admin">Boss</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
+                    <br><br><br>
                     <div style="float:right">
                         <?php
 
@@ -504,10 +507,8 @@ while ($row = mysqli_fetch_assoc($sql)) {
                                 <input type="text" readonly id="app_remarks" value="<?= $_SESSION['approver_remarks'] ?>" name="la_approver_remarks" class="form-control">
                             </div>
                         </div>
-
                     </div>
                     <?php if ($role == "User") { ?>
-
                         <div class="right" style="float:right">
                             <a href="javascript:void(0)" class="btn btn-warning" onclick="$('#modal-transfer').modal('show');">Transfer of Leave</a>&nbsp;
 

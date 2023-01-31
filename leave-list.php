@@ -24,6 +24,19 @@ if (isset($_GET['selected_monthyear'])) {
     $month = $monthyear[1];
     $monthName = date("F", mktime(0, 0, 0, $month, 10));
 }
+
+$get_role = mysqli_query($db, "SELECT * FROM tbl_users WHERE employee_number = '$empnum'");
+while ($row = mysqli_fetch_assoc($get_role)) {
+    $role = $row['role'];
+}
+
+if ($role == 'Manager') {
+    $status = 'Manager Approval';
+} else if ($role == 'HR Processing') {
+    $status = 'HR Approval';
+} else {
+    $status = 'Boss Approval';
+}
 ?>
 
 <div id="page-content">
@@ -43,11 +56,6 @@ if (isset($_GET['selected_monthyear'])) {
             <h2><strong>Leave Application</strong> Summary List</h2>
         </div>
         <?php
-
-        $get_role = mysqli_query($db, "SELECT * FROM tbl_users WHERE employee_number = '$empnum'");
-        while ($row = mysqli_fetch_assoc($get_role)) {
-            $role = $row['role'];
-        }
 
         if ($role != 'User') {
         ?>
@@ -96,32 +104,30 @@ if (isset($_GET['selected_monthyear'])) {
             <table id="leave-list" class="table table-vcenter table-condensed table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-center">ID</th>
-                        <th>Employee Number</th>
-                        <th>Employee Name</th>
-                        <th>Leave Type</th>
-                        <th>Duration</th>
-                        <th>Total Days</th>
-                        <th>Status</th>
-                        <th>Date Created</th>
-                        <th class="text-center">Action</th>
+                        <th class="text-center" style="font-size: 12px;">ID</th>
+                        <th style="font-size: 12px;">Employee Number</th>
+                        <th style="font-size: 12px;">Employee Name</th>
+                        <th style="font-size: 12px;">Leave Type</th>
+                        <th style="font-size: 12px;">Duration</th>
+                        <th style="font-size: 12px;">Total Days</th>
+                        <th style="font-size: 12px;">Status</th>
+                        <th style="font-size: 12px;">Date Created</th>
+                        <th class="text-center" style="font-size: 12px;">Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <?php
-
-                    if ($role == "Admin" || $role == "Supervisor" || $role == "Manager") {
-
+                    if ($role != "User") {
                         if ($emp_name != '' && $monthyear != '') {
-                            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE emp_name = '$emp_name' AND month_selected = '$monthName' AND year_selected = '$year'");
+                            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE emp_name = '$emp_name' AND month_selected = '$monthName' AND year_selected = '$year' AND status = '$status'");
                         } else {
-                            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests");
+                            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE status = '$status'");
                         }
 
                         while ($row = mysqli_fetch_assoc($sql)) {
                     ?>
-                            <tr>
+                            <tr style="font-size: 11px;">
                                 <td class="text-center"><?= format_transaction_id($row['ID']) ?></td>
                                 <td><?= $row['delegated_emp_number'] ?></td>
                                 <td><?= $row['emp_name'] ?></td>
@@ -136,17 +142,13 @@ if (isset($_GET['selected_monthyear'])) {
                                     </div>
                                 </td>
                             </tr>
-                    <?php
+                        <?php
                         }
-                    }
-                    ?>
-
-                    <?php
-                    if ($role == "User") {
+                    } else {
                         $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE delegated_emp_number = '$empnum'");
                         while ($row = mysqli_fetch_assoc($sql)) {
-                    ?>
-                            <tr>
+                        ?>
+                            <tr style="font-size: 11px;">
                                 <td class="text-center"><?= format_transaction_id($row['ID']) ?></td>
                                 <td><?= $row['delegated_emp_number'] ?></td>
                                 <td><?= $row['emp_name'] ?></td>
