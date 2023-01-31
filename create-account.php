@@ -85,6 +85,9 @@ if (empty($_SESSION['hris_id'])) {
                                 <input type="radio" name="role" value="HR Processing" required> HR Processing
                             </label>
                             <label class="radio-inline">
+                                <input type="radio" name="role" value="Group Head" required> Group Head
+                            </label>
+                            <label class="radio-inline">
                                 <input type="radio" name="role" value="Manager" required> Manager
                             </label>
                             <label class="radio-inline">
@@ -286,7 +289,7 @@ if (empty($_SESSION['hris_id'])) {
             $('#payslip').prop('checked', true);
             $('#app').prop('checked', true);
             $('#payroll').prop('checked', true);
-        } else if ($(this).val() == "Manager") {
+        } else if ($(this).val() == "Manager" || $(this).val() == "HR Processing" || $(this).val() == "Group Head") {
             $('#201').prop('checked', false);
             $('#cert').prop('checked', true);
             $('#leave').prop('checked', true);

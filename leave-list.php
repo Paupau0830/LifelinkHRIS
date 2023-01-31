@@ -32,10 +32,10 @@ while ($row = mysqli_fetch_assoc($get_role)) {
 
 if ($role == 'Manager') {
     $status = 'Manager Approval';
-} else if ($role == 'HR Processing') {
-    $status = 'HR Approval';
-} else {
+} else if ($role == 'Admin') {
     $status = 'Boss Approval';
+} else {
+    $status = 'HR Approval';
 }
 ?>
 
@@ -145,7 +145,7 @@ if ($role == 'Manager') {
                         <?php
                         }
                     } else {
-                        $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE delegated_emp_number = '$empnum'");
+                        $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE delegated_emp_number = '$empnum' AND status != 'Approved'");
                         while ($row = mysqli_fetch_assoc($sql)) {
                         ?>
                             <tr style="font-size: 11px;">
@@ -170,6 +170,89 @@ if ($role == 'Manager') {
                 </tbody>
             </table>
         </div>
+    </div>
+
+
+    <div class="block full">
+        <div class="block-title">
+            <div class="block-options pull-left">
+                <!-- <a href="leave-application" class="btn btn-primary">Leave Application</a> -->
+            </div>
+            <h2><strong>Approved Leave Application</strong> Summary List</h2>
+        </div>
+        <div class="container-fluid">
+            <div class="table-responsive">
+                <table id="company-management" class="table table-vcenter table-condensed table-bordered">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="font-size: 12px;">ID</th>
+                            <th style="font-size: 12px;">Employee Number</th>
+                            <th style="font-size: 12px;">Employee Name</th>
+                            <th style="font-size: 12px;">Leave Type</th>
+                            <th style="font-size: 12px;">Duration</th>
+                            <th style="font-size: 12px;">Total Days</th>
+                            <th style="font-size: 12px;">Status</th>
+                            <th style="font-size: 12px;">Date Created</th>
+                            <th class="text-center" style="font-size: 12px;">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <?php
+                        if ($role != "User") {
+                            if ($emp_name != '' && $monthyear != '') {
+                                $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE emp_name = '$emp_name' AND month_selected = '$monthName' AND year_selected = '$year' AND status = 'Approved'");
+                            } else {
+                                $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE status = 'Approved'");
+                            }
+
+                            while ($row = mysqli_fetch_assoc($sql)) {
+                        ?>
+                                <tr style="font-size: 11px;">
+                                    <td class="text-center"><?= format_transaction_id($row['ID']) ?></td>
+                                    <td><?= $row['delegated_emp_number'] ?></td>
+                                    <td><?= $row['emp_name'] ?></td>
+                                    <td><?= $row['leave_type'] ?></td>
+                                    <td><?= $row['startDate'] . ' >> ' . $row['endDate'] ?></td>
+                                    <td><?= $row['total_day'] ?></td>
+                                    <td><?= $row['status'] ?></td>
+                                    <td><?= $row['date_filed'] ?></td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a href="leave-details?<?= md5('id') . '=' . md5($row['ID']) ?>" data-toggle="tooltip" title="View" class="btn btn-s btn-default"><i class="fa fa-eye">&nbsp; View</i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php
+                            }
+                        } else {
+                            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE delegated_emp_number = '$empnum' AND status = 'Approved'");
+                            while ($row = mysqli_fetch_assoc($sql)) {
+                            ?>
+                                <tr style="font-size: 11px;">
+                                    <td class="text-center"><?= format_transaction_id($row['ID']) ?></td>
+                                    <td><?= $row['delegated_emp_number'] ?></td>
+                                    <td><?= $row['emp_name'] ?></td>
+                                    <td><?= $row['leave_type'] ?></td>
+                                    <td><?= $row['startDate'] . ' >> ' . $row['endDate'] ?></td>
+                                    <td><?= $row['total_day'] ?></td>
+                                    <td><?= $row['status'] ?></td>
+                                    <td><?= $row['date_filed'] ?></td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a href="leave-details?<?= md5('id') . '=' . md5($row['ID']) ?>" data-toggle="tooltip" title="View" class="btn btn-s btn-default"><i class="fa fa-eye">&nbsp; View</i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                        <?php
+                            }
+                        }
+                        ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
     <!-- END Datatables Content -->
 </div>
