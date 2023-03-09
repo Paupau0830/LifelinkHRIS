@@ -122,7 +122,7 @@ if ($role == 'Manager') {
                         if ($emp_name != '' && $monthyear != '') {
                             $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE emp_name = '$emp_name' AND month_selected = '$monthName' AND year_selected = '$year' AND status = '$status'");
                         } else {
-                            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests");
+                            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE status = '$status'");
                         }
 
                         while ($row = mysqli_fetch_assoc($sql)) {
