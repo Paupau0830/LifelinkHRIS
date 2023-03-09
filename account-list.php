@@ -27,6 +27,7 @@ if (empty($_SESSION['hris_id'])) {
                         <th class="text-center">ID</th>
                         <th>Email Address</th>
                         <th>Account Name</th>
+                        <th>Role</th>
                         <th class="text-center">Action</th>
                     </tr>
                 </thead>
@@ -40,6 +41,7 @@ if (empty($_SESSION['hris_id'])) {
                             <td class="text-center"><?= $row['ID'] ?></td>
                             <td><?= $row['email'] ?></td>
                             <td><?= $row['account_name'] ?></td>
+                            <td><?= $row['role'] ?></td>
                             <td class="text-center">
                                 <div class="btn-group">
                                     <a href="edit-account?<?= md5('id') . '=' . md5($row['ID']) ?>" data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil"></i></a>

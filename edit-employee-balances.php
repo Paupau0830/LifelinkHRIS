@@ -90,7 +90,7 @@ $optical = $balances[5]['optical'];
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>EL</label>
-                                <input type="text" name="el" class="form-control" value="<?= $r['EL'] ?>">
+                                <input type="text" name="el" class="form-control" value="<?= $r['others'] ?>">
                             </div>
                         </div>
                         <!-- <div class="col-md-2">

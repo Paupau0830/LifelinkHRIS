@@ -109,6 +109,9 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         if ($role == 'Admin') {
                             $boss = 'checked';
                         }
+                        if ($role == 'Officer') {
+                            $officer = 'checked';
+                        }
                         if ($role == 'HR Processing') {
                             $hr = 'checked';
                         }
@@ -127,11 +130,14 @@ while ($row = mysqli_fetch_assoc($sql)) {
                                 <label class="radio-inline">
                                     <input type="radio" name="role" value="Admin" required <?= $boss ?>> Boss
                                 </label>
+                                <!-- <label class="radio-inline">
+                                    <input type="radio" name="role" value="Officer" required <?= $officer ?>> Officer
+                                </label> -->
                                 <label class="radio-inline">
                                     <input type="radio" name="role" value="HR Processing" required <?= $hr ?>> HR Processing
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="role" value="Group Head" required <?= $gh ?>> Group Head
+                                    <input type="radio" name="role" value="Group Head" required <?= $officer ?>> Officer
                                 </label>
                                 <label class="radio-inline">
                                     <input type="radio" name="role" value="Manager" required <?= $manager ?>> Manager

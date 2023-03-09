@@ -14,19 +14,19 @@ $newDate = date("Y-m-d", strtotime("+1 month", $test_date_now));
 $newMonth = date("m", strtotime("+1 month", $test_date_now));
 
 // Every 1st day of the Month. 
-if ($daynow == '1') {
+// if ($daynow == '1') {
 
-    mysqli_query($db, "UPDATE tbl_leave_balances SET SL = SL + 0.6667, updated_monthly = 1 WHERE ID > '0' AND updated_monthly = '0'");
-    mysqli_query($db, "UPDATE tbl_leave_balances SET VL = VL + 1, updated_monthly = 1 WHERE ID > '0' AND updated_monthly = '0'");
+//     mysqli_query($db, "UPDATE tbl_leave_balances SET SL = SL + 0.6667, updated_monthly = 1 WHERE ID > '0' AND updated_monthly = '0'");
+//     mysqli_query($db, "UPDATE tbl_leave_balances SET VL = VL + 1, updated_monthly = 1 WHERE ID > '0' AND updated_monthly = '0'");
 
-    // ROUND OFF
-    mysqli_query($db, "UPDATE tbl_leave_balances SET SL = ROUND(SL,4) WHERE ID > '0' ");
-    mysqli_query($db, "UPDATE tbl_leave_balances SET VL = ROUND(VL,2) WHERE ID > '0'");
-}
+//     // ROUND OFF
+//     mysqli_query($db, "UPDATE tbl_leave_balances SET SL = ROUND(SL,4) WHERE ID > '0' ");
+//     mysqli_query($db, "UPDATE tbl_leave_balances SET VL = ROUND(VL,2) WHERE ID > '0'");
+// }
 
-if ($daynow == '2') {
-    mysqli_query($db, "UPDATE tbl_leave_balances SET updated_monthly = 0 WHERE ID > '0' AND updated_monthly = '1'");
-}
+// if ($daynow == '2') {
+//     mysqli_query($db, "UPDATE tbl_leave_balances SET updated_monthly = 0 WHERE ID > '0' AND updated_monthly = '1'");
+// }
 ?>
 
 <div id="page-content">
@@ -57,6 +57,9 @@ if ($daynow == '2') {
                         <th class="text-center">SL</th>
                         <th class="text-center">VL</th>
                         <th class="text-center">Others</th>
+                        <th class="text-center">APE</th>
+                        <th class="text-center">HP</th>
+                        <th class="text-center">BL</th>
                         <th class="text-center" style="width:60px;">Maternity</th>
                         <th class="text-center" style="width:60px;">Paternity</th>
                         <?php
@@ -87,6 +90,9 @@ if ($daynow == '2') {
                             <td class="text-center"><?= $row['SL'] ?></td>
                             <td class="text-center"><?= $row['VL'] ?></td>
                             <td class="text-center"><?= $row['others'] ?></td>
+                            <td class="text-center"><?= $row['ape'] ?></td>
+                            <td class="text-center"><?= $row['hp'] ?></td>
+                            <td class="text-center"><?= $row['bl'] ?></td>
                             <td class="text-center"><?= $row['maternity'] ?></td>
                             <td class="text-center"><?= $row['paternity'] ?></td>
                             <?php

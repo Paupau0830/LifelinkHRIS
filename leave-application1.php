@@ -77,15 +77,14 @@ while ($row = mysqli_fetch_assoc($sql)) {
                                 <option></option>
                                 <option value="VL">Vacation Leave</option>
                                 <option value="SL">Sick Leave</option>
-                                <option value="SLVL">Combination of SL & VL</option>
                                 <option value="others">Others</option>
-
                             </select>
                             <input type="hidden" name="leavetype" id="leavetype">
                             <div class="others_leave" id="others_leave" style="display: none;">
                                 <br>
                                 <label>Others:</label>
                                 <select name="leave_type_others" id="leave_type_others" required class="select-chosen" data-placeholder="Choose a Leave Type..." style="width: 250px;">
+                                    <option></option>
                                     <option value="ape">APE</option>
                                     <option value="hp">HP</option>
                                     <option value="bl">Birthday Leave</option>
@@ -97,13 +96,13 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="form-group">
                             <label>Balance</label>
                             <input type="number" readonly id="leave_balance" step="any" class="form-control">
+                            <div class="others_leave1" id="others_leave1" style="display: none;">
+                                <br>
+                                <label>Balance</label>
+                                <input type="number" readonly id="leave_balance_others" step="any" class="form-control">
+                            </div>
 
                         </div>
-                        <div class="others_leave1" id="others_leave1" style="display: none;">
-                            <label>Balance</label>
-                            <input type="number" readonly id="leave_balance_others" step="any" class="form-control">
-                        </div>
-
                     </div>
                 </div>
                 <div class="row">
@@ -122,7 +121,16 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="form-group">
                             <label>End Date *</label>
                             <input type="date" name="endDate" required id="endDate" class="form-control">
-
+                            <?php
+                            $role = $_SESSION['hris_role'];
+                            if ($role != "User") {
+                            ?>
+                                <input type="checkbox" name="late_filing" id="late_filing" onclick="getCheckboxValue()">
+                                <label for="late_filing">Late Filing</label>
+                                <input type="hidden" name="late_filing_val" id="late_filing_val" value="0">
+                            <?php
+                            }
+                            ?>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -255,6 +263,137 @@ while ($row = mysqli_fetch_assoc($sql)) {
         }
 
     });
+    $('#leave_type').on('change', function() {
+        var leave_type = $(this).val();
+        var role_type = $('#roletype').val();
+        if (leave_type === "others") {
+            // $('#startDate').removeAttr('min');
+            <?php
+            $DateToday = date('Y-m-d');
+            ?>
+
+            if (role_type === "Admin") {
+                $('#startDate').removeAttr('max');
+                $('#startDate').removeAttr('min');
+                $('#endDate').removeAttr('max');
+                $('#endDate').removeAttr('min');
+
+            } else {
+                $('#startDate').removeAttr('min');
+                // $('#startDate').attr('min', '<?= $DateToday ?>');
+                $('#startDate').attr('max', '<?= date('Y-m-d', strtotime(' + 6 days')); ?>');
+                $('#endDate').removeAttr('min');
+                // $('#endDate').attr('min', '<?= $DateToday ?>');
+                $('#endDate').removeAttr('max');
+            }
+            var x = document.getElementById("others_leave");
+            var y = document.getElementById("others_leave1");
+            var leave_type = $('#leave_type').val();
+            var leavetype = document.getElementById("leavetype");
+            $('#leavetype').val(leave_type);
+
+            if (x.style.display === "none") {
+                x.style.display = "block";
+                y.style.display = "block";
+            } else {
+                x.style.display = "none";
+                y.style.display = "none";
+            }
+
+
+
+        } else if (leave_type === "VL") {
+            if (role_type === "Admin") {
+                $('#startDate').removeAttr('max');
+                $('#startDate').removeAttr('min');
+                $('#endDate').removeAttr('max');
+                $('#endDate').removeAttr('min');
+
+            }
+            //  else {
+            //     $('#startDate').attr('min', '<?= date('Y-m-d', strtotime(' + 2 weeks')); ?>');
+            //     $('#startDate').removeAttr('max');
+            //     $('#endDate').attr('min', '<?= date('Y-m-d', strtotime(' + 2 weeks')); ?>');
+            //     $('#endDate').removeAttr('max');
+            // }
+            var y = document.getElementById("others_leave1");
+            var x = document.getElementById("others_leave");
+            var leave_type = $('#leave_type').val();
+            var leavetype = document.getElementById("leavetype");
+            $('#leavetype').val(leave_type);
+
+            x.style.display = "none";
+            y.style.display = "none";
+        } else if (leave_type === "SL") {
+            if (role_type === "Admin") {
+                $('#startDate').removeAttr('max');
+                $('#startDate').removeAttr('min');
+                $('#endDate').removeAttr('max');
+                $('#endDate').removeAttr('min');
+
+            } else {
+                // $('#startDate').attr('min', '<?= $DateToday ?>');
+                $('#startDate').removeAttr('min');
+                $('#startDate').removeAttr('max');
+                // $('#endDate').attr('min', '<?= $DateToday ?>');
+                $('#endDate').removeAttr('min');
+                $('#endDate').removeAttr('max');
+            }
+            var y = document.getElementById("others_leave1");
+            var x = document.getElementById("others_leave");
+            var leave_type = $('#leave_type').val();
+            var leavetype = document.getElementById("leavetype");
+            $('#leavetype').val(leave_type);
+            y.style.display = "none";
+            x.style.display = "none";
+        } else {
+            $('#startDate').removeAttr('max');
+            $('#endDate').removeAttr('max');
+
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+        var delegate = $('#delegate_name').val();
+        var select_leave_balances = '';
+        var available_leaves = ['SL', 'VL', 'others']; // MNCS = maternity normal or cs -- MM = Maternity Miscarriage 
+        if ($.inArray(leave_type, available_leaves) !== -1) {
+            $('#btn_leave_application').prop("disabled", true);
+            $('#btn_leave_application').text('Loading...');
+            $.ajax({
+                url: "inc/config.php",
+                method: "POST",
+                data: {
+                    select_leave_balances: select_leave_balances,
+                    leave_type: leave_type,
+                    delegate: delegate
+                },
+                success: function(data) {
+                    $('#leave_balance').val(data);
+                },
+                complete: function() {
+                    $('#btn_leave_application').prop("disabled", false);
+                    $('#btn_leave_application').text('Submit');
+                    var numDays = $('#numDays').text();
+                    var balance = $('#leave_balance').text();
+                    var nd = parseInt(numDays);
+                    var bal = parseInt(balance);
+                    if (nd > bal) {
+                        $('#result').html("Note: You don't have enough leave credits to file this.");
+                        $('#btn_leave_application').prop("disabled", true);
+                    } else {
+                        $('#result').html('');
+                        $('#btn_leave_application').prop("disabled", false);
+                    }
+                }
+            });
+        } else {
+
+            $('#leave_balance').val('Actuals');
+        }
+    });
     $('#leave_type_others').on('change', function() {
         var leave_type_others = $(this).val();
         var role_type = $('#roletype').val();
@@ -295,157 +434,13 @@ while ($row = mysqli_fetch_assoc($sql)) {
             $('#leave_balance_others').val('Actuals');
         }
     });
-    $('#leave_type').on('change', function() {
-        var leave_type = $(this).val();
-        var role_type = $('#roletype').val();
-        if (leave_type === "others") {
-            // $('#startDate').removeAttr('min');
-            <?php
-            $DateToday = date('Y-m-d');
-            ?>
-
-            if (role_type === "Admin") {
-                $('#startDate').removeAttr('max');
-                $('#startDate').removeAttr('min');
-                $('#endDate').removeAttr('max');
-                $('#endDate').removeAttr('min');
-
-            } else {
-                $('#startDate').removeAttr('min');
-                // $('#startDate').attr('min', '<?= $DateToday ?>');
-                $('#startDate').attr('max', '<?= date('Y-m-d', strtotime(' + 6 days')); ?>');
-                $('#endDate').removeAttr('min');
-                // $('#endDate').attr('min', '<?= $DateToday ?>');
-                $('#endDate').removeAttr('max');
-            }
-            var x = document.getElementById("others_leave");
-            var y = document.getElementById("others_leave1");
-            var leave_type = $('#leave_type').val();
-            var leavetype = document.getElementById("leavetype");
-            $('#leavetype').val(leave_type);
-
-            if (x.style.display === "none") {
-                x.style.display = "block";
-                y.style.display = "block";
-            } else {
-                x.style.display = "none";
-                y.style.display = "none";
-            }
-        } else if (leave_type === "SLVL") {
-            // $('#startDate').removeAttr('min');
-            <?php
-            $DateToday = date('Y-m-d');
-            ?>
-
-            if (role_type === "Admin") {
-                $('#startDate').removeAttr('max');
-                $('#startDate').removeAttr('min');
-                $('#endDate').removeAttr('max');
-                $('#endDate').removeAttr('min');
-
-            } else {
-                $('#startDate').removeAttr('min');
-                // $('#startDate').attr('min', '<?= $DateToday ?>');
-                $('#startDate').attr('max', '<?= date('Y-m-d', strtotime(' + 6 days')); ?>');
-                $('#endDate').removeAttr('min');
-                // $('#endDate').attr('min', '<?= $DateToday ?>');
-                $('#endDate').removeAttr('max');
-            }
-            var y = document.getElementById("others_leave1");
-            var x = document.getElementById("others_leave");
-            var leave_type = $('#leave_type').val();
-            var leavetype = document.getElementById("leavetype");
-            $('#leavetype').val(leave_type);
-            y.style.display = "none";
-            x.style.display = "none";
-        } else if (leave_type === "VL") {
-            if (role_type === "Admin") {
-                $('#startDate').removeAttr('max');
-                $('#startDate').removeAttr('min');
-                $('#endDate').removeAttr('max');
-                $('#endDate').removeAttr('min');
-
-            } else {
-                $('#startDate').attr('min', '<?= date('Y-m-d', strtotime(' + 2 weeks')); ?>');
-                $('#startDate').removeAttr('max');
-                $('#endDate').attr('min', '<?= date('Y-m-d', strtotime(' + 2 weeks')); ?>');
-                $('#endDate').removeAttr('max');
-            }
-
-            var y = document.getElementById("others_leave1");
-            var x = document.getElementById("others_leave");
-            var leave_type = $('#leave_type').val();
-            var leavetype = document.getElementById("leavetype");
-            $('#leavetype').val(leave_type);
-            y.style.display = "none";
-            x.style.display = "none";
-        } else if (leave_type === "SL") {
-            if (role_type === "Admin") {
-                $('#startDate').removeAttr('max');
-                $('#startDate').removeAttr('min');
-                $('#endDate').removeAttr('max');
-                $('#endDate').removeAttr('min');
-
-            } else {
-                // $('#startDate').attr('min', '<?= $DateToday ?>');
-                $('#startDate').removeAttr('min');
-                $('#startDate').removeAttr('max');
-                // $('#endDate').attr('min', '<?= $DateToday ?>');
-                $('#endDate').removeAttr('min');
-                $('#endDate').removeAttr('max');
-            }
-
-            var y = document.getElementById("others_leave1");
-            var x = document.getElementById("others_leave");
-            var leave_type = $('#leave_type').val();
-            var leavetype = document.getElementById("leavetype");
-            $('#leavetype').val(leave_type);
-            y.style.display = "none";
-            x.style.display = "none";
-        } else {
-            $('#startDate').removeAttr('max');
-            $('#endDate').removeAttr('max');
-        }
-        var delegate = $('#delegate_name').val();
-        var select_leave_balances = '';
-        var available_leaves = ['SL', 'VL', 'others', 'SLVL']; // MNCS = maternity normal or cs -- MM = Maternity Miscarriage 
-        if ($.inArray(leave_type, available_leaves) !== -1) {
-            $('#btn_leave_application').text('Loading...');
-            $.ajax({
-                url: "inc/config.php",
-                method: "POST",
-                data: {
-                    select_leave_balances: select_leave_balances,
-                    leave_type: leave_type,
-                    delegate: delegate
-                },
-                success: function(data) {
-                    $('#leave_balance').val(data);
-                },
-                complete: function() {
-                    $('#btn_leave_application').text('Submit');
-                    var numDays = $('#numDays').text();
-                    var balance = $('#leave_balance').text();
-                    var nd = parseInt(numDays);
-                    var bal = parseInt(balance);
-                    if (nd > bal) {
-                        $('#result').html("Note: You don't have enough leave credits to file this.");
-                    } else {
-                        $('#result').html('');
-                    }
-                }
-            });
-        } else {
-
-            $('#leave_balance').val('Actuals');
-        }
-    });
     $('#delegate_name').on('change', function() {
         var leave_type = $('#leave_type').val();
         var delegate = $('#delegate_name').val();
         var select_leave_balances = '';
         var available_leaves = ['SL', 'VL', 'others']; // MNCS = maternity normal or cs -- MM = Maternity Miscarriage 
         if ($.inArray(leave_type, available_leaves) !== -1) {
+            $('#btn_leave_application').prop("disabled", true);
             $('#btn_leave_application').text('Loading...');
             $.ajax({
                 url: "inc/config.php",
@@ -459,6 +454,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                     $('#leave_balance').val(data);
                 },
                 complete: function() {
+                    $('#btn_leave_application').prop("disabled", false);
                     $('#btn_leave_application').text('Submit');
 
                     var startDate = $('#startDate').val();
@@ -480,6 +476,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                                 $('#btn_leave_application').prop("disabled", false);
                             } else {
                                 $('#result').html("Note: The following dates were already filed: " + data);
+                                $('#btn_leave_application').prop("disabled", true);
                             }
                         }
                     });
@@ -494,8 +491,8 @@ while ($row = mysqli_fetch_assoc($sql)) {
         var leave_type = $('#leave_type').val();
         var compute_leave_duration = '';
 
-        // $('#btn_leave_application').prop("disabled", true);
-        // $('#btn_leave_application').text('Loading...');
+        $('#btn_leave_application').prop("disabled", true);
+        $('#btn_leave_application').text('Loading...');
 
         $.ajax({
             url: "inc/config.php",
@@ -519,7 +516,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                 }
             },
             complete: function() {
-                // $('#btn_leave_application').prop("disabled", false);
+                $('#btn_leave_application').prop("disabled", false);
                 $('#btn_leave_application').text('Submit');
                 var numDays = $('#totalDays').val();
                 var balance = $('#leave_balance').val();
@@ -528,7 +525,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                 var empnum = $('#delegate_name').val();
                 if (nd > bal) {
                     $('#result').html("Note: You don't have enough leave credits to file this.");
-                    // $('#btn_leave_application').prop("disabled", true);
+                    $('#btn_leave_application').prop("disabled", true);
                 } else {
                     $('#result').html('');
                     $('#btn_leave_application').prop("disabled", false);
@@ -539,7 +536,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                     $('#btn_leave_application').prop("disabled", false);
                 } else {
                     $('#result').html("Note: The following dates were already filed: " + data);
-                    // $('#btn_leave_application').prop("disabled", true);
+                    $('#btn_leave_application').prop("disabled", true);
                 }
             }
         });

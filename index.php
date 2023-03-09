@@ -82,10 +82,10 @@ $img = mysqli_fetch_assoc($get_maintenance);
         <div class="col-md-6">
             <div class="block full">
                 <div class="block-title">
-                    <h2><strong>Recent Leave Applications</strong></h2>
+                    <h2><strong>Recent Leave Pending Applications</strong></h2>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-vcenter table-condensed table-bordered">
+                    <table id="company-management" class="table table-vcenter table-condensed table-bordered">
                         <thead>
                             <tr>
                                 <th class="text-center">ID</th>
@@ -100,10 +100,10 @@ $img = mysqli_fetch_assoc($get_maintenance);
                         <tbody>
                             <?php
                             $company_id = $_SESSION['hris_company_id'];
-                            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE company_id = '$company_id'");
+                            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE company_id = '$company_id' AND status = 'Pending'");
                             if ($_SESSION['hris_role'] == "User") {
                                 $empnum = $_SESSION['hris_employee_number'];
-                                $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE delegated_emp_number = '$empnum'");
+                                $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE delegated_emp_number = '$empnum' AND status = 'Pending'");
                             }
                             while ($row = mysqli_fetch_assoc($sql)) {
                             ?>
@@ -131,124 +131,41 @@ $img = mysqli_fetch_assoc($get_maintenance);
         <div class="col-md-6">
             <div class="block full">
                 <div class="block-title">
-                            <h2><strong>Recent Attendance Adjustment Applications</strong></h2>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="two-column" class="table table-vcenter table-condensed table-bordered">
-                <thead>
-                    <tr>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">Employee</th>
-                        <th class="text-center">Date</th>
-                        <th class="text-center">Time</th>
-                        <th class="text-center">Type</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $sql = mysqli_query($db, "SELECT * FROM tbl_attendance_adjust_request WHERE emp_num = '$emp_num'");
-                    while ($row = mysqli_fetch_assoc($sql)) {
-                    ?>
-                    <tr>
-                            <td class="text-center"><?= $row['id'] ?></td>
-                            <td class="text-center"><?= $row['emp_num'] ?></td>
-                            <td class="text-center"><?= $row['date'] ?></td>
-                            <td class="text-center"><?= $row['time'] ?></td>
-                            <td class="text-center"><?= $row['request_type'] ?></td>
-                            <td class="text-center"><?= $row['status'] ?></td>
-                            <td class="text-center">
-                                <div class="btn-group">
-                                    <a href="attendance_adjustment_request-viewonly?<?= md5('id') . '=' . md5($row['id']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php
-                    }
-                    ?>
-                </tbody>
-            </table>
-                        </div>
-            </div>
-        </div>
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="block full">
-                        <div class="block-title">
-                            <h2><strong>Recent OT Applications</strong></h2>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="two-column" class="table table-vcenter table-condensed table-bordered">
-                <thead>
-                    <tr>
-                        <th class="text-center">ID</th>
-                        <th class="text-center">Date From</th>
-                        <th class="text-center">Date To</th>
-                        <th class="text-center">Date Filed</th>
-                        <th class="text-center">Duration</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $sql = mysqli_query($db, "SELECT * FROM tbl_ot_request WHERE emp_num = '$emp_num'");
-                    while ($row = mysqli_fetch_assoc($sql)) {
-                    ?>
-                    <tr>
-                            <td class="text-center"><?= $row['id'] ?></td>
-                            <td class="text-center"><?= $row['date_from'] ?></td>
-                            <td class="text-center"><?= $row['date_to'] ?></td>
-                            <td class="text-center"><?= $row['date_filed'] ?></td>
-                            <td class="text-center"><?= $row['total_duration'] ?></td>
-                            <td class="text-center"><?= $row['status'] ?></td>
-                            <td class="text-center">
-                                <div class="btn-group">
-                                    <a href="overtime_request_list-viewonly?<?= md5('id') . '=' . md5($row['id']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                </div>
-                            </td>
-                        </tr>
-                    <?php
-                    }
-                    ?>
-                </tbody>
-            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="block full">
-                        <div class="block-title">
-                    <h2><strong>Recent Offset Applications</strong></h2>
+                    <h2><strong>Recent Leave Remaining Processed Applications</strong></h2>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-vcenter table-condensed table-bordered">
+                    <table id="company-departments" class="table table-vcenter table-condensed table-bordered">
                         <thead>
                             <tr>
                                 <th class="text-center">ID</th>
-                                <th class="text-center">Date From</th>
-                                <th class="text-center">Date To</th>
-                                <th class="text-center">Date Filed</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Action</th>
+                                <th class="text-center">Employee #</th>
+                                <th>Leave Type</th>
+                                <th>Duration</th>
+                                <th>Status</th>
+                                <th>Date Created</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $sql = mysqli_query($db, "SELECT * FROM tbl_offset_request WHERE emp_num = '$emp_num'");
+                            $company_id = $_SESSION['hris_company_id'];
+                            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE company_id = '$company_id' AND status != 'Pending'");
+                            if ($_SESSION['hris_role'] == "User") {
+                                $empnum = $_SESSION['hris_employee_number'];
+                                $sql = mysqli_query($db, "SELECT * FROM tbl_leave_requests WHERE delegated_emp_number = '$empnum' AND status != 'Pending'");
+                            }
                             while ($row = mysqli_fetch_assoc($sql)) {
                             ?>
-                            <tr>
-                            <td class="text-center"><?= $row['id'] ?></td>
-                            <td class="text-center"><?= $row['date_from'] ?></td>
-                            <td class="text-center"><?= $row['date_to'] ?></td>
-                            <td class="text-center"><?= $row['date_filed'] ?></td>
-                            <td class="text-center"><?= $row['status'] ?></td>
-                            <td class="text-center">
-                                <div class="btn-group">
-                                    <a href="offset_application_viewonly?<?= md5('id') . '=' . md5($row['id']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                <tr>
+                                    <td class="text-center">LA-<?= format_transaction_id($row['ID']) ?></td>
+                                    <td><?= $row['delegated_emp_number'] ?></td>
+                                    <td><?= $row['leave_type'] ?></td>
+                                    <td><?= $row['startDate'] . ' >> ' . $row['endDate'] ?></td>
+                                    <td><?= $row['status'] ?></td>
+                                    <td><?= $row['date_filed'] ?></td>
+                                    <td class="text-center">
+                                        <div class="btn-group">
+                                            <a href="leave-details?<?= md5('id') . '=' . md5($row['ID']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -258,31 +175,161 @@ $img = mysqli_fetch_assoc($get_maintenance);
                         </tbody>
                     </table>
                 </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="block full">
+                        <div class="block-title">
+                            <h2><strong>Recent Attendance Applications</strong></h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="company-job-grade" class="table table-vcenter table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">ID</th>
+                                        <th class="text-center">Employee #</th>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $company_id = $_SESSION['hris_company_id'];
+                                    $sql = mysqli_query($db, "SELECT * FROM tbl_attendance_adjust_request WHERE company = '$company_id'");
+                                    if ($_SESSION['hris_role'] == "User") {
+                                        $empnum = $_SESSION['hris_employee_number'];
+                                        $sql = mysqli_query($db, "SELECT * FROM tbl_attendance_adjust_request WHERE emp_num = '$empnum'");
+                                    }
+                                    while ($row = mysqli_fetch_assoc($sql)) {
+                                    ?>
+                                        <tr>
+                                            <td class="text-center">LA-<?= format_transaction_id($row['ID']) ?></td>
+                                            <td><?= $row['emp_num'] ?></td>
+                                            <td><?= $row['date'] ?></td>
+                                            <td><?= $row['time'] ?></td>
+                                            <td><?= $row['request_type'] ?></td>
+                                            <td><?= $row['status'] ?></td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    <a href="leave-details?<?= md5('id') . '=' . md5($row['ID']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="block full">
+                        <div class="block-title">
+                            <h2><strong>Recent OT Applications</strong></h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="univ-col" class="table table-vcenter table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">ID</th>
+                                        <th class="text-center">Date From</th>
+                                        <th class="text-center">Date To</th>
+                                        <th class="text-center">Date Filed</th>
+                                        <th class="text-center">Duration</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $sql = mysqli_query($db, "SELECT * FROM tbl_ot_request WHERE emp_num = '$emp_num'");
+                                    while ($row = mysqli_fetch_assoc($sql)) {
+                                    ?>
+                                        <tr>
+                                            <td class="text-center"><?= $row['id'] ?></td>
+                                            <td class="text-center"><?= $row['date_from'] ?></td>
+                                            <td class="text-center"><?= $row['date_to'] ?></td>
+                                            <td class="text-center"><?= $row['date_filed'] ?></td>
+                                            <td class="text-center"><?= $row['total_duration'] ?></td>
+                                            <td class="text-center"><?= $row['status'] ?></td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    <a href="overtime_request_list-viewonly?<?= md5('id') . '=' . md5($row['id']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="block full">
+                        <div class="block-title">
+                            <h2><strong>Recent Offset Applications</strong></h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="company-job-grade-set" class="table table-vcenter table-condensed table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">ID</th>
+                                        <th class="text-center">Date From</th>
+                                        <th class="text-center">Date To</th>
+                                        <th class="text-center">Date Filed</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $sql = mysqli_query($db, "SELECT * FROM tbl_offset_request WHERE emp_num = '$emp_num'");
+                                    while ($row = mysqli_fetch_assoc($sql)) {
+                                    ?>
+                                        <tr>
+                                            <td class="text-center"><?= $row['id'] ?></td>
+                                            <td class="text-center"><?= $row['date_from'] ?></td>
+                                            <td class="text-center"><?= $row['date_to'] ?></td>
+                                            <td class="text-center"><?= $row['date_filed'] ?></td>
+                                            <td class="text-center"><?= $row['status'] ?></td>
+                                            <td class="text-center">
+                                                <div class="btn-group">
+                                                    <a href="offset_application_viewonly?<?= md5('id') . '=' . md5($row['id']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <!-- END Widgets Row -->
+    <?php include 'inc/page_footer.php'; ?>
+    <?php include 'inc/template_scripts.php'; ?>
 </div>
 <!-- END Page Content -->
-
-<?php include 'inc/page_footer.php'; ?>
-<?php include 'inc/template_scripts.php'; ?>
-
-<!-- Google Maps API Key (you will have to obtain a Google Maps API key to use Google Maps) -->
-<!-- For more info please have a look at https://developers.google.com/maps/documentation/javascript/get-api-key#key -->
-<script src="https://maps.googleapis.com/maps/api/js?key="></script>
-<script src="js/helpers/gmaps.min.js"></script>
-
-<!-- Load and execute javascript code used only in this page -->
-<script src="js/pages/index.js"></script>
 <script src="js/pages/tablesDatatables.js"></script>
 <script>
     $(function() {
-        Index.init();
         TablesDatatables.init();
     });
 </script>
+
+<!-- Load and execute javascript code used only in this page -->
+
 
 <?php include 'inc/template_end.php'; ?>

@@ -62,12 +62,12 @@ if (empty($_SESSION['hris_id'])) {
                   <input type="text" readonly class="form-control-plaintext" id="staticNetSalary" value="<?= number_format($_SESSION['selected_netsalary'], 2, ".", ",")  ?>">
                 </div>
               </div>
-              <div class="mb-3 row">
+              <!-- <div class="mb-3 row">
                 <label for="staticNetSalary" class="col-sm-2 col-form-label">Net Salary before adjustments</label>
                 <div class="col-sm-10">
                   <input type="text" readonly class="form-control-plaintext" id="staticNetSalary" value="<?= number_format($_SESSION['selected_netsalary_beforeadjustment'], 2, ".", ",")  ?>">
                 </div>
-              </div>
+              </div> -->
               <!-- <div class="mb-3 row">
               <label for="staticNetSalary" class="col-sm-2 col-form-label">Current Net Salary</label>
               <div class="col-sm-10">
@@ -180,12 +180,12 @@ if (empty($_SESSION['hris_id'])) {
                 <input type="text" readonly class="form-control-plaintext" id="staticNetSalary" value="<?= number_format($_SESSION['selected_netsalary'], 2, ".", ",")  ?>">
               </div>
             </div>
-            <div class="mb-3 row">
+            <!-- <div class="mb-3 row">
                 <label for="staticNetSalary" class="col-sm-2 col-form-label">Net Salary before adjustments</label>
                 <div class="col-sm-10">
                   <input type="text" readonly class="form-control-plaintext" id="staticNetSalary" value="<?= number_format($_SESSION['selected_netsalary_beforeadjustment'], 2, ".", ",")  ?>">
                 </div>
-              </div>
+              </div> -->
             <!-- <div class="mb-3 row">
               <label for="staticNetSalary" class="col-sm-2 col-form-label">Current Net Salary</label>
               <div class="col-sm-10">

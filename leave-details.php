@@ -78,6 +78,21 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="form-group">
                             <label>Date Filed</label>
                             <input type="text" readonly id="app_date" name="la_application_date" value="<?= $date_filed ?>" class="form-control">
+                            <?php
+                            $role = $_SESSION['hris_role'];
+                            if ($role == "HR Processing") {
+                                if ($late_filing == '1') {
+                                    $checked_lf = 'checked disabled';
+                                } else {
+                                    $checked_lf = '';
+                                }
+                            ?>
+                                <input type="checkbox" name="late_filing" id="late_filing" <?= $checked_lf ?> onclick="getCheckboxValue()">
+                                <label for="late_filing">Late Filing</label>
+                                <input type="hidden" name="late_filing_val" id="late_filing_val" value="<?= $late_filing ?>">
+                            <?php
+                            }
+                            ?>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -206,7 +221,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <!-- <div class="col-md-2">
                         <div class="form-group">
                             <label>Late Filing</label>
                             <?php
@@ -218,7 +233,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                             ?>
                             <input type="text" readonly name="late_filing" class="form-control" value="<?= $late_filing ?>">
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -230,7 +245,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Remarks</label>
-                            <textarea name="la_remarks" readonly class="form-control" rows="3" style="resize:none;"><?= $remarks ?></textarea>
+                            <textarea name="la_remarks" readonly class="form-control" rows="3" style="resize:none;" required><?= $remarks ?></textarea>
                         </div>
                     </div>
                 </div>
@@ -249,25 +264,32 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Remarks</label>
-                                <input type="text" id="app_remarks" value="<?= $_SESSION['approver_remarks'] ?>" name="la_approver_remarks" class="form-control">
+                                <input type="text" id="app_remarks" value="<?= $_SESSION['approver_remarks'] ?>" name="la_approver_remarks" class="form-control" required>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Next Approver</label>
-                                <select name="next_approver" class="select-chosen" data-placeholder="Choose an approvers..." style="width: 250px;">
-                                    <option value="Manager">Manager</option>
-                                    <option value="HR Processing">HR (Processing)</option>
-                                    <option value="Admin">Boss</option>
-                                </select>
+                        <?php
+
+                        if ($status != 'Boss Approval'  && ($role != "Admin")) {
+                        ?>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Next Approver</label>
+                                    <select name="next_approver" class="select-chosen" data-placeholder="Choose an approvers..." style="width: 250px;">
+                                        <option value="Manager">Manager</option>
+                                        <option value="HR Processing">HR (Processing)</option>
+                                        <option value="Admin">Boss</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+                        <?php
+                        }
+                        ?>
                     </div>
                     <br><br><br>
                     <div style="float:right">
                         <?php
 
-                        if ($status != "Cancelled" && ($role == "Admin" || $role == "Manager" || $role == "Supervisor")) {
+                        if ($status != "Cancelled" && ($role == "Admin" || $role == "HR Processing")) {
                         ?>
                             <a href="javascript:void(0)" class="btn btn-warning" onclick="$('#modal-cancellation').modal('show');">Cancellation</a>&nbsp;
                             <div id="modal-cancellation" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
@@ -504,7 +526,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Remarks</label>
-                                <input type="text" readonly id="app_remarks" value="<?= $_SESSION['approver_remarks'] ?>" name="la_approver_remarks" class="form-control">
+                                <input type="text" readonly id="app_remarks" value="<?= $_SESSION['approver_remarks'] ?>" name="la_approver_remarks" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -633,8 +655,9 @@ while ($row = mysqli_fetch_assoc($sql)) {
     <!--block content -->
 </div>
 <!--content header-->
-</div>
+<!-- </div> -->
 <!--pagecontent-->
+
 
 
 <?php include 'inc/page_footer.php'; ?>
@@ -647,6 +670,14 @@ while ($row = mysqli_fetch_assoc($sql)) {
 </script>
 
 <script>
+    function getCheckboxValue() {
+        var checkbox_lf = document.getElementById("late_filing");
+        if (checkbox_lf.checked == true) {
+            document.getElementById("late_filing_val").value = '1';
+        } else {
+            document.getElementById("late_filing_val").value = '0';
+        }
+    }
     setInterval(function() {
         if ($('#endDate').val().length === 0) {
             $('#totalDays').val('');

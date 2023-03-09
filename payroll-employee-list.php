@@ -40,7 +40,7 @@ if (empty($_SESSION['hris_id'])) {
                     $sql = mysqli_query($db, "SELECT * FROM tbl_employees");
                     while ($row = mysqli_fetch_assoc($sql)) {
                     ?>
-                    <tr>
+                        <tr>
                             <td class="text-center"><?= $row['emp_num'] ?></td>
                             <td><?= $row['emp_name'] ?></td>
                             <td><?= $row['company_position'] ?></td>
@@ -69,19 +69,19 @@ if (empty($_SESSION['hris_id'])) {
                         <div class="form-group">
                             <label>Employee ID</label>
                             <select name="emp_num" class="form-control select-chosen">
-                            <?php
-                                $sql = mysqli_query($db, "SELECT * FROM tbl_employees");
+                                <?php
+                                $sql = mysqli_query($db, "SELECT * FROM tbl_employees WHERE account_created = 0");
                                 while ($row = mysqli_fetch_assoc($sql)) {
-                             ?>
-                             <option value="<?= $row['emp_num'] ?>"><?= $row['emp_num'] ?></option>
-                        <?php
-                        }
-                        ?>
-                        </select>
-                        <br><br>
-                        <button class="btn btn-primary btn-block" name="edit_employee">Proceed</button>
-                        <br>
-                    </div>
+                                ?>
+                                    <option value="<?= $row['emp_num'] ?>"><?= $row['emp_num'] ?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                            <br><br>
+                            <button class="btn btn-primary btn-block" name="edit_employee">Proceed</button>
+                            <br>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -100,20 +100,20 @@ if (empty($_SESSION['hris_id'])) {
                         <div class="form-group">
                             <label>Employee ID</label>
                             <select name="emp_num" class="form-control select-chosen">
-                            <option value="null">Select one...</option>
-                            <?php
+                                <option value="null">Select one...</option>
+                                <?php
                                 $sql = mysqli_query($db, "SELECT * FROM tbl_personal_information WHERE account_created = '0'");
                                 while ($row = mysqli_fetch_assoc($sql)) {
-                             ?>
-                             <option value="<?= $row['employee_number'] ?>"><?= $row['employee_number'] ?></option>
-                        <?php
-                        }
-                        ?>
-                        </select>
-                        <br><br>
-                        <button class="btn btn-primary btn-block" name="add_payroll_registry">Proceed</button>
-                        <br>
-                    </div>
+                                ?>
+                                    <option value="<?= $row['employee_number'] ?>"><?= $row['employee_number'] ?></option>
+                                <?php
+                                }
+                                ?>
+                            </select>
+                            <br><br>
+                            <button class="btn btn-primary btn-block" name="add_payroll_registry">Proceed</button>
+                            <br>
+                        </div>
                     </form>
                 </div>
             </div>

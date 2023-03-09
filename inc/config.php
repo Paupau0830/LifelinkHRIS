@@ -175,7 +175,7 @@ if (isset($_POST['print_bank_summary'])) {
     $pdf->Cell(190, 3, 'PAYROLL SUMMARY FOR BANK', '0', 1, 'C');
 
     $pdf->SetFont('Arial', 'B', 8);
-    $pdf->Cell(190, 8, 'LEMI PHILIPPINES, INC.', '0', 1, 'C');
+    $pdf->Cell(190, 8, 'LIFELINK', '0', 1, 'C');
 
     $pdf->Cell(190, 8, '', '0', 1, 'C');
 
@@ -230,7 +230,7 @@ if (isset($_POST['print_attendance_summary'])) {
     $pdf->Cell(335, 3, 'ATTENDANCE SUMMARY REPORT', '0', 1, 'C');
 
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(335, 8, 'LEMI PHILIPPINES, INC.', '0', 1, 'C');
+    $pdf->Cell(335, 8, 'LIFELINK', '0', 1, 'C');
 
     $pdf->Cell(335, 3, '', '0', 1, 'C');
 
@@ -628,7 +628,7 @@ if (isset($_POST['print_overall_attendance_summary'])) {
     $pdf->Cell(335, 3, 'ATTENDANCE SUMMARY REPORT', '0', 1, 'C');
 
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(335, 8, 'LEMI PHILIPPINES, INC.', '0', 1, 'C');
+    $pdf->Cell(335, 8, 'LIFELINK', '0', 1, 'C');
 
     $pdf->Cell(335, 3, '', '0', 1, 'C');
 
@@ -862,7 +862,7 @@ if (isset($_POST['print_payroll_summary'])) {
     $pdf->Cell(330, 3, 'PAYROLL SUMMARY FOR EMPLOYEES', '0', 1, 'C');
 
     $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(330, 8, 'LEMI PHILIPPINES, INC.', '0', 1, 'C');
+    $pdf->Cell(330, 8, 'LIFELINK', '0', 1, 'C');
 
     $pdf->Cell(190, 5, '', '0', 1, 'C');
 
@@ -940,13 +940,17 @@ if (isset($_POST['btn_decline_leave_application'])) {
     $endDate = $_POST['la_endDate'];
     $applied_by = $_POST['applied_by'];
     $approver_remarks = $_POST['la_approver_remarks'];
-    // $reason_for_cancellation = $_POST['reason_for_cancellation'];
+    $reason_for_cancellation = $_POST['reason_for_cancellation'];
+
 
     $total_days = $_POST['la_total_days'];
     $employee_number = $_POST['la_emp_number'];
-    $approver = $_POST['la_approver'];
+    if (isset($_POST['la_approver'])) {
+        $approver = $_POST['la_approver'];
+    }
+    $approver = $_SESSION['hris_employee_number'];
     $status = "Declined";
-    $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET status = '$status', approver = '$approver', approver_remarks = '$approver_remarks' WHERE ID = '$leaveapplication_id'");
+    $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET status = '$status', approver = '$approver', approver_remarks = '$approver_remarks', leave_wo_pay_days = '0' WHERE ID = '$leaveapplication_id'");
     $at_name = $_SESSION['hris_account_name'];
 
     $res = '<div class="alert alert-success alert-dismissable">
@@ -3092,6 +3096,9 @@ if (isset($_POST['btn_onboarding'])) {
         '0',
         '0',
         '0',
+        '0',
+        '0',
+        '0',
         '0')");
 
     // Benefits Balances
@@ -3700,7 +3707,11 @@ if (isset($_POST['transfer_of_leave'])) {
             <h4><i class="fa fa-times"></i> Complete all necessary fields to proceed.</h4>
         </div>';
     } else {
-        $tol_id = $_POST['tol_id'];
+        // initialize
+        $tol_id = '';
+        if (isset($_POST['tol_id'])) {
+            $tol_id = $_POST['tol_id'];
+        }
         $leave_duration = $_POST['leave_duration'];
         $modified_startDate = $_POST['m_startDate'];
         $modified_endDate = $_POST['m_endDate'];
@@ -3819,9 +3830,24 @@ if (isset($_POST['compute_leave_duration'])) {
 
     echo $days;
 }
+
+// with combi
 if (isset($_POST['select_leave_balances'])) {
     $leaves = array('SL', 'VL', 'others');
+    $combi = 0;
     $leave_type = $_POST['leave_type'];
+    if ($leave_type == 'SLVL') {
+        $employee_number = $_POST['delegate'];
+
+        $com = mysqli_query($db, "SELECT * FROM tbl_leave_balances WHERE employee_number = '$employee_number'");
+
+        if ($row = mysqli_fetch_assoc($com)) {
+            $sl_leave = $row['SL'];
+            $vl_leave = $row['VL'];
+            $combi =  $vl_leave +  $sl_leave;
+            echo $combi;
+        }
+    }
     foreach ($leaves as $k => $v) {
         if ($leave_type == $v) {
             $employee_number = $_POST['delegate'];
@@ -3830,6 +3856,21 @@ if (isset($_POST['select_leave_balances'])) {
 
             if ($row = mysqli_fetch_assoc($sql)) {
                 echo $row[$leave_type];
+            }
+        }
+    }
+}
+if (isset($_POST['select_leave_balances_others'])) {
+    $leaves_others = array('ape', 'hp', 'bl');
+    $leave_type_others = $_POST['leave_type_others'];
+    foreach ($leaves_others as $k => $v) {
+        if ($leave_type_others == $v) {
+            $employee_number = $_POST['delegate'];
+
+            $sql = mysqli_query($db, "SELECT * FROM tbl_leave_balances WHERE employee_number = '$employee_number'");
+
+            if ($row = mysqli_fetch_assoc($sql)) {
+                echo $row[$leave_type_others];
             }
         }
     }
@@ -3946,12 +3987,12 @@ if (isset($_POST['btn_leave_application'])) {
     $duration = $_POST['duration'];
     $total_days = $_POST['total_days'];
 
-    $late_filing_val = $_POST['late_filing_val'];
+    $late_filing_val = '0';
     $reason = $_POST['reason'];
     // $remarks = $_POST['remarks'];
     $approver = $_POST['approver'];
     $approver_remarks = "";
-
+    $lwop_days = 0;
     if ($_SESSION['hris_role'] == "Admin") {
         $sql = mysqli_query($db, "SELECT * FROM tbl_personal_information WHERE employee_number = '$emp_name'");
         while ($row = mysqli_fetch_assoc($sql)) {
@@ -3959,13 +4000,98 @@ if (isset($_POST['btn_leave_application'])) {
         }
     }
 
+    // get lwop days
+    $get_lb = mysqli_query($db, "SELECT * FROM tbl_leave_balances WHERE employee_number = '$emp_name'");
+    while ($row = mysqli_fetch_assoc($get_lb)) {
+        $lb_vl = $row['VL'];
+        $lb_sl = $row['SL'];
+        $lb_others = $row['others'];
+        $lb_maternity = $row['maternity'];
+        $lb_paternity = $row['paternity'];
+        $lb_solo_parent = $row['solo_parent'];
+        $lb_ape = $row['ape'];
+        $lb_hp = $row['hp'];
+        $lb_bl = $row['bl'];
+    }
+
+    $combi_slvl = $lb_sl + $lb_vl;
+
+    if ($leave_type == 'VL') {
+        $lwop_days = $total_days - $lb_vl;
+        if ($lwop_days > 0) {
+            $leave_without_pay = $lwop_days;
+        } else {
+            $leave_without_pay = '0';
+        }
+    } else if ($leave_type == 'SL') {
+        $lwop_days = $total_days - $lb_sl;
+        if ($lwop_days > 0) {
+            $leave_without_pay = $lwop_days;
+        } else {
+            $leave_without_pay = '0';
+        }
+    } else if ($leave_type == 'SLVL') {
+        $lwop_days = $total_days - $combi_slvl;
+        if ($lwop_days > 0) {
+            $leave_without_pay = $lwop_days;
+        } else {
+            $leave_without_pay = '0';
+        }
+    } else if ($leave_type == 'others') {
+        if (isset($_POST['leave_type_others'])) {
+            $leave_type_others = $_POST['leave_type_others'];
+        }
+
+        if ($leave_type_others == 'ape') {
+            $lwop_days = $total_days - $lb_ape;
+            if ($lwop_days > 0) {
+                $leave_without_pay = $lwop_days;
+            } else {
+                $leave_without_pay = '0';
+            }
+        }
+        if ($leave_type_others == 'hp') {
+            $lwop_days = $total_days - $lb_hp;
+            if ($lwop_days > 0) {
+                $leave_without_pay = $lwop_days;
+            } else {
+                $leave_without_pay = '0';
+            }
+        }
+        if ($leave_type_others == 'bl') {
+            $lwop_days = $total_days - $lb_bl;
+            if ($lwop_days > 0) {
+                $leave_without_pay = $lwop_days;
+            } else {
+                $leave_without_pay = '0';
+            }
+        }
+    }
+
+
     $company_id = $_SESSION['hris_company_id'];
     $month = date('F');
     $year = date('Y');
+    if ($leave_type == 'others') {
+        $leave_type_others = $_POST['leave_type_others'];
+        if ($leave_type_others == 'ape') {
+            $leave_type = 'others - APE';
+        }
+        if ($leave_type_others == 'hp') {
+            $leave_type = 'others - HP';
+        }
+        if ($leave_type_others == 'bl') {
+            $leave_type = 'others - BL';
+        }
+    }
+
     // FILE UPLOAD
     if (empty($_FILES['attachment']['tmp_name']) || !is_uploaded_file($_FILES['attachment']['tmp_name'])) {
-        $sql = mysqli_query($db, "INSERT INTO tbl_leave_requests VALUES('','$company_id','$employee_num','$emp_name','$employee_name','$leave_type','$startDate','$endDate','$total_days','$reason','$duration','','$approver','$approver_remarks','Pending','$datetime','$late_filing_val','$reason','$month','$year')");
+
+        $sql = mysqli_query($db, "INSERT INTO tbl_leave_requests VALUES('','$company_id','$employee_num','$emp_name','$employee_name','$leave_type','$startDate','$endDate','$total_days','$reason','$duration','','$approver','$approver_remarks','Pending','$datetime','$late_filing_val','$reason','$month','$year','$leave_without_pay')");
+
         $at_name = $_SESSION['hris_account_name'];
+        // audit trail
         mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Filed a leave application','$datetime')");
         $res = '<div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -4446,6 +4572,9 @@ if (isset($_POST['btn_update_leave_balances'])) {
     $sl = $_POST['sl'];
     $vl = $_POST['vl'];
     $el = $_POST['el'];
+    $ape = $_POST['ape'];
+    $hp = $_POST['hp'];
+    $bl = $_POST['bl'];
     $maternity = $_POST['maternity'];
     $paternity = $_POST['paternity'];
     $solo_parent = $_POST['solo_parent'];
@@ -4453,7 +4582,10 @@ if (isset($_POST['btn_update_leave_balances'])) {
     $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET
     SL = '$sl',
     VL = '$vl',
-    EL = '$el',
+    others = '$el',
+    ape = '$ape',
+    hp = '$hp',
+    bl = '$bl',
     maternity = '$maternity',
     solo_parent = '$solo_parent',
     paternity = '$paternity'
@@ -4797,9 +4929,9 @@ if (isset($_POST['btn_download_certificate'])) {
         $pdf->useTemplate($pageId, 0, 0, 210);
         // $pdf->useImportedPage($pageId, 10, 10, 100);
         $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Cell(318, 150, '' . $date_now . '', '0', 1, 'C');
+        $pdf->Cell(318, 122, '' . $date_now . '', '0', 1, 'C');
         // -----
-        $pdf->Cell(175, -99, '' . $emp_name . '', '0', 1, 'C');
+        $pdf->Cell(175, -59, '' . $emp_name . '', '0', 1, 'C');
         // $pdf->SetFont('Arial', 'B', 8);
         // $pdf->Cell(63, -177, ''.$position.'', '0', 0, 'C');
         // $pdf->SetFont('Arial', 'B', 9);
@@ -6416,6 +6548,11 @@ if (isset($_POST['btn_approve_leave_application'])) {
 
     $applied_by = $_POST['applied_by'];
     $leaveapplication_id = $_POST['la_id'];
+    if (isset($_POST['late_filing_val'])) {
+        $late_filing_val = $_POST['late_filing_val'];
+    } else {
+        $late_filing_val = '0';
+    }
     // $leave_details = get_leave_details($leave_id);
     $date_filed = $_POST['la_application_date'];
     $leave_type = $_POST['la_leave_type'];
@@ -6425,12 +6562,15 @@ if (isset($_POST['btn_approve_leave_application'])) {
 
     $total_days = $_POST['la_total_days'];
     $employee_number = $_POST['la_emp_number'];
-    $next_approver = $_POST['next_approver'];
-
+    if (isset($_POST['next_approver'])) {
+        $next_approver = $_POST['next_approver'];
+    } else {
+        $next_approver = '';
+    }
     if ($_SESSION['hris_role'] == 'Admin') {
         $status = 'Approved';
 
-        $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET status = '$status', approver_remarks = '$approver_remarks' WHERE ID = '$leaveapplication_id'");
+        $sql = mysqli_query($db, "UPDATE tbl_leave_requests SET status = '$status', late_filing = '$late_filing_val', approver_remarks = '$approver_remarks' WHERE ID = '$leaveapplication_id'");
         $at_name = $_SESSION['hris_account_name'];
 
         $res = '<div class="alert alert-success alert-dismissable">
@@ -6444,18 +6584,68 @@ if (isset($_POST['btn_approve_leave_application'])) {
             $empnum = $row['employee_number'];
             $num_vl = $row['VL'];
             $num_sl = $row['SL'];
+            $num_others = $row['others'];
+            $num_ape = $row['ape'];
+            $num_hp = $row['hp'];
+            $num_bl = $row['bl'];
         }
 
         if ($leave_type == "SL") {
             $num_sick_leave = $num_sl;
             $num_sick_leave = $num_sick_leave - $total_days;
+            if ($num_sick_leave < 0) {
+                $num_sick_leave = 0;
+            }
             $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET SL = '$num_sick_leave' WHERE employee_number = '$empnum'");
         } else if ($leave_type == "VL") {
             $num_vacation_leave = $num_vl;
             $num_vacation_leave = $num_vacation_leave - $total_days;
+            if ($num_vacation_leave < 0) {
+                $num_vacation_leave = 0;
+            }
             $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET VL = '$num_vacation_leave' WHERE employee_number = '$empnum'");
+        } else if ($leave_type == "others") {
+            $num_others_leave = $num_others;
+            $num_others_leave = $num_others_leave - $total_days;
+            if ($num_others_leave < 0) {
+                $num_others_leave = 0;
+            }
+            $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET others = '$num_others_leave' WHERE employee_number = '$empnum'");
+        } else if ($leave_type == "others - APE") {
+            $num_ape_leave = $num_ape;
+            $num_ape_leave = $num_ape_leave - $total_days;
+            if ($num_ape_leave < 0) {
+                $num_ape_leave = 0;
+            }
+            $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET ape = '$num_ape_leave' WHERE employee_number = '$empnum'");
+        } else if ($leave_type == "others - HP") {
+            $num_hp_leave = $num_hp;
+            $num_hp_leave = $num_hp_leave - $total_days;
+            if ($num_hp_leave < 0) {
+                $num_hp_leave = 0;
+            }
+            $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET hp = '$num_hp_leave' WHERE employee_number = '$empnum'");
+        } else if ($leave_type == "others - BL") {
+            $num_bl_leave = $num_bl;
+            $num_bl_leave = $num_bl_leave - $total_days;
+            if ($num_bl_leave < 0) {
+                $num_bl_leave = 0;
+            }
+            $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET bl = '$num_bl_leave' WHERE employee_number = '$empnum'");
+        } else if ($leave_type == "SLVL") {
+            $num_slvl_leave = $num_vl + $num_sl;
+            $num_slvl_leave = $num_slvl_leave - $total_days;
+            if ($num_slvl_leave < 0) {
+                $num_slvl_leave = 0;
+            }
+            $sql = mysqli_query($db, "UPDATE tbl_leave_balances SET SL = '$num_slvl_leave', VL = '$num_slvl_leave' WHERE employee_number = '$empnum'");
         }
     } else {
+        if (isset($_POST['late_filing_val'])) {
+            $late_filing_val = $_POST['late_filing_val'];
+        } else {
+            $late_filing_val = '0';
+        }
         if ($next_approver == 'Manager') {
             $status = 'Manager Approval';
         } else if ($next_approver == 'HR Processing') {
@@ -6464,7 +6654,7 @@ if (isset($_POST['btn_approve_leave_application'])) {
             $status = 'Boss Approval';
         }
 
-        mysqli_query($db, "UPDATE tbl_leave_requests SET status = '$status', approver_remarks = '$approver_remarks' WHERE ID = '$leaveapplication_id'");
+        mysqli_query($db, "UPDATE tbl_leave_requests SET status = '$status', late_filing = '$late_filing_val', approver_remarks = '$approver_remarks' WHERE ID = '$leaveapplication_id'");
 
         $res = '<div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -6510,7 +6700,7 @@ if (isset($_POST['btn_generate_report'])) {
                 $philhealth = $row['philhealth'];
                 $sss_er = $row['sss_er'];
                 $sss_ec = $row['sss_ec'];
-                $pagibig_er = $row['pagibig_er'];
+                // $philhealth_ee = $row['philhealth_ee'];
                 $philhealth_er = $row['philhealth_er'];
                 $net_salary = $row['net_salary'];
                 $account_number = $row['account_number'];
@@ -6637,7 +6827,7 @@ if (isset($_POST['btn_generate_report'])) {
             // $pdf->MultiCell(0,5,utf8_decode($variable1 . chr(10) . $variable2),1);
             $pdf->SetFont('Arial', 'B', 12);
             // $pdf->Cell( 40, 40, $pdf->Image($image1, $pdf->GetX(), $pdf->GetY(), 33.78), 0, 0, 'L', false );
-            $pdf->Cell(140, 45, 'LEMI PHILIPPINES, INC.', 'LRT', 0, 'L');
+            $pdf->Cell(140, 45, 'DEMO', 'LRT', 0, 'L');
             $pdf->Cell(50, 23, '', 'TR', 1, 'L');
 
             $pdf->SetFont('Arial', 'B', 8);

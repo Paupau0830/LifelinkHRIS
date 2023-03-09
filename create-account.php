@@ -81,11 +81,14 @@ if (empty($_SESSION['hris_id'])) {
                             <label class="radio-inline">
                                 <input type="radio" name="role" value="Admin" required> Boss
                             </label>
+                            <!-- <label class="radio-inline">
+                                <input type="radio" name="role" value="Officer" required> Officer
+                            </label> -->
                             <label class="radio-inline">
                                 <input type="radio" name="role" value="HR Processing" required> HR Processing
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="role" value="Group Head" required> Group Head
+                                <input type="radio" name="role" value="Officer" required> Officer
                             </label>
                             <label class="radio-inline">
                                 <input type="radio" name="role" value="Manager" required> Manager
