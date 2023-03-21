@@ -24,7 +24,6 @@ if (empty($_SESSION['hris_id'])) {
             <table id="account-list" class="table table-vcenter table-condensed table-bordered">
                 <thead>
                     <tr>
-                        <th class="text-center">ID</th>
                         <th>Email Address</th>
                         <th>Account Name</th>
                         <th>Role</th>
@@ -38,7 +37,6 @@ if (empty($_SESSION['hris_id'])) {
                     while ($row = mysqli_fetch_assoc($sql)) {
                     ?>
                         <tr>
-                            <td class="text-center"><?= $row['ID'] ?></td>
                             <td><?= $row['email'] ?></td>
                             <td><?= $row['account_name'] ?></td>
                             <td><?= $row['role'] ?></td>

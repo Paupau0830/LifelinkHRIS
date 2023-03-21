@@ -106,6 +106,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                         $user = '';
                         $manager = '';
                         $gh = '';
+                        $officer = '';
                         if ($role == 'Admin') {
                             $boss = 'checked';
                         }
