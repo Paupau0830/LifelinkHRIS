@@ -4105,7 +4105,7 @@ if (isset($_POST['btn_leave_application'])) {
         $fileExt = strtolower(end($initialExt));
 
         $la_attachment = uploadFile('attachment');
-        $sql = mysqli_query($db, "INSERT INTO tbl_leave_requests VALUES('','$company_id','$employee_num','$emp_name','$employee_name','$leave_type','$startDate','$endDate','$total_days','$reason','$duration','$la_attachment','$approver','$approver_remarks','Pending','$datetime','$late_filing_val','$approver_remarks','$month','$year')");
+        $sql = mysqli_query($db, "INSERT INTO tbl_leave_requests VALUES('','$company_id','$employee_num','$emp_name','$employee_name','$leave_type','$startDate','$endDate','$total_days','$reason','$duration','$la_attachment','$approver','$approver_remarks','Pending','$datetime','$late_filing_val','$approver_remarks','$month','$year','$leave_without_pay')");
 
         if ($sql) {
             $at_name = $_SESSION['hris_account_name'];

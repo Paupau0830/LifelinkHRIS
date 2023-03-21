@@ -35,7 +35,7 @@ if ($role == 'Manager') {
 } else if ($role == 'Admin') {
     $status = 'Boss Approval';
 } else {
-    $status = 'HR Approval';
+    $status = '';
 }
 ?>
 
