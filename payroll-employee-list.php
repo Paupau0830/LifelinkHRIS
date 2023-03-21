@@ -70,10 +70,10 @@ if (empty($_SESSION['hris_id'])) {
                             <label>Employee ID</label>
                             <select name="emp_num" class="form-control select-chosen">
                                 <?php
-                                $sql = mysqli_query($db, "SELECT * FROM tbl_employees WHERE account_created = 0");
+                                $sql = mysqli_query($db, "SELECT * FROM tbl_employees");
                                 while ($row = mysqli_fetch_assoc($sql)) {
                                 ?>
-                                    <option value="<?= $row['emp_num'] ?>"><?= $row['emp_num'] ?></option>
+                                    <option value="<?= $row['emp_num'] ?>"><?= $row['emp_num'] . ' - ' .  $row['emp_name'] ?></option>
                                 <?php
                                 }
                                 ?>
@@ -105,7 +105,7 @@ if (empty($_SESSION['hris_id'])) {
                                 $sql = mysqli_query($db, "SELECT * FROM tbl_personal_information WHERE account_created = '0'");
                                 while ($row = mysqli_fetch_assoc($sql)) {
                                 ?>
-                                    <option value="<?= $row['employee_number'] ?>"><?= $row['employee_number'] ?></option>
+                                    <option value="<?= $row['employee_number'] ?>"><?= $row['employee_number'] . ' - ' .  $row['employee_name'] ?></option>
                                 <?php
                                 }
                                 ?>

@@ -61,7 +61,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
                                     FROM tbl_personal_information t
                                     INNER JOIN tbl_employment_information t1
                                     ON t.employee_number = t1.employee_number
-                                    WHERE t1.company = '$company_id' AND t.super_admin != '1'");
+                                    WHERE t1.company = '$company_id'");
                                     while ($row = mysqli_fetch_assoc($get_employees)) {
                                         echo '<option value="' . $row['employee_number'] . '">' . $row['account_name'] . '</option>';
                                     }

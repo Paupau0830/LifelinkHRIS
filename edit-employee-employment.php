@@ -45,9 +45,9 @@ $em = '';
             <li>
                 <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="edit-employee-balances?<?= md5('id') . '=' . $fid ?>"><i class="gi gi-wallet"></i> Balances</a>
-            </li>
+            </li> -->
             <li>
                 <a href="edit-employee-position?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-database"></i> Position History</a>
             </li>
@@ -168,7 +168,7 @@ $em = '';
                                         <option></option>
                                         <?php
                                         // added project based and Intern
-                                        $emp_stat = array('Intern','Project Based','Probationary', 'Regular', 'Consultant');
+                                        $emp_stat = array('Intern', 'Project Based', 'Probationary', 'Regular', 'Consultant');
                                         foreach ($emp_stat as $k => $v) {
                                             if ($v == $row['employment_status']) {
                                                 echo '<option selected>' . $v . '</option>';

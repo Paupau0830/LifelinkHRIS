@@ -8151,27 +8151,27 @@ function get_benefits_balances($employee_number)
 
     $get_car_balance = mysqli_query($db, "SELECT * FROM tbl_benefits_car_balance WHERE employee_number = '$employee_number'");
     $car_balance = mysqli_fetch_assoc($get_car_balance);
-    $balances[] = array('car_maintenance' => $car_balance['balance']);
+    // $balances[] = array('car_maintenance' => $car_balance['balance']);
 
     $get_cep_balance = mysqli_query($db, "SELECT * FROM tbl_benefits_cep_balance WHERE employee_number = '$employee_number'");
     $cep_balance = mysqli_fetch_assoc($get_cep_balance);
-    $balances[] = array('cep' => $cep_balance['balance']);
+    // $balances[] = array('cep' => $cep_balance['balance']);
 
     $get_gas_balance = mysqli_query($db, "SELECT * FROM tbl_benefits_gas_balance WHERE employee_number = '$employee_number'");
     $gas_balance = mysqli_fetch_assoc($get_gas_balance);
-    $balances[] = array('gas' => $gas_balance['balance']);
+    // $balances[] = array('gas' => $gas_balance['balance']);
 
     $get_gym_balance = mysqli_query($db, "SELECT * FROM tbl_benefits_gym_balance WHERE employee_number = '$employee_number'");
     $gym_balance = mysqli_fetch_assoc($get_gym_balance);
-    $balances[] = array('gym' =>  $gym_balance['balance']);
+    // $balances[] = array('gym' =>  $gym_balance['balance']);
 
     $get_medical_balance = mysqli_query($db, "SELECT * FROM tbl_benefits_medical_balance WHERE employee_number = '$employee_number'");
     $medical_balance = mysqli_fetch_assoc($get_medical_balance);
-    $balances[] = array('medical' => $medical_balance['balance']);
+    // $balances[] = array('medical' => $medical_balance['balance']);
 
     $get_optical_balance = mysqli_query($db, "SELECT * FROM tbl_benefits_optical_balance WHERE employee_number = '$employee_number'");
     $optical_balance = mysqli_fetch_assoc($get_optical_balance);
-    $balances[] = array('optical' => $optical_balance['balance']);
+    // $balances[] = array('optical' => $optical_balance['balance']);
 
     return json_encode($balances);
     // $obj = json_decode(get_benefits_balances('0009'), true);

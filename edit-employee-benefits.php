@@ -45,9 +45,9 @@ $em = '';
             <li class="active">
                 <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="edit-employee-balances?<?= md5('id') . '=' . $fid ?>"><i class="gi gi-wallet"></i> Balances</a>
-            </li>
+            </li> -->
             <li>
                 <a href="edit-employee-position?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-database"></i> Position History</a>
             </li>
