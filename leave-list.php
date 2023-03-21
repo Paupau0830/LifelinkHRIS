@@ -23,6 +23,9 @@ if (isset($_GET['selected_monthyear'])) {
     $year = $monthyear[0];
     $month = $monthyear[1];
     $monthName = date("F", mktime(0, 0, 0, $month, 10));
+    $monthyear1 = $_GET['selected_monthyear'];
+} else {
+    $monthyear1 = '';
 }
 
 $get_role = mysqli_query($db, "SELECT * FROM tbl_users WHERE employee_number = '$empnum'");
@@ -37,6 +40,7 @@ if ($role == 'Manager') {
 } else {
     $status = '';
 }
+
 ?>
 
 <div id="page-content">
@@ -56,6 +60,7 @@ if ($role == 'Manager') {
             <h2><strong>Leave Application</strong> Summary List</h2>
         </div>
         <?php
+        $monthyear1 = date('F-Y', strtotime($monthyear1));
 
         if ($role != 'User') {
         ?>
@@ -65,14 +70,13 @@ if ($role == 'Manager') {
 
                         <div class="col-md-3">
                             <label style="margin-top: 8px;"> Month & Year: </label> &nbsp; &nbsp;
-                            <input type="month" name="selected_monthyear" class="form-control" required>
-                            <!-- <input type="text" value="<?= $monthName ?>"> -->
+                            <input type="month" name="selected_monthyear" class="form-control" value="<?= $monthyear1 ?>" required>
+                            <!-- <input type="text" value="<?= $monthyear1 ?>"> -->
                         </div>
                         <div class="col-md-4">
                             <label style="margin-top: 8px; padding-right:30px;">Employee Name: </label> &nbsp; &nbsp;
 
                             <select name="selected_emp_name" id="selected_emp_name" class="form-control select-chosen">
-                                <option></option>
                                 <?php
                                 $sql = mysqli_query($db, "SELECT * FROM tbl_personal_information");
                                 while ($row = mysqli_fetch_assoc($sql)) {
