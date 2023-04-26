@@ -107,19 +107,21 @@ $img = mysqli_fetch_assoc($get_maintenance);
                             }
                             while ($row = mysqli_fetch_assoc($sql)) {
                             ?>
-                                <tr>
-                                    <td class="text-center">LA-<?= format_transaction_id($row['ID']) ?></td>
-                                    <td><?= $row['delegated_emp_number'] ?></td>
-                                    <td><?= $row['leave_type'] ?></td>
-                                    <td><?= $row['startDate'] . ' >> ' . $row['endDate'] ?></td>
-                                    <td><?= $row['status'] ?></td>
-                                    <td><?= $row['date_filed'] ?></td>
-                                    <td class="text-center">
-                                        <div class="btn-group">
-                                            <a href="leave-details?<?= md5('id') . '=' . md5($row['ID']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td class="text-center">LA-<?= format_transaction_id($row['ID']) ?></td>
+                                <td><?= $row['delegated_emp_number'] ?></td>
+                                <td><?= $row['leave_type'] ?></td>
+                                <td><?= $row['startDate'] . ' >> ' . $row['endDate'] ?></td>
+                                <td><?= $row['status'] ?></td>
+                                <td><?= $row['date_filed'] ?></td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="leave-details?<?= md5('id') . '=' . md5($row['ID']) ?>"
+                                            data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i
+                                                class="fa fa-eye"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
                             <?php
                             }
                             ?>
@@ -156,19 +158,21 @@ $img = mysqli_fetch_assoc($get_maintenance);
                             }
                             while ($row = mysqli_fetch_assoc($sql)) {
                             ?>
-                                <tr>
-                                    <td class="text-center">LA-<?= format_transaction_id($row['ID']) ?></td>
-                                    <td><?= $row['delegated_emp_number'] ?></td>
-                                    <td><?= $row['leave_type'] ?></td>
-                                    <td><?= $row['startDate'] . ' >> ' . $row['endDate'] ?></td>
-                                    <td><?= $row['status'] ?></td>
-                                    <td><?= $row['date_filed'] ?></td>
-                                    <td class="text-center">
-                                        <div class="btn-group">
-                                            <a href="leave-details?<?= md5('id') . '=' . md5($row['ID']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                        </div>
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td class="text-center">LA-<?= format_transaction_id($row['ID']) ?></td>
+                                <td><?= $row['delegated_emp_number'] ?></td>
+                                <td><?= $row['leave_type'] ?></td>
+                                <td><?= $row['startDate'] . ' >> ' . $row['endDate'] ?></td>
+                                <td><?= $row['status'] ?></td>
+                                <td><?= $row['date_filed'] ?></td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <a href="leave-details?<?= md5('id') . '=' . md5($row['ID']) ?>"
+                                            data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i
+                                                class="fa fa-eye"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
                             <?php
                             }
                             ?>
@@ -207,19 +211,21 @@ $img = mysqli_fetch_assoc($get_maintenance);
                                     }
                                     while ($row = mysqli_fetch_assoc($sql)) {
                                     ?>
-                                        <tr>
-                                            <td class="text-center">LA-<?= format_transaction_id($row['ID']) ?></td>
-                                            <td><?= $row['emp_num'] ?></td>
-                                            <td><?= $row['date'] ?></td>
-                                            <td><?= $row['time'] ?></td>
-                                            <td><?= $row['request_type'] ?></td>
-                                            <td><?= $row['status'] ?></td>
-                                            <td class="text-center">
-                                                <div class="btn-group">
-                                                    <a href="leave-details?<?= md5('id') . '=' . md5($row['ID']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td class="text-center">LA-<?= format_transaction_id($row['id']) ?></td>
+                                        <td><?= $row['emp_num'] ?></td>
+                                        <td><?= $row['date'] ?></td>
+                                        <td><?= $row['time'] ?></td>
+                                        <td><?= $row['request_type'] ?></td>
+                                        <td><?= $row['status'] ?></td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <a href="leave-details?<?= md5('id') . '=' . md5($row['id']) ?>"
+                                                    data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i
+                                                        class="fa fa-eye"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     <?php
                                     }
                                     ?>
@@ -251,19 +257,21 @@ $img = mysqli_fetch_assoc($get_maintenance);
                                     $sql = mysqli_query($db, "SELECT * FROM tbl_ot_request WHERE emp_num = '$emp_num'");
                                     while ($row = mysqli_fetch_assoc($sql)) {
                                     ?>
-                                        <tr>
-                                            <td class="text-center"><?= $row['id'] ?></td>
-                                            <td class="text-center"><?= $row['date_from'] ?></td>
-                                            <td class="text-center"><?= $row['date_to'] ?></td>
-                                            <td class="text-center"><?= $row['date_filed'] ?></td>
-                                            <td class="text-center"><?= $row['total_duration'] ?></td>
-                                            <td class="text-center"><?= $row['status'] ?></td>
-                                            <td class="text-center">
-                                                <div class="btn-group">
-                                                    <a href="overtime_request_list-viewonly?<?= md5('id') . '=' . md5($row['id']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td class="text-center"><?= $row['id'] ?></td>
+                                        <td class="text-center"><?= $row['date_from'] ?></td>
+                                        <td class="text-center"><?= $row['date_to'] ?></td>
+                                        <td class="text-center"><?= $row['date_filed'] ?></td>
+                                        <td class="text-center"><?= $row['total_duration'] ?></td>
+                                        <td class="text-center"><?= $row['status'] ?></td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <a href="overtime_request_list-viewonly?<?= md5('id') . '=' . md5($row['id']) ?>"
+                                                    data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i
+                                                        class="fa fa-eye"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     <?php
                                     }
                                     ?>
@@ -278,7 +286,8 @@ $img = mysqli_fetch_assoc($get_maintenance);
                             <h2><strong>Recent Offset Applications</strong></h2>
                         </div>
                         <div class="table-responsive">
-                            <table id="company-job-grade-set" class="table table-vcenter table-condensed table-bordered">
+                            <table id="company-job-grade-set"
+                                class="table table-vcenter table-condensed table-bordered">
                                 <thead>
                                     <tr>
                                         <th class="text-center">ID</th>
@@ -294,18 +303,20 @@ $img = mysqli_fetch_assoc($get_maintenance);
                                     $sql = mysqli_query($db, "SELECT * FROM tbl_offset_request WHERE emp_num = '$emp_num'");
                                     while ($row = mysqli_fetch_assoc($sql)) {
                                     ?>
-                                        <tr>
-                                            <td class="text-center"><?= $row['id'] ?></td>
-                                            <td class="text-center"><?= $row['date_from'] ?></td>
-                                            <td class="text-center"><?= $row['date_to'] ?></td>
-                                            <td class="text-center"><?= $row['date_filed'] ?></td>
-                                            <td class="text-center"><?= $row['status'] ?></td>
-                                            <td class="text-center">
-                                                <div class="btn-group">
-                                                    <a href="offset_application_viewonly?<?= md5('id') . '=' . md5($row['id']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td class="text-center"><?= $row['id'] ?></td>
+                                        <td class="text-center"><?= $row['date_from'] ?></td>
+                                        <td class="text-center"><?= $row['date_to'] ?></td>
+                                        <td class="text-center"><?= $row['date_filed'] ?></td>
+                                        <td class="text-center"><?= $row['status'] ?></td>
+                                        <td class="text-center">
+                                            <div class="btn-group">
+                                                <a href="offset_application_viewonly?<?= md5('id') . '=' . md5($row['id']) ?>"
+                                                    data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i
+                                                        class="fa fa-eye"></i></a>
+                                            </div>
+                                        </td>
+                                    </tr>
                                     <?php
                                     }
                                     ?>
@@ -324,9 +335,9 @@ $img = mysqli_fetch_assoc($get_maintenance);
 <!-- END Page Content -->
 <script src="js/pages/tablesDatatables.js"></script>
 <script>
-    $(function() {
-        TablesDatatables.init();
-    });
+$(function() {
+    TablesDatatables.init();
+});
 </script>
 
 <!-- Load and execute javascript code used only in this page -->

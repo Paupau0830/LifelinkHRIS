@@ -5,6 +5,17 @@
 if (empty($_SESSION['hris_id'])) {
     header('Location: login');
 }
+
+$employee_number = $_SESSION['add_payroll_empnum'];
+$bank_name = '';
+$employment_status = '';
+$sql = mysqli_query($db, "SELECT * FROM tbl_employment_information WHERE employee_number = '$employee_number'");
+while ($row = mysqli_fetch_assoc($sql)) {
+    $employment_status = $row['employment_status'];
+    if ($row['employment_status'] != 'Regular') {
+        $bank_name = 'Cash';
+    }
+}
 ?>
 <div id="page-content">
     <div class="content-header">
@@ -25,25 +36,31 @@ if (empty($_SESSION['hris_id'])) {
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Employee ID*</label>
-                            <input type="text" readonly name="emp_num" required class="form-control" value ="<?= $_SESSION['add_payroll_empnum'] ?>">
+                            <input type="text" readonly name="emp_num" required class="form-control" value="<?= $_SESSION['add_payroll_empnum'] ?>">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label>Employee Name*</label>
-                        <input type="text" readonly name="emp_name" required class="form-control" value ="<?= $_SESSION['add_payroll_empname'] ?>">
+                        <input type="text" readonly name="emp_name" required class="form-control" value="<?= $_SESSION['add_payroll_empname'] ?>">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Company*</label>
-                            <input type="text" readonly name="select_company" required class="form-control" value ="<?= $_SESSION['add_payroll_empcomp'] ?>">
+                            <input type="text" readonly name="select_company" required class="form-control" value="<?= $_SESSION['add_payroll_empcomp'] ?>">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Job Title*</label>
-                            <input type="text" readonly name="job_title" required class="form-control" value ="<?= $_SESSION['add_payroll_empjob'] ?>">
+                            <input type="text" readonly name="job_title" required class="form-control" value="<?= $_SESSION['add_payroll_empjob'] ?>">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Employment Status*</label>
+                            <input type="text" readonly name="employment_status" required class="form-control" value="<?= $employment_status ?>">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -58,10 +75,10 @@ if (empty($_SESSION['hris_id'])) {
                             <input type="number" name="acc_num" required class="form-control" step="any">
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label>Bank Name*</label>
-                            <input type="text" name="bank_name" required class="form-control">
+                            <input type="text" name="bank_name" required class="form-control" value="<?= $bank_name ?>">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -116,6 +133,12 @@ if (empty($_SESSION['hris_id'])) {
                         <div class="form-group">
                             <label>Deminimis*</label>
                             <input type="number" name="deminimis" required class="form-control" step="any">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Annual Medical Allowance*</label>
+                            <input type="number" name="annual_medical_allowance" required class="form-control" step="any">
                         </div>
                     </div>
                     <div class="col-md-12">
