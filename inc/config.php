@@ -1904,7 +1904,7 @@ if (isset($_POST['add_department'])) {
             <h4><i class="fa fa-times"></i> Submission failed. Department already exist.</h4>
         </div>';
     } else {
-        $sql = mysqli_query($db, "INSERT INTO tbl_departments VALUES('','$department','$company_id','$datetime')");
+        $sql = mysqli_query($db, "INSERT INTO tbl_departments VALUES('','','','$department','$company_id','$datetime')");
         $res = '<div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         <h4><i class="fa fa-check-circle"></i> ' . $department . ' has been added as Department</h4>
@@ -1917,25 +1917,37 @@ if (isset($_POST['get_department_details'])) {
     $department_id = $_POST['department_id'];
     $company_id = $_POST['company_id'];
     $department_name = $_POST['department_name'];
+    $manual_id = '';
+    $group = '';
+
+    $sql = mysqli_query($db, "SELECT * FROM tbl_departments WHERE ID = '$department_id'");
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $manual_id = $row['manual_id'];
+        $group = $row['group_id'];
+    }
 
     echo '<div class="modal-header text-center">
     <h2 class="modal-title"><i class="fa fa-sitemap"></i> Update Department</h2>
     </div>
     <div class="modal-body">
-        <form method="POST" enctype="multipart/form-data" class="form-horizontal form-bordered">
-            <input type="hidden" name="department_id" value="' . $department_id . '">
-            <input type="hidden" name="company_id" value="' . $company_id . '">
-            <div class="form-group">
-                <div class="col-md-12">
-                    <div class="input-group">
-                        <input type="text" name="department" required class="form-control" placeholder="Enter Department Name..." value="' . $department_name . '">
-                        <span class="input-group-btn">
-                            <button name="update_department" class="btn btn-primary">Update</button>
-                        </span>
-                    </div>
+        <div class="container-fluid">
+            <form method="POST" enctype="multipart/form-data" class="form-horizontal form-bordered">
+                <input type="hidden" name="department_id" value="' . $department_id . '">
+                <input type="hidden" name="company_id" value="' . $company_id . '">
+                <div class="form-group">
+                    <label>Department Name</label>
+                    <input type="text" name="department" required class="form-control" placeholder="Enter Department Name..." value="' . $department_name . '">
+                    <br>
+                    <label>Manual ID</label>
+                    <input type="text" name="manual_id" required class="form-control" value="' . $manual_id . '">
+                    <br>
+                    <label>Group</label>
+                    <input type="text" name="group" required class="form-control" value="' . $group . '">
+                    <br>
+                    <button name="update_department" class="btn btn-primary btn-block">Update</button>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>';
 }
 if (isset($_POST['view_summary'])) {
@@ -1960,23 +1972,25 @@ if (isset($_POST['update_department'])) {
     $department_id = $_POST['department_id'];
     $company_id = $_POST['company_id'];
     $department = $_POST['department'];
+    $manual_id = $_POST['manual_id'];
+    $group = $_POST['group'];
 
-    if (check_if_department_exist($department, $company_id) == true) {
-        $res = '<div class="alert alert-danger alert-dismissable">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-            <h4><i class="fa fa-times"></i> Update failed. Department already exist.</h4>
-        </div>
-      ';
-    } else {
-        $sql = mysqli_query($db, "UPDATE tbl_departments SET department = '$department' WHERE ID = '$department_id'");
-        $res = '<div class="alert alert-success alert-dismissable">
+    // if (check_if_department_exist($department, $company_id) == true) {
+    //     $res = '<div class="alert alert-danger alert-dismissable">
+    //         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    //         <h4><i class="fa fa-times"></i> Update failed. Department already exist.</h4>
+    //     </div>
+    //   ';
+    // } else {
+    $sql = mysqli_query($db, "UPDATE tbl_departments SET department = '$department', manual_id = '$manual_id', group_id = '$group' WHERE ID = '$department_id'");
+    $res = '<div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         <h4><i class="fa fa-check-circle"></i> ' . $department . ' has been updated.</h4>
         </div>';
 
-        $at_name = $_SESSION['hris_account_name'];
-        mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','updated a department: $department_id','$datetime')");
-    }
+    $at_name = $_SESSION['hris_account_name'];
+    mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','updated a department: $department_id','$datetime')");
+    // }
 }
 if (isset($_POST['add_job_grade'])) {
     $company_id = $_POST['company_id'];
