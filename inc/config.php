@@ -2909,6 +2909,8 @@ if (isset($_POST['btn_onboarding'])) {
     $spouse_name = $_POST['spouse_name'];
     $personal_email = $_POST['personal_email'];
     $contact_number = $_POST['contact_number'];
+    $suffix = $_POST['suffix'];
+    $initials = $_POST['initials'];
     $account_created = '0';
 
     // Get Age
@@ -2940,7 +2942,9 @@ if (isset($_POST['btn_onboarding'])) {
         '$spouse_name',
         '$datetime',
         '$account_created',
-        '0'
+        '0',
+        '$suffix',
+        '$initials'
         )");
     if ($insert_personal_info) {
         $employee_number = mysqli_insert_id($db);
@@ -3004,6 +3008,13 @@ if (isset($_POST['btn_onboarding'])) {
     $account_status = $_POST['account_status'];
     $reporting_to = $_POST['reporting_to'];
     $vendor_id = $_POST['vendor_id'];
+    $group = $_POST['group'];
+    $unit = $_POST['unit'];
+    $position = $_POST['position'];
+    $rank = $_POST['rank'];
+    $hmo_number = $_POST['hmo_number'];
+    $tenure = $_POST['tenure'];
+
     $on_behalf_filing = '0';
     if (isset($_POST['on_behalf_filing'])) {
         $on_behalf_filing = $_POST['on_behalf_filing'];
@@ -3030,29 +3041,46 @@ if (isset($_POST['btn_onboarding'])) {
         '$vendor_id',
         '$on_behalf_filing',
         '$is_approver'
+        '$group',
+        '$unit',
+        '$position',
+        '$rank'
+        '$hmo_number',
+        '$tenure'
         );");
 
     // Supporting Documents
     $attachment = $_FILES['attachment']['name']; // array
     $attachment_tmp = $_FILES['attachment']['tmp_name']; // array
     $attachment_remarks = $_POST['attachment_remarks']; // array
-    foreach ($attachment as $k => $v) {
-        $value = md5($v);
-        mysqli_query($db, "INSERT INTO tbl_documents VALUES('','$employee_number','$value','$attachment_remarks[$k]')");
-        move_uploaded_file($attachment_tmp[$k], "uploads/" . $value);
-    }
+    // foreach ($attachment as $k => $v) {
+    //     $value = md5($v);
+    //     $supporting_attachment = uploadAttachment('attachment');
+    //     mysqli_query($db, "INSERT INTO tbl_documents VALUES('','','$supporting_attachment','$attachment_remarks[$k]')");
+    //     move_uploaded_file($attachment_tmp[$k], "uploads/" . $value);
+    // }
+    $supporting_attachment = uploadAttachment('attachment');
+    mysqli_query($db, "INSERT INTO tbl_documents VALUES('','','$supporting_attachment','$attachment_remarks')");
+    move_uploaded_file($attachment_tmp, "uploads/" . $value);
 
     // Benefits Eligibility
     $parking = "0";
     $gasoline = "0";
     $car_maintenance = "0";
     $medicine = "0";
-    $gym = "0";
     $optical_allowance = "0";
+    $others = "0";
+    $medical_allowance = "0";
+    $transportation_allowance = "0";
+    $meal_allowance = "0";
+    $leave_credits = "0";
+    $hmo = "0";
+    $maternity_paternity = "0";
+    $gym = "0";
     $cep = "0";
     $club_membership = "0";
     $maternity = "0";
-    $others = "0";
+
     if (isset($_POST['benefits_eligibility'])) {
         $benefits_eligibility = $_POST['benefits_eligibility'];
         foreach ($benefits_eligibility as $k => $v) {
@@ -3068,23 +3096,29 @@ if (isset($_POST['btn_onboarding'])) {
             if ($v == "Medicine") {
                 $medicine = "1";
             }
-            if ($v == "Gym") {
-                $gym = "1";
-            }
             if ($v == "Optical Allowance") {
                 $optical_allowance = "1";
             }
-            if ($v == "CEP") {
-                $cep = "1";
-            }
-            if ($v == "Club Membership") {
-                $club_membership = "1";
-            }
-            if ($v == "Maternity") {
-                $maternity = "1";
-            }
             if ($v == "Others") {
                 $others = "1";
+            }
+            if ($v == "Medical Allowance") {
+                $medical_allowance = "1";
+            }
+            if ($v == "Transportation Allowance") {
+                $transportation_allowance = "1";
+            }
+            if ($v == "Meal Allowance") {
+                $meal_allowance = "1";
+            }
+            if ($v == "Leave Credits") {
+                $leave_credits = "1";
+            }
+            if ($v == "HMO") {
+                $hmo = "1";
+            }
+            if ($v == "Maternity and/or Paternity Gift") {
+                $maternity_paternity = "1";
             }
         }
         mysqli_query($db, "INSERT INTO tbl_benefits_eligibility VALUES(
@@ -3099,7 +3133,13 @@ if (isset($_POST['btn_onboarding'])) {
             '$cep',
             '$club_membership',
             '$maternity',
-            '$others')");
+            '$others'
+            '$medical_allowance',
+            '$transportation_allowance',
+            '$meal_allowance',
+            '$leave_credits',
+            '$hmo',
+            '$maternity_paternity')");
     }
     // Leave Balances
     mysqli_query($db, "INSERT INTO tbl_leave_balances VALUES(
@@ -3116,26 +3156,6 @@ if (isset($_POST['btn_onboarding'])) {
         '0',
         '0',
         '0')");
-
-    // Benefits Balances
-
-    // Gas Balance
-    mysqli_query($db, "INSERT INTO tbl_benefits_gas_balance VALUES('', '$employee_number', '0', '0')");
-
-    // Car Maintenance
-    mysqli_query($db, "INSERT INTO tbl_benefits_car_balance VALUES('', '$employee_number', '0', '0')");
-
-    // Medical Maintenance
-    mysqli_query($db, "INSERT INTO tbl_benefits_medical_balance VALUES('', '$employee_number', '0', '0')");
-
-    // Gym maintenance
-    mysqli_query($db, "INSERT INTO tbl_benefits_gym_balance VALUES('', '$employee_number', '0', '0')");
-
-    // Optical maintenance
-    mysqli_query($db, "INSERT INTO tbl_benefits_optical_balance VALUES('', '$employee_number', '0', '0')");
-
-    // CEP maintenance
-    mysqli_query($db, "INSERT INTO tbl_benefits_cep_balance VALUES('', '$employee_number', '0', '0')");
 
     $at_name = $_SESSION['hris_account_name'];
     mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Onboarded an employee: $account_name','$datetime')");
@@ -4142,6 +4162,82 @@ if (isset($_POST['btn_leave_application'])) {
 
 
 use Aws\S3\S3Client;
+
+function uploadAttachment($fieldName)
+{
+    require 'vendor/autoload.php';
+
+    // Instantiate an Amazon S3 client.
+    $s3Client = new S3Client([
+        'version' => 'latest',
+        'region'  => 'ap-southeast-1',
+        'credentials' => [
+            'key'    => 'AKIAR2IERYMVHI6C36NV',
+            'secret' => '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'
+        ]
+    ]);
+    // Check if file was uploaded without errors
+    if (isset($_FILES[$fieldName]) && $_FILES[$fieldName]["error"] == 0) {
+        $allowed = array("pdf" => "application/pdf");
+        $prefilename = $_FILES[$fieldName]["name"];
+        $filetype = $_FILES[$fieldName]["type"];
+        $filesize = $_FILES[$fieldName]["size"];
+
+        $ext = pathinfo($prefilename, PATHINFO_EXTENSION);
+
+        $info = pathinfo($prefilename);
+        $file_name =  $info['filename'];
+        $filename = $file_name . date("YmdHms") . '.' . $ext;
+
+        // Validate file extension
+        if (!array_key_exists($ext, $allowed)) die("Error: Please select a valid file format.");
+        // Validate file size - 10MB maximum
+        $maxsize = 10 * 1024 * 1024;
+        if ($filesize > $maxsize) die("Error: File size is larger than the allowed limit.");
+        // Validate type of the file
+        if (in_array($filetype, $allowed)) {
+            // Check whether file exists before uploading it
+            if (file_exists("uploads/" . $filename)) {
+                echo $filename . " is already exists.";
+            } else {
+                if (move_uploaded_file($_FILES[$fieldName]["tmp_name"], "uploads/" . $filename)) {
+                    $bucket = 'lifelink-storage';
+                    $file_Path = 'uploads/' . $filename;
+                    $key = basename($file_Path);
+                    try {
+                        $result = $s3Client->putObject([
+                            'Bucket' => $bucket,
+                            'Key'    => 'ONBOARDING/' . $key,
+                            'Body'   => fopen($file_Path, 'r'),
+                            'ACL'    => 'public-read', // make file 'public'
+                        ]);
+                        $res = '<div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <h4><i class="fa fa-check-circle"></i> Image uploaded successfully. Image path is: ' . $result->get('ObjectURL') . ' .</h4>
+                                    </div>';
+                        echo "Image uploaded successfully. Image path is: " . $result->get('ObjectURL');
+                    } catch (Aws\S3\Exception\S3Exception $e) {
+                        $res = '<div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <h4><i class="fa fa-times"></i> There was an error uploading the file. ' . $e->getMessage() . ' .</h4>
+                                    </div>';
+                        // echo "There was an error uploading the file.\n";
+                        // echo $e->getMessage();
+                    }
+                    // echo "Your file was uploaded successfully.";
+                } else {
+                    // echo "File is not uploaded";
+                }
+            }
+        } else {
+            // echo "Error: There was a problem uploading your file. Please try again.";
+        }
+    } else {
+        // echo "Error: " . $_FILES[$fieldName]["error"];
+    }
+
+    return $filename;
+}
 
 function uploadFile($fieldName)
 {
