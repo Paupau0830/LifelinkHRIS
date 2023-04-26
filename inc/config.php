@@ -1253,6 +1253,7 @@ if (isset($_POST['add_employee'])) {
     $commission = $_POST['commission'];
     $remarks = $_POST['remarks'];
     $withholding_tax = '';
+    $annual_medical_allowance = $_POST['annual_medical_allowance'];
 
     $gross_pay = $basic_salary / 2;
     $contributions = (int)$sss_er + (int)$hdmf_er + (int)$philhealth_er;
@@ -1299,7 +1300,7 @@ if (isset($_POST['add_employee'])) {
     } else {
         $created_by = $_SESSION['hris_account_name'];
 
-        mysqli_query($db, "INSERT INTO tbl_employees VALUES('','$employee_num','$emp_name','$company_position','$company_name','$bank_name','$commission','$account_num','$basic_salary','$sss_er', '$sss_ee', '$sss_ec','$hdmf_er', '$hdmf_ee', '$philhealth_er', '$philhealth_ee','$withholding_tax','$deminimis','0','0','$remarks')");
+        mysqli_query($db, "INSERT INTO tbl_employees VALUES('','$employee_num','$emp_name','$company_position','$company_name','$bank_name','$commission','$account_num','$basic_salary','$sss_er', '$sss_ee', '$sss_ec','$hdmf_er', '$hdmf_ee', '$philhealth_er', '$philhealth_ee','$withholding_tax','$deminimis','0','0','$remarks', '$annual_medical_allowance')");
 
         mysqli_query($db, "UPDATE tbl_personal_information SET account_created = '1' WHERE employee_number = '$employee_num'");
 
@@ -1544,7 +1545,6 @@ if (isset($_POST['edit_employee'])) {
     reset_all_edit_session();
     $_SESSION['selected_editemp'] = $emp_num;
 
-
     $sql = mysqli_query($db, "SELECT * FROM tbl_employees WHERE emp_num = '$emp_num'");
     while ($row = mysqli_fetch_assoc($sql)) {
         $_SESSION['selected_edit_empname'] = $row['emp_name'];
@@ -1565,6 +1565,7 @@ if (isset($_POST['edit_employee'])) {
         $_SESSION['selected_edit_commission'] = $row['commission'];
         $_SESSION['selected_edit_whtax'] = $row['withholding_tax'];
         $_SESSION['selected_edit_remarks'] = $row['remarks'];
+        $_SESSION['selected_annual_medical_allowance'] = $row['annual_medical_allowance'];
     }
 
     header('Location: payroll-edit-employee');
@@ -1590,6 +1591,7 @@ if (isset($_POST['update_employee'])) {
     $commission = $_POST['commission'];
     $remarks = $_POST['remarks'];
     $withholding_tax = 0;
+    $annual_medical_allowance = $_POST['annual_medical_allowance'];
 
     $gross_pay = $basic_salary / 2;
     $contributions = $sss_ee + $philhealth_ee + $hdmf_ee;
@@ -1636,7 +1638,7 @@ if (isset($_POST['update_employee'])) {
         if ($_POST['whtax'] != $withholding_tax && $_POST['whtax'] != 0) {
             $withholding_tax = $_POST['whtax'];
         }
-        mysqli_query($db, "UPDATE tbl_employees SET emp_name = '$emp_name', company_position = '$company_position', company_name = '$select_company', basic_salary = '$basic_salary', account_number = '$acc_num', sss_er = '$sss_er', sss_ee = '$sss_ee', sss_ec = '$sss_ec', hdmf_er = '$hdmf_er', hdmf_ee = '$hdmf_ee', philhealth_er = '$philhealth_er', philhealth_ee = '$philhealth_ee',deminimis = '$deminimis', commission = '$commission', bank_name = '$bank_name', withholding_tax = '$withholding_tax', remarks = '$remarks' WHERE emp_num = '$emp_num'");
+        mysqli_query($db, "UPDATE tbl_employees SET emp_name = '$emp_name', company_position = '$company_position', company_name = '$select_company', basic_salary = '$basic_salary', account_number = '$acc_num', sss_er = '$sss_er', sss_ee = '$sss_ee', sss_ec = '$sss_ec', hdmf_er = '$hdmf_er', hdmf_ee = '$hdmf_ee', philhealth_er = '$philhealth_er', philhealth_ee = '$philhealth_ee',deminimis = '$deminimis', commission = '$commission', bank_name = '$bank_name', withholding_tax = '$withholding_tax', remarks = '$remarks', annual_medical_allowance = '$annual_medical_allowance' WHERE emp_num = '$emp_num'");
 
         mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$created_by','Updated Employee Payroll Registry: $emp_name','$datetime')");
 
