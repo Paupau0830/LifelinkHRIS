@@ -3,7 +3,8 @@
         "symfony/routing": "^5.4",
         "bramus/router": "^1.6",
         "selective/database": "^3.0",
-        "illuminate/database": "^8.83"
+        "illuminate/database": "^8.83",
+        "aws/aws-sdk-php": "^3.268"
     },
     "autoload": {
         "psr-4": {

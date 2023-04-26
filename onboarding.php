@@ -622,33 +622,37 @@ $company_id = $_SESSION['hris_company_id'];
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Group</label>
-                                <select name="group" class="select-chosen" data-placeholder="Choose a group..." style="width: 250px;">
+                                <!-- <select name="group" class="select-chosen" data-placeholder="Choose a group..." style="width: 250px;">
                                     <option></option>
-                                </select>
+                                </select> -->
+                                <input type="text" name="group" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Unit</label>
-                                <select name="group" class="select-chosen" data-placeholder="Choose a group..." style="width: 250px;">
+                                <!-- <select name="group" class="select-chosen" data-placeholder="Choose a group..." style="width: 250px;">
                                     <option></option>
-                                </select>
+                                </select> -->
+                                <input type="text" name="unit" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Position</label>
-                                <select name="position" class="select-chosen" data-placeholder="Choose a position..." style="width: 250px;">
+                                <!-- <select name="position" class="select-chosen" data-placeholder="Choose a position..." style="width: 250px;">
                                     <option></option>
-                                </select>
+                                </select> -->
+                                <input type="text" name="position" class="form-control">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Rank</label>
-                                <select name="rank" class="select-chosen" data-placeholder="Choose a rank..." style="width: 250px;">
+                                <!-- <select name="rank" class="select-chosen" data-placeholder="Choose a rank..." style="width: 250px;">
                                     <option></option>
-                                </select>
+                                </select> -->
+                                <input type="text" name="rank" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -765,7 +769,7 @@ $company_id = $_SESSION['hris_company_id'];
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Supporting Document</label>
-                                <input type="file" class="form-control" name="attachment[]">
+                                <input type="file" class="form-control" name="attachment">
                             </div>
                         </div>
                         <div class="col-md-12">
