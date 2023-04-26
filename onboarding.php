@@ -208,6 +208,20 @@ $company_id = $_SESSION['hris_company_id'];
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label>Suffix</label>
+                                <input type="text" name="suffix" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Initials</label>
+                                <input type="text" name="initials" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
                                 <label>Address</label>
                                 <textarea name="address" rows="6" class="form-control"></textarea>
                             </div>
@@ -236,6 +250,8 @@ $company_id = $_SESSION['hris_company_id'];
                                 <label>Personal Email</label>
                                 <input type="email" name="personal_email" class="form-control">
                             </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label>Contact Number</label>
                                 <input type="text" name="contact_number" class="form-control">
@@ -251,28 +267,28 @@ $company_id = $_SESSION['hris_company_id'];
                 <!-- Step Info -->
                 <div class="wizard-steps">
                     <ul class="nav-horizontal text-center">
-                            <li >
-                                <a href="edit-employee?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-info"></i> Information</a>
-                            </li>
-                            <li class="active">
-                                <a href="edit-employee-education?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-graduation-cap"></i> Education</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-contacts?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-phone"></i> Emergency Contacts</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-ids?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-id-card"></i> IDs</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-employment?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-briefcase"></i> Employment Information</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-documents?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-file"></i> Documents</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
-                            </li>
-                        </ul>
+                        <li>
+                            <a href="edit-employee?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-info"></i> Information</a>
+                        </li>
+                        <li class="active">
+                            <a href="edit-employee-education?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-graduation-cap"></i> Education</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-contacts?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-phone"></i> Emergency Contacts</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-ids?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-id-card"></i> IDs</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-employment?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-briefcase"></i> Employment Information</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-documents?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-file"></i> Documents</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
+                        </li>
+                    </ul>
                 </div>
                 <!-- END Step Info -->
                 <div class="container-fluid">
@@ -338,27 +354,27 @@ $company_id = $_SESSION['hris_company_id'];
                 <!-- Step Info -->
                 <div class="wizard-steps">
                     <ul class="nav-horizontal text-center">
-                            <li>
-                                <a href="edit-employee?"><i class="fa fa-info"></i> Information</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-education?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-graduation-cap"></i> Education</a>
-                            </li>
-                            <li class = "active">
-                                <a href="edit-employee-contacts?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-phone"></i> Emergency Contacts</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-ids?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-id-card"></i> IDs</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-employment?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-briefcase"></i> Employment Information</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-documents?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-file"></i> Documents</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
-                            </li>
+                        <li>
+                            <a href="edit-employee?"><i class="fa fa-info"></i> Information</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-education?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-graduation-cap"></i> Education</a>
+                        </li>
+                        <li class="active">
+                            <a href="edit-employee-contacts?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-phone"></i> Emergency Contacts</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-ids?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-id-card"></i> IDs</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-employment?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-briefcase"></i> Employment Information</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-documents?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-file"></i> Documents</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- END Step Info -->
@@ -392,29 +408,29 @@ $company_id = $_SESSION['hris_company_id'];
             <div id="advanced-fourth" class="step">
                 <!-- Step Info -->
                 <div class="wizard-steps">
-                        <ul class="nav-horizontal text-center">
-                            <li >
-                                <a href="edit-employee?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-info"></i> Information</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-education?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-graduation-cap"></i> Education</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-contacts?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-phone"></i> Emergency Contacts</a>
-                            </li>
-                            <li class = "active">
-                                <a href="edit-employee-ids?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-id-card"></i> IDs</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-employment?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-briefcase"></i> Employment Information</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-documents?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-file"></i> Documents</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
-                            </li>
-                        </ul>
+                    <ul class="nav-horizontal text-center">
+                        <li>
+                            <a href="edit-employee?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-info"></i> Information</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-education?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-graduation-cap"></i> Education</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-contacts?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-phone"></i> Emergency Contacts</a>
+                        </li>
+                        <li class="active">
+                            <a href="edit-employee-ids?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-id-card"></i> IDs</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-employment?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-briefcase"></i> Employment Information</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-documents?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-file"></i> Documents</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
+                        </li>
+                    </ul>
                 </div>
                 <!-- END Step Info -->
                 <div class="container-fluid">
@@ -469,28 +485,28 @@ $company_id = $_SESSION['hris_company_id'];
                 <!-- Step Info -->
                 <div class="wizard-steps">
                     <ul class="nav-horizontal text-center">
-                            <li >
-                                <a href="edit-employee?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-info"></i> Information</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-education?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-graduation-cap"></i> Education</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-contacts?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-phone"></i> Emergency Contacts</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-ids?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-id-card"></i> IDs</a>
-                            </li>
-                            <li class = "active">
-                                <a href="edit-employee-employment?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-briefcase"></i> Employment Information</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-documents?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-file"></i> Documents</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
-                            </li>
-                            <li>
+                        <li>
+                            <a href="edit-employee?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-info"></i> Information</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-education?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-graduation-cap"></i> Education</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-contacts?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-phone"></i> Emergency Contacts</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-ids?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-id-card"></i> IDs</a>
+                        </li>
+                        <li class="active">
+                            <a href="edit-employee-employment?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-briefcase"></i> Employment Information</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-documents?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-file"></i> Documents</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
+                        </li>
+                        <li>
                     </ul>
                 </div>
                 <!-- END Step Info -->
@@ -605,12 +621,46 @@ $company_id = $_SESSION['hris_company_id'];
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
+                                <label>Group</label>
+                                <select name="group" class="select-chosen" data-placeholder="Choose a group..." style="width: 250px;">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Unit</label>
+                                <select name="group" class="select-chosen" data-placeholder="Choose a group..." style="width: 250px;">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Position</label>
+                                <select name="position" class="select-chosen" data-placeholder="Choose a position..." style="width: 250px;">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Rank</label>
+                                <select name="rank" class="select-chosen" data-placeholder="Choose a rank..." style="width: 250px;">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
                                 <label>Approver</label>
                                 <select name="approver" class="select-chosen" data-placeholder="Choose an approvers..." style="width: 250px;">
                                     <option></option>
                                     <?php
                                     $sql = mysqli_query($db, "SELECT * FROM tbl_users WHERE role != 'User' AND super_admin = '0'");
-                                        while ($row = mysqli_fetch_assoc($sql)){
+                                    while ($row = mysqli_fetch_assoc($sql)) {
                                     ?>
                                         <option value="<?= $row['employee_number'] ?>"><?= $row['account_name'] ?></option>
                                     <?php
@@ -619,7 +669,7 @@ $company_id = $_SESSION['hris_company_id'];
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Account Status</label>
                                 <select name="account_status" class="select-chosen" data-placeholder="Choose an account status..." style="width: 250px;">
@@ -629,16 +679,14 @@ $company_id = $_SESSION['hris_company_id'];
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label>Reporting To</label>
                                 <select name="reporting_to" class="select-chosen" data-placeholder="Choose a superior..." style="width: 250px;">
                                     <option></option>
                                     <?php
                                     $sql = mysqli_query($db, "SELECT * FROM tbl_users WHERE role != 'User' AND super_admin = '0'");
-                                        while ($row = mysqli_fetch_assoc($sql)){
+                                    while ($row = mysqli_fetch_assoc($sql)) {
                                     ?>
                                         <option value="<?= $row['employee_number'] ?>"><?= $row['account_name'] ?></option>
                                     <?php
@@ -647,10 +695,24 @@ $company_id = $_SESSION['hris_company_id'];
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-6" style="display: none;">
+                        <div class="col-md-4" style="display: none;">
                             <div class="form-group">
                                 <label>Vendor ID</label>
                                 <input type="text" class="form-control" name="vendor_id" value="none">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>HMO Number</label>
+                                <input type="text" class="form-control" name="hmo_number">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Tenure</label>
+                                <input type="text" class="form-control" name="tenure">
                             </div>
                         </div>
                     </div>
@@ -674,27 +736,27 @@ $company_id = $_SESSION['hris_company_id'];
                 <!-- Step Info -->
                 <div class="wizard-steps">
                     <ul class="nav-horizontal text-center">
-                            <li>
-                                <a href="edit-employee?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-info"></i> Information</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-education?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-graduation-cap"></i> Education</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-contacts?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-phone"></i> Emergency Contacts</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-ids?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-id-card"></i> IDs</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-employment?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-briefcase"></i> Employment Information</a>
-                            </li>
-                            <li class = "active">
-                                <a href="edit-employee-documents?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-file"></i> Documents</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
-                            </li>
+                        <li>
+                            <a href="edit-employee?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-info"></i> Information</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-education?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-graduation-cap"></i> Education</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-contacts?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-phone"></i> Emergency Contacts</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-ids?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-id-card"></i> IDs</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-employment?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-briefcase"></i> Employment Information</a>
+                        </li>
+                        <li class="active">
+                            <a href="edit-employee-documents?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-file"></i> Documents</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
+                        </li>
                     </ul>
                 </div>
                 <!-- END Step Info -->
@@ -722,31 +784,91 @@ $company_id = $_SESSION['hris_company_id'];
                 <!-- Step Info -->
                 <div class="wizard-steps">
                     <ul class="nav-horizontal text-center">
-                            <li>
-                                <a href="edit-employee?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-info"></i> Information</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-education?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-graduation-cap"></i> Education</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-contacts?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-phone"></i> Emergency Contacts</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-ids?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-id-card"></i> IDs</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-employment?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-briefcase"></i> Employment Information</a>
-                            </li>
-                            <li>
-                                <a href="edit-employee-documents?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-file"></i> Documents</a>
-                            </li>
-                            <li class = "active">
-                                <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
-                            </li>
-                        </ul>
+                        <li>
+                            <a href="edit-employee?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-info"></i> Information</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-education?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-graduation-cap"></i> Education</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-contacts?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-phone"></i> Emergency Contacts</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-ids?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-id-card"></i> IDs</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-employment?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-briefcase"></i> Employment Information</a>
+                        </li>
+                        <li>
+                            <a href="edit-employee-documents?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-file"></i> Documents</a>
+                        </li>
+                        <li class="active">
+                            <a href="edit-employee-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
+                        </li>
+                    </ul>
                 </div>
                 <!-- END Step Info -->
                 <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="switch switch-primary">
+                                    <input type="checkbox" name="benefits_eligibility[]" value="Medical Allowance">
+                                    <span></span>
+                                </label>
+                                <label>Medical Allowance</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="switch switch-primary">
+                                    <input type="checkbox" name="benefits_eligibility[]" value="Transportation Allowance">
+                                    <span></span>
+                                </label>
+                                <label>Transportation Allowance</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="switch switch-primary">
+                                    <input type="checkbox" name="benefits_eligibility[]" value="Meal Allowance">
+                                    <span></span>
+                                </label>
+                                <label>Meal Allowance</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="switch switch-primary">
+                                    <input type="checkbox" name="benefits_eligibility[]" value="Leave Credits">
+                                    <span></span>
+                                </label>
+                                <label>Leave Credits</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="switch switch-primary">
+                                    <input type="checkbox" name="benefits_eligibility[]" value="HMO">
+                                    <span></span>
+                                </label>
+                                <label>HMO</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="switch switch-primary">
+                                    <input type="checkbox" name="benefits_eligibility[]" value="Maternity and/or Paternity Gift">
+                                    <span></span>
+                                </label>
+                                <label>Maternity and/or Paternity Gift</label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -756,6 +878,8 @@ $company_id = $_SESSION['hris_company_id'];
                                 </label>
                                 <label>Parking</label>
                             </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
                                     <input type="checkbox" name="benefits_eligibility[]" value="Gasoline">
@@ -763,6 +887,10 @@ $company_id = $_SESSION['hris_company_id'];
                                 </label>
                                 <label>Gasoline</label>
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
                                     <input type="checkbox" name="benefits_eligibility[]" value="Car Maintenance">
@@ -770,6 +898,8 @@ $company_id = $_SESSION['hris_company_id'];
                                 </label>
                                 <label>Car Maintenance</label>
                             </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
                                     <input type="checkbox" checked name="benefits_eligibility[]" value="Medicine">
@@ -777,14 +907,9 @@ $company_id = $_SESSION['hris_company_id'];
                                 </label>
                                 <label>Medicine</label>
                             </div>
-                            <div class="form-group">
-                                <label class="switch switch-primary">
-                                    <input type="checkbox" checked name="benefits_eligibility[]" value="Gym">
-                                    <span></span>
-                                </label>
-                                <label>Gym</label>
-                            </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
@@ -793,27 +918,8 @@ $company_id = $_SESSION['hris_company_id'];
                                 </label>
                                 <label>Optical Allowance</label>
                             </div>
-                            <div class="form-group">
-                                <label class="switch switch-primary">
-                                    <input type="checkbox" name="benefits_eligibility[]" value="CEP">
-                                    <span></span>
-                                </label>
-                                <label>CEP</label>
-                            </div>
-                            <div class="form-group">
-                                <label class="switch switch-primary">
-                                    <input type="checkbox" name="benefits_eligibility[]" value="Club Membership">
-                                    <span></span>
-                                </label>
-                                <label>Club Membership</label>
-                            </div>
-                            <div class="form-group">
-                                <label class="switch switch-primary">
-                                    <input type="checkbox" name="benefits_eligibility[]" value="Maternity">
-                                    <span></span>
-                                </label>
-                                <label>Maternity</label>
-                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-group">
                                 <label class="switch switch-primary">
                                     <input type="checkbox" checked name="benefits_eligibility[]" value="Others">

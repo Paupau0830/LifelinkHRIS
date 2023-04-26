@@ -105,7 +105,7 @@ if (empty($_SESSION['hris_id'])) {
                                 $sql = mysqli_query($db, "SELECT * FROM tbl_personal_information WHERE account_created = '0'");
                                 while ($row = mysqli_fetch_assoc($sql)) {
                                 ?>
-                                    <option value="<?= $row['employee_number'] ?>"><?= $row['employee_number'] . ' - ' .  $row['employee_name'] ?></option>
+                                    <option value="<?= $row['employee_number'] ?>"><?= $row['employee_number'] . ' - ' .  $row['account_name'] ?></option>
                                 <?php
                                 }
                                 ?>

@@ -67,7 +67,7 @@ if (empty($_SESSION['hris_id'])) {
                     <form method="POST" class="form-horizontal form-bordered">
                         <div class="form-group">
                             <label>Employee ID</label>
-                            <select name="emp_num" class="form-control">
+                            <select name="emp_num" class="form-control select-chosen">
                                 <option value="null">Select one...</option>
                                 <?php
                                 $sql = mysqli_query($db, "SELECT * FROM tbl_employees WHERE account_created = '0'");
