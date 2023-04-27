@@ -1254,6 +1254,7 @@ if (isset($_POST['add_employee'])) {
     $annual_medical_allowance = $_POST['annual_medical_allowance'];
     $cola = $_POST['cola'];
     $additional_allowance = $_POST['additional_allowance'];
+    $additional_allowance_amount = $_POST['additional_allowance_amount'];
     $monthly_gross = $_POST['monthly_gross'];
 
     $gross_pay = $basic_salary / 2;
@@ -1301,7 +1302,7 @@ if (isset($_POST['add_employee'])) {
     } else {
         $created_by = $_SESSION['hris_account_name'];
 
-        mysqli_query($db, "INSERT INTO tbl_employees VALUES('','$employee_num','$emp_name','$company_position','$company_name','$bank_name','$commission','$account_num','$basic_salary','$sss_er', '$sss_ee', '$sss_ec','$hdmf_er', '$hdmf_ee', '$philhealth_er', '$philhealth_ee','$withholding_tax','$deminimis','0','0','$remarks', '$annual_medical_allowance', '$cola', '$additional_allowance', '$monthly_gross')");
+        mysqli_query($db, "INSERT INTO tbl_employees VALUES('','$employee_num','$emp_name','$company_position','$company_name','$bank_name','$commission','$account_num','$basic_salary','$sss_er', '$sss_ee', '$sss_ec','$hdmf_er', '$hdmf_ee', '$philhealth_er', '$philhealth_ee','$withholding_tax','$deminimis','0','0','$remarks', '$annual_medical_allowance', '$cola', '$additional_allowance', '$additional_allowance_amount', '$monthly_gross')");
 
         mysqli_query($db, "UPDATE tbl_personal_information SET account_created = '1' WHERE employee_number = '$employee_num'");
 
@@ -1569,6 +1570,7 @@ if (isset($_POST['edit_employee'])) {
         $_SESSION['selected_annual_medical_allowance'] = $row['annual_medical_allowance'];
         $_SESSION['selected_edit_cola'] = $row['cola'];
         $_SESSION['selected_edit_additional_allowance'] = $row['additional_allowance'];
+        $_SESSION['selected_edit_additional_allowance_amount'] = $row['additional_allowance_amount'];
         $_SESSION['selected_edit_monthly_gross'] = $row['monthly_gross'];
     }
 
@@ -1598,6 +1600,7 @@ if (isset($_POST['update_employee'])) {
     $annual_medical_allowance = $_POST['annual_medical_allowance'];
     $cola = $_POST['cola'];
     $additional_allowance = $_POST['additional_allowance'];
+    $additional_allowance_amount = $_POST['additional_allowance_amount'];
     $monthly_gross = $_POST['monthly_gross'];
 
     $gross_pay = $basic_salary / 2;
@@ -1645,7 +1648,7 @@ if (isset($_POST['update_employee'])) {
         if ($_POST['whtax'] != $withholding_tax && $_POST['whtax'] != 0) {
             $withholding_tax = $_POST['whtax'];
         }
-        mysqli_query($db, "UPDATE tbl_employees SET emp_name = '$emp_name', company_position = '$company_position', company_name = '$select_company', basic_salary = '$basic_salary', account_number = '$acc_num', sss_er = '$sss_er', sss_ee = '$sss_ee', sss_ec = '$sss_ec', hdmf_er = '$hdmf_er', hdmf_ee = '$hdmf_ee', philhealth_er = '$philhealth_er', philhealth_ee = '$philhealth_ee',deminimis = '$deminimis', commission = '$commission', bank_name = '$bank_name', withholding_tax = '$withholding_tax', remarks = '$remarks', annual_medical_allowance = '$annual_medical_allowance', cola = '$cola', additional_allowance = '$additional_allowance', monthly_gross = '$monthly_gross' WHERE emp_num = '$emp_num'");
+        mysqli_query($db, "UPDATE tbl_employees SET emp_name = '$emp_name', company_position = '$company_position', company_name = '$select_company', basic_salary = '$basic_salary', account_number = '$acc_num', sss_er = '$sss_er', sss_ee = '$sss_ee', sss_ec = '$sss_ec', hdmf_er = '$hdmf_er', hdmf_ee = '$hdmf_ee', philhealth_er = '$philhealth_er', philhealth_ee = '$philhealth_ee',deminimis = '$deminimis', commission = '$commission', bank_name = '$bank_name', withholding_tax = '$withholding_tax', remarks = '$remarks', annual_medical_allowance = '$annual_medical_allowance', cola = '$cola', additional_allowance = '$additional_allowance', additional_allowance_amount = '$additional_allowance_amount', monthly_gross = '$monthly_gross' WHERE emp_num = '$emp_num'");
 
         mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$created_by','Updated Employee Payroll Registry: $emp_name','$datetime')");
 
@@ -1676,6 +1679,7 @@ if (isset($_POST['update_employee'])) {
             $_SESSION['selected_edit_remarks'] = $row['remarks'];
             $_SESSION['selected_edit_cola'] = $row['cola'];
             $_SESSION['selected_edit_additional_allowance'] = $row['additional_allowance'];
+            $_SESSION['selected_edit_additional_allowance_amount'] = $row['additional_allowance_amount'];
             $_SESSION['selected_edit_monthly_gross'] = $row['monthly_gross'];
         }
         $_SESSION['selected_editemp'] = $emp_num;
@@ -2727,6 +2731,7 @@ function reset_all_edit_session()
     $_SESSION['selected_edit_remarks'] = null;
     $_SESSION['selected_edit_cola'] = null;
     $_SESSION['selected_edit_additional_allowance'] = null;
+    $_SESSION['selected_edit_additional_allowance_amount'] = null;
     $_SESSION['selected_edit_monthly_gross'] = null;
 }
 
