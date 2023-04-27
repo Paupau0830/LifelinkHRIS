@@ -17,7 +17,7 @@ while ($row = mysqli_fetch_assoc($sql)) {
         $cname = $row['company_name'];
     }
 }
-$get_count_departments = mysqli_query($db, "SELECT COUNT(*) as c FROM tbl_departments WHERE company_id = '$rid'");
+$get_count_departments = mysqli_query($db, "SELECT COUNT(*) as c FROM tbl_departments WHERE company_id = '$rid' AND group_id != ''");
 $count_dept = mysqli_fetch_assoc($get_count_departments);
 
 $get_count_jg = mysqli_query($db, "SELECT COUNT(*) as c FROM tbl_job_grade WHERE company_id = '$rid'");
@@ -43,9 +43,9 @@ $count_jgs = mysqli_fetch_assoc($get_count_jgs);
             <li>
                 <a href="edit-company-job-grade-set?<?= md5('id') . '=' . $fid ?>"><i class="gi gi-show_thumbnails"></i> Job Grade Set</a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="edit-company-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
-            </li>
+            </li> -->
             <li>
                 <a href="edit-company-maintenance?<?= md5('id') . '=' . $fid ?>"><i class="gi gi-settings"></i> Maintenance</a>
             </li>

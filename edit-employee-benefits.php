@@ -72,6 +72,12 @@ $em = '';
                 $club = '';
                 $mat = '';
                 $oth = '';
+                $medical = '';
+                $transportation = '';
+                $meal = '';
+                $hmo = '';
+                $leave = '';
+                $maternity_paternity = '';
                 $get_benefits = mysqli_query($db, "SELECT * FROM tbl_benefits_eligibility WHERE employee_number = '$employee_number'");
                 while ($row = mysqli_fetch_assoc($get_benefits)) {
                     $ben_id = $row['ID'];
@@ -105,6 +111,24 @@ $em = '';
                     if ($row['others'] == '1') {
                         $oth = 'checked';
                     }
+                    if ($row['medical_allowance'] == '1') {
+                        $medical = 'checked';
+                    }
+                    if ($row['transportation_allowance'] == '1') {
+                        $transportation = 'checked';
+                    }
+                    if ($row['meal_allowance'] == '1') {
+                        $meal = 'checked';
+                    }
+                    if ($row['leave_credits'] == '1') {
+                        $leave = 'checked';
+                    }
+                    if ($row['hmo'] == '1') {
+                        $hmo = 'checked';
+                    }
+                    if ($row['maternity_paternity'] == '1') {
+                        $maternity_paternity = 'checked';
+                    }
                 }
                 ?>
                 <input type="hidden" name="employee_number" value="<?= $employee_number ?>">
@@ -117,6 +141,8 @@ $em = '';
                             </label>
                             <label>Parking</label>
                         </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label class="switch switch-primary">
                                 <input type="checkbox" <?= $gas ?> name="benefits_eligibility[]" value="Gasoline">
@@ -124,6 +150,8 @@ $em = '';
                             </label>
                             <label>Gasoline</label>
                         </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label class="switch switch-primary">
                                 <input type="checkbox" <?= $car ?> name="benefits_eligibility[]" value="Car Maintenance">
@@ -131,6 +159,8 @@ $em = '';
                             </label>
                             <label>Car Maintenance</label>
                         </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label class="switch switch-primary">
                                 <input type="checkbox" <?= $med ?> name="benefits_eligibility[]" value="Medicine">
@@ -138,6 +168,8 @@ $em = '';
                             </label>
                             <label>Medicine</label>
                         </div>
+                    </div>
+                    <div class="col-md-6" style="display:none">
                         <div class="form-group">
                             <label class="switch switch-primary">
                                 <input type="checkbox" <?= $gy ?> name="benefits_eligibility[]" value="Gym">
@@ -154,6 +186,8 @@ $em = '';
                             </label>
                             <label>Optical Allowance</label>
                         </div>
+                    </div>
+                    <div class="col-md-6" style="display:none">
                         <div class="form-group">
                             <label class="switch switch-primary">
                                 <input type="checkbox" <?= $ce ?> name="benefits_eligibility[]" value="CEP">
@@ -161,20 +195,26 @@ $em = '';
                             </label>
                             <label>CEP</label>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" style="display:none">
                             <label class="switch switch-primary">
                                 <input type="checkbox" <?= $club ?> name="benefits_eligibility[]" value="Club Membership">
                                 <span></span>
                             </label>
                             <label>Club Membership</label>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" style="display:none">
                             <label class="switch switch-primary">
                                 <input type="checkbox" <?= $mat ?> name="benefits_eligibility[]" value="Maternity">
                                 <span></span>
                             </label>
                             <label>Maternity</label>
                         </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label class="switch switch-primary">
                                 <input type="checkbox" <?= $oth ?> name="benefits_eligibility[]" value="Others">
@@ -183,11 +223,75 @@ $em = '';
                             <label>Others</label>
                         </div>
                     </div>
-                </div><br>
-                <button class="btn btn-primary" name="btn_update_benefits_eligibility">Update</button>
-            </div>
-        </form>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label class="switch switch-primary">
+                                <input type="checkbox" <?= $medical ?> name="benefits_eligibility[]" value="Medical Allowance">
+                                <span></span>
+                            </label>
+                            <label>Medical Allowance</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label class="switch switch-primary">
+                                <input type="checkbox" <?= $transportation ?> name="benefits_eligibility[]" value="Transportation Allowance">
+                                <span></span>
+                            </label>
+                            <label>Transportation Allowance</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label class="switch switch-primary">
+                                <input type="checkbox" <?= $meal ?> name="benefits_eligibility[]" value="Meal Allowance">
+                                <span></span>
+                            </label>
+                            <label>Meal Allowance</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label class="switch switch-primary">
+                                <input type="checkbox" <?= $leave ?> name="benefits_eligibility[]" value="Leave Credits">
+                                <span></span>
+                            </label>
+                            <label>Leave Credits</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label class="switch switch-primary">
+                                <input type="checkbox" <?= $hmo ?> name="benefits_eligibility[]" value="HMO">
+                                <span></span>
+                            </label>
+                            <label>HMO</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+
+                        <div class="form-group">
+                            <label class="switch switch-primary">
+                                <input type="checkbox" <?= $maternity_paternity ?> name="benefits_eligibility[]" value="Maternity and/or Paternity Gift">
+                                <span></span>
+                            </label>
+                            <label>Maternity and/or Paternity Gift</label>
+                        </div>
+                    </div>
+
+                </div>
+                <br>
+                <button class="btn btn-success" name="btn_update_benefits_eligibility">Update</button>
+
+            </div><br>
     </div>
+    </form>
+</div>
 </div>
 <?php include 'inc/page_footer.php'; ?>
 <?php include 'inc/template_scripts.php'; ?>

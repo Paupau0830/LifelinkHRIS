@@ -63,40 +63,43 @@ $em = '';
                 <?php
                 $sql = mysqli_query($db, "SELECT * FROM tbl_government_id WHERE employee_number = '$employee_number'");
                 while ($row = mysqli_fetch_assoc($sql)) {
-                ?>
-                    <input type="hidden" name="employee_number" value="<?= $row['employee_number'] ?>">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>SSS</label>
-                                <input type="text" name="sss" class="form-control" value="<?= $row['sss'] ?>">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>PAG-IBIG</label>
-                                <input type="text" name="pagibig" class="form-control" value="<?= $row['pagibig'] ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Philhealth</label>
-                                <input type="text" name="philhealth" class="form-control" value="<?= $row['philhealth'] ?>">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>TIN</label>
-                                <input type="text" name="tin" class="form-control" value="<?= $row['tin'] ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <button class="btn btn-primary" name="btn_update_ids">Update</button>
-                <?php
+                    $sss = $row['sss'];
+                    $pagibig = $row['pagibig'];
+                    $philhealth = $row['philhealth'];
+                    $tin = $row['tin'];
+                    $employee_number = $row['employee_number'];
                 }
                 ?>
+                <input type="hidden" name="employee_number" value="<?= $employee_number ?>">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>SSS</label>
+                            <input type="text" name="sss" class="form-control" value="<?= $sss ?>">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>PAG-IBIG</label>
+                            <input type="text" name="pagibig" class="form-control" value="<?= $pagibig ?>">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Philhealth</label>
+                            <input type="text" name="philhealth" class="form-control" value="<?= $philhealth ?>">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>TIN</label>
+                            <input type="text" name="tin" class="form-control" value="<?= $tin ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" name="btn_update_ids">Update</button>
+
             </form>
         </div>
     </div>

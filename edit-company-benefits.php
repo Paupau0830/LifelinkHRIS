@@ -62,6 +62,12 @@ while ($row = mysqli_fetch_assoc($sql)) {
                 $club = '';
                 $mat = '';
                 $oth = '';
+                $medical = '';
+                $transportation = '';
+                $meal = '';
+                $leave = '';
+                $hmo = '';
+                $maternity_paternity = '';
                 $get_benefits = mysqli_query($db, "SELECT * FROM tbl_company_benefits WHERE company_id = '$rid'");
                 while ($row = mysqli_fetch_assoc($get_benefits)) {
                     $ben_id = $row['ID'];
@@ -91,6 +97,24 @@ while ($row = mysqli_fetch_assoc($sql)) {
                     }
                     if ($row['maternity'] == '1') {
                         $mat = 'checked';
+                    }
+                    if ($row['others'] == '1') {
+                        $oth = 'checked';
+                    }
+                    if ($row['others'] == '1') {
+                        $oth = 'checked';
+                    }
+                    if ($row['others'] == '1') {
+                        $oth = 'checked';
+                    }
+                    if ($row['others'] == '1') {
+                        $oth = 'checked';
+                    }
+                    if ($row['others'] == '1') {
+                        $oth = 'checked';
+                    }
+                    if ($row['others'] == '1') {
+                        $oth = 'checked';
                     }
                     if ($row['others'] == '1') {
                         $oth = 'checked';

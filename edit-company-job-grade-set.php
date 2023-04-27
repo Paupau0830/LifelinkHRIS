@@ -35,9 +35,9 @@ while ($row = mysqli_fetch_assoc($sql)) {
             <li class="active">
                 <a href="edit-company-job-grade-set?<?= md5('id') . '=' . $fid ?>"><i class="gi gi-show_thumbnails"></i> Job Grade Set</a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="edit-company-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
-            </li>
+            </li> -->
             <li>
                 <a href="edit-company-maintenance?<?= md5('id') . '=' . $fid ?>"><i class="gi gi-settings"></i> Maintenance</a>
             </li>

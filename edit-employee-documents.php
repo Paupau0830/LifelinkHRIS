@@ -73,12 +73,43 @@ $em = '';
                 </thead>
                 <tbody>
                     <?php
+                    $path = 'https://lifelink-storage.s3.ap-southeast-1.amazonaws.com/ONBOARDING/';
                     $sql = mysqli_query($db, "SELECT * FROM tbl_documents WHERE employee_number = '$employee_number'");
                     while ($row = mysqli_fetch_assoc($sql)) {
+                        $doc_attachment = $row['attachment'];
                     ?>
                         <tr>
                             <td class="text-center"><?= $row['ID'] ?></td>
-                            <td class="text-center"><a href="uploads/<?= $row['attachment'] ?>" target="_blank">View</a></td>
+                            <td class="text-center"><?php
+                                                    if ($doc_attachment != '') {
+                                                        $exp_attachment = explode('.', $doc_attachment);
+                                                        $file = $exp_attachment[0];
+                                                        $ext = $exp_attachment[1];
+                                                    } else {
+                                                        $exp_attachment = '';
+                                                        $file = '';
+                                                        $ext = '';
+                                                    }
+                                                    ?>
+                                <div class="div" style="display: flex; text-align:center;">
+                                    <input type="text" readonly name="doc_attachment" id="doc_attachment" class="form-control" style="border:none; background-color:white;" value="<?= $doc_attachment ?>">
+                                    <?php
+
+                                    if ($doc_attachment != "" && $ext == 'pdf') {
+
+                                    ?>
+                                        <form method="POST">
+
+                                            <div class="btn-group" style="margin-left:5px; float:right;">
+                                                <!-- <button class="btn btn-primary" name="view_attachment_doc" formnovalidate>View Attachment</button> -->
+                                                <a href="javascript:void(0)" class="btn btn-danger" onclick="$('#modal-view-pdf').modal('show');">View Attachment</a>
+
+                                            </div>
+                                        </form>
+                                </div>
+                            <?php
+                                    } ?>
+                            </td>
                             <td class="text-center"><?= $row['remarks'] ?></td>
                             <td class="text-center">
                                 <form method="POST">
@@ -92,6 +123,22 @@ $em = '';
                     ?>
                 </tbody>
             </table>
+        </div>
+    </div>
+</div>
+<div id="modal-view-pdf" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h2 class="modal-title"><i class="fa fa-sitemap"></i> View PDF</h2>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <center>
+                        <iframe src="<?php echo $path . $doc_attachment; ?>" width="100%" height="500px"></iframe>
+                    </center>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -119,7 +166,7 @@ $em = '';
                         </div>
                     </div>
                     <br>
-                    <button class="btn btn-primary" name="btn_add_document">Submit</button>
+                    <button class="btn btn-success btn_block" name="btn_add_document">Submit</button>
                     <br><br>
                 </form>
             </div>

@@ -1895,6 +1895,28 @@ if (isset($_POST['view_attachment'])) {
 
     header('Location: file');
 }
+
+if (isset($_POST['view_attachment_doc'])) {
+
+    // $file = 'uploads/' . $_POST['doc_attachment'];
+    // $filename = $_POST['doc_attachment'];
+    // header('Content-type: application/pdf');
+    // header('Content-Disposition: inline; filename="' . $filename . '"');
+    // header('Content-Transfer: Encoding: binary');
+    // header('Accept-Ranges: bytes');
+    $filename = 'https://lifelink-storage.s3.ap-southeast-1.amazonaws.com/ONBOARDING/' . $_POST['doc_attachment'];
+
+    // Header content type
+    header("Content-type: application/pdf");
+    header('Content-Disposition: inline; filename="' . $filename . '"');
+
+    header("Content-Length: " . filesize($filename));
+
+    // Send the file to the browser.
+    @readfile($filename);
+    // @readfile($file);
+}
+
 if (isset($_POST['view_attachment_cert'])) {
     // $_SESSION['la_attachment'] = null;
     // $_SESSION['la_attachment'] = $_POST['la_attachment'];
@@ -1912,13 +1934,15 @@ if (isset($_POST['view_attachment_cert'])) {
 if (isset($_POST['add_department'])) {
     $department = $_POST['department'];
     $company_id = $_POST['company_id'];
+    $dept_group = $_POST['dept_group'];
+    $dept_manual_id = $_POST['dept_manual_id'];
     if (check_if_department_exist($department, $company_id) == true) {
         $res = '<div class="alert alert-danger alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             <h4><i class="fa fa-times"></i> Submission failed. Department already exist.</h4>
         </div>';
     } else {
-        $sql = mysqli_query($db, "INSERT INTO tbl_departments VALUES('','','','$department','$company_id','$datetime')");
+        $sql = mysqli_query($db, "INSERT INTO tbl_departments VALUES('','$dept_manual_id','$department','$company_id','$datetime','$dept_group')");
         $res = '<div class="alert alert-success alert-dismissable">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
         <h4><i class="fa fa-check-circle"></i> ' . $department . ' has been added as Department</h4>
@@ -1926,6 +1950,39 @@ if (isset($_POST['add_department'])) {
     }
     $at_name = $_SESSION['hris_account_name'];
     mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Added a department: $department','$datetime')");
+}
+if (isset($_POST['add_department_group'])) {
+    $group_name = $_POST['group_name'];
+    $company_id = $_POST['company_id'];
+    if (check_if_group_exist($group_name, $company_id) == true) {
+        $res = '<div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="fa fa-times"></i> Submission failed. Department already exist.</h4>
+        </div>';
+    } else {
+        $at_name = $_SESSION['hris_account_name'];
+        $sql = mysqli_query($db, "INSERT INTO tbl_department_group VALUES('','$company_id','$group_name','$at_name','$datetime')");
+        $res = '<div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="fa fa-check-circle"></i> ' . $group_name . ' has been added as Group</h4>
+        </div>';
+    }
+    $at_name = $_SESSION['hris_account_name'];
+    mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Added a group: $group_name','$datetime')");
+}
+if (isset($_POST['add_department_unit'])) {
+    $dept_group = $_POST['dept_group'];
+    $dept_unit = $_POST['dept_unit'];
+    $company_id = $_POST['company_id'];
+    $at_name = $_SESSION['hris_account_name'];
+
+    $sql = mysqli_query($db, "INSERT INTO tbl_department_unit VALUES('','$company_id','$dept_group','$dept_unit','$at_name','$datetime')");
+    $res = '<div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="fa fa-check-circle"></i> ' . $dept_unit . ' has been added as Unit</h4>
+        </div>';
+
+    mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Added a unit: $dept_unit','$datetime')");
 }
 if (isset($_POST['get_department_details'])) {
     $department_id = $_POST['department_id'];
@@ -2006,6 +2063,49 @@ if (isset($_POST['update_department'])) {
     mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','updated a department: $department_id','$datetime')");
     // }
 }
+if (isset($_POST['update_departments'])) {
+    $department = $_POST['department'];
+    $m_dept_manual_id = $_POST['m_dept_manual_id'];
+    $m_dept_group = $_POST['m_dept_group'];
+    // $manual_id = $_POST['manual_id'];
+    // $group = $_POST['group'];
+
+    $sql = mysqli_query($db, "UPDATE tbl_departments SET manual_id = '$m_dept_manual_id', group_id = '$m_dept_group' WHERE ID = '$department'");
+    $res = '<div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="fa fa-check-circle"></i> Department has been updated.</h4>
+        </div>';
+
+    $at_name = $_SESSION['hris_account_name'];
+    mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','updated a department: $department','$datetime')");
+    // }
+}
+
+if (isset($_POST['delete_departments'])) {
+    if (empty($_POST['selected_departments_delete'])) {
+        $all_deptid = null;
+    } else {
+        $all_deptid = $_POST['selected_departments_delete'];
+    }
+
+    if ($all_deptid == null) {
+        $res = '<div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="fa fa-times"></i> Select at least one to delete.</h4>
+    </div>';
+    } else {
+        foreach ($all_deptid as $dept_id) {
+            $db = connect();
+            mysqli_query($db, "DELETE FROM tbl_departments WHERE ID = '$dept_id'");
+        }
+
+        $res = '<div class="alert alert-success alert-dismissable">
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+    <h4><i class="fa fa-check-circle"></i> Department(s) has been deleted successfully.</h4>
+    </div>';
+    }
+}
+
 if (isset($_POST['add_job_grade'])) {
     $company_id = $_POST['company_id'];
     $job_grade = $_POST['job_grade'];
@@ -3058,11 +3158,11 @@ if (isset($_POST['btn_onboarding'])) {
         '$reporting_to',
         '$vendor_id',
         '$on_behalf_filing',
-        '$is_approver'
+        '$is_approver',
         '$group',
         '$unit',
         '$position',
-        '$rank'
+        '$rank',
         '$hmo_number',
         '$tenure'
         );");
@@ -3078,8 +3178,8 @@ if (isset($_POST['btn_onboarding'])) {
     //     move_uploaded_file($attachment_tmp[$k], "uploads/" . $value);
     // }
     $supporting_attachment = uploadAttachment('attachment');
-    mysqli_query($db, "INSERT INTO tbl_documents VALUES('','','$supporting_attachment','$attachment_remarks')");
-    move_uploaded_file($attachment_tmp, "uploads/" . $value);
+    mysqli_query($db, "INSERT INTO tbl_documents VALUES('','$employee_number','$supporting_attachment','$attachment_remarks')");
+    move_uploaded_file($attachment_tmp, "uploads/" . $supporting_attachment);
 
     // Benefits Eligibility
     $parking = "0";
@@ -3151,7 +3251,7 @@ if (isset($_POST['btn_onboarding'])) {
             '$cep',
             '$club_membership',
             '$maternity',
-            '$others'
+            '$others',
             '$medical_allowance',
             '$transportation_allowance',
             '$meal_allowance',
@@ -3183,6 +3283,9 @@ if (isset($_POST['btn_onboarding'])) {
             <h4><i class="fa fa-check"></i> Employee added in 201 File.</h4>
         </div>';
 }
+
+
+
 if (isset($_POST['onboarding_get_departments'])) {
     $company_id = $_POST['onboarding_get_departments'];
     $departments = get_departments($company_id);
@@ -3204,6 +3307,8 @@ if (isset($_POST['btn_update_personal_info'])) {
     $spouse_name = $_POST['spouse_name'];
     $personal_email = $_POST['personal_email'];
     $contact_number = $_POST['contact_number'];
+    $suffix = $_POST['suffix'];
+    $initials = $_POST['initials'];
 
     // Get Age
     $bday = date('m-d-Y', strtotime($date_of_birth));
@@ -3226,7 +3331,9 @@ if (isset($_POST['btn_update_personal_info'])) {
         spouse_name = '$spouse_name',
         personal_email = '$personal_email',
         contact_number = '$contact_number',
-        age = '$age'
+        age = '$age',
+        suffix = '$suffix',
+        initials = '$initials'
         WHERE employee_number = '$employee_number'
     ");
     if ($sql) {
@@ -3556,6 +3663,13 @@ if (isset($_POST['btn_update_employment_info'])) {
     $account_status = $_POST['account_status'];
     $reporting_to = $_POST['reporting_to'];
     $vendor_id = $_POST['vendor_id'];
+    $group = $_POST['group'];
+    $unit = $_POST['unit'];
+    $position = $_POST['position'];
+    $rank = $_POST['rank'];
+    $hmo_number = $_POST['hmo_number'];
+    $tenure = $_POST['tenure'];
+
     $on_behalf_filing = '0';
     if (isset($_POST['on_behalf_filing'])) {
         $on_behalf_filing = $_POST['on_behalf_filing'];
@@ -3580,7 +3694,13 @@ if (isset($_POST['btn_update_employment_info'])) {
         reporting_to = '$reporting_to',
         vendor_id = '$vendor_id',
         filing = '$on_behalf_filing',
-        is_approver = '$is_approver'
+        is_approver = '$is_approver',
+        group_name = '$group',
+        unit = '$unit',
+        position = '$position',
+        rank_name = '$rank',
+        hmo_number = '$hmo_number',
+        tenure = '$tenure'
         WHERE employee_number = '$employee_number'
     ");
     if ($sql) {
@@ -3595,6 +3715,8 @@ if (isset($_POST['btn_update_employment_info'])) {
         mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Updated employment info for employee number: $employee_number','$datetime')");
     }
 }
+
+
 if (isset($_POST['btn_delete_document'])) {
     $id = $_POST['id'];
     $sql = mysqli_query($db, "DELETE FROM tbl_documents WHERE ID = '$id'");
@@ -3607,20 +3729,59 @@ if (isset($_POST['btn_delete_document'])) {
         mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Deleted a document','$datetime')");
     }
 }
+
+if (isset($_POST['btn_educational_loan'])) {
+    if ($_POST['selected_employee_educ'] == 'null') {
+        $res = '<div class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        <h4><i class="fa fa-times"></i> Complete necessary fields to proceed.</h4>
+    </div>';
+    } else {
+        $selected_employee_id = $_POST['selected_employee_educ'];
+        $educ_loan_amount = $_POST['educ_loan_amount'];
+        $educ_description = $_POST['educ_description'];
+        $educ_date_availed = $_POST['educ_date_availed'];
+        $at_name = $_SESSION['hris_account_name'];
+
+        $get_employee_name = mysqli_query($db, "SELECT * FROM tbl_personal_information WHERE employee_number = '$selected_employee_id'");
+        while ($row = mysqli_fetch_assoc($get_employee_name)) {
+            $employee_name = $row['account_name'];
+        }
+        // Supporting Documents
+        $attachment = $_FILES['educ_attachment']['name']; // array
+        $attachment_tmp = $_FILES['educ_attachment']['tmp_name']; // array
+
+        $supporting_educ_attachment = uploadAttachmentLoan('attachment');
+        move_uploaded_file($attachment_tmp, "uploads/" . $supporting_educ_attachment);
+
+        $sql = mysqli_query($db, "INSERT INTO tbl_loan_records VALUES('','$selected_employee_id','$employee_name','Educational Loan','$educ_loan_amount','$educ_description','$educ_date_availed','$at_name','$datetime','$supporting_educ_attachment')");
+
+        if ($sql) {
+            $res = '<div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="fa fa-check"></i> Educational Loan has been registered.</h4>
+            </div>';
+            mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Added Educational Loan for: $employee_name','$datetime')");
+        }
+    }
+}
+
 if (isset($_POST['btn_add_document'])) {
     $employee_number = $_POST['employee_number'];
-    $attachment = $_FILES['attachment']['name'];
-    $attachment = md5($attachment);
-    $attachment_tmp = $_FILES['attachment']['tmp_name'];
-    $attachment_remarks = $_POST['attachment_remarks'];
 
-    $sql = mysqli_query($db, "INSERT INTO tbl_documents VALUES('','$employee_number','$attachment','$attachment_remarks')");
+    // Supporting Documents
+    $attachment = $_FILES['attachment']['name']; // array
+    $attachment_tmp = $_FILES['attachment']['tmp_name']; // array
+    $attachment_remarks = $_POST['attachment_remarks']; // array 
+
+    $supporting_attachment = uploadAttachment('attachment');
+    $sql = mysqli_query($db, "INSERT INTO tbl_documents VALUES('','$employee_number','$supporting_attachment','$attachment_remarks')");
+    move_uploaded_file($attachment_tmp, "uploads/" . $supporting_attachment);
     if ($sql) {
         $res = '<div class="alert alert-success alert-dismissable">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             <h4><i class="fa fa-check"></i> Document has been added.</h4>
         </div>';
-        move_uploaded_file($attachment_tmp, "uploads/" . $attachment);
         mysqli_query($db, "INSERT INTO tbl_audit_trail VALUES('','$at_name','Added a document for employee number: $employee_number','$datetime')");
     }
 }
@@ -3636,6 +3797,12 @@ if (isset($_POST['btn_update_benefits_eligibility'])) {
     $cep = "0";
     $club_membership = "0";
     $maternity = "0";
+    $meal = "0";
+    $medical = "0";
+    $transportation = "0";
+    $leave = "0";
+    $hmo = "0";
+    $maternity_paternity = "0";
     $others = "0";
     if (isset($_POST['benefits_eligibility'])) {
         $benefits_eligibility = $_POST['benefits_eligibility'];
@@ -3670,6 +3837,24 @@ if (isset($_POST['btn_update_benefits_eligibility'])) {
             if ($v == "Others") {
                 $others = "1";
             }
+            if ($v == "Medical Allowance") {
+                $medical = "1";
+            }
+            if ($v == "Transportation Allowance") {
+                $transportation = "1";
+            }
+            if ($v == "Meal Allowance") {
+                $meal = "1";
+            }
+            if ($v == "Leave Credits") {
+                $leave = "1";
+            }
+            if ($v == "HMO") {
+                $hmo = "1";
+            }
+            if ($v == "Maternity and/or Paternity Gift") {
+                $maternity_paternity = "1";
+            }
         }
         $sql = mysqli_query($db, "UPDATE tbl_benefits_eligibility SET
         parking = '$parking',
@@ -3681,7 +3866,13 @@ if (isset($_POST['btn_update_benefits_eligibility'])) {
         cep = '$cep',
         club_membership = '$club_membership',
         maternity = '$maternity',
-        others = '$others'
+        others = '$others',
+        medical_allowance = '$medical',
+        transportation_allowance = '$transportation',
+        meal_allowance = '$meal',
+        leave_credits = '$leave',
+        hmo = '$hmo',
+        maternity_paternity = '$maternity_paternity'
         WHERE employee_number = '$employee_number'
         ");
         if ($sql) {
@@ -4181,6 +4372,75 @@ if (isset($_POST['btn_leave_application'])) {
 
 use Aws\S3\S3Client;
 
+function uploadAttachmentLoan($fieldName)
+{
+    require 'vendor/autoload.php';
+
+    // Instantiate an Amazon S3 client.
+    $s3Client = new S3Client([
+        'version' => 'latest',
+        'region'  => 'ap-southeast-1',
+        'credentials' => [
+            'key'    => 'AKIAR2IERYMVHI6C36NV',
+            'secret' => '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'
+        ]
+    ]);
+    // Check if file was uploaded without errors
+    if (isset($_FILES[$fieldName]) && $_FILES[$fieldName]["error"] == 0) {
+        $allowed = array("pdf" => "application/pdf");
+        $prefilename = $_FILES[$fieldName]["name"];
+        $filetype = $_FILES[$fieldName]["type"];
+        $filesize = $_FILES[$fieldName]["size"];
+
+        $ext = pathinfo($prefilename, PATHINFO_EXTENSION);
+
+        $info = pathinfo($prefilename);
+        $file_name =  $info['filename'];
+        $filename = $file_name . date("YmdHms") . '.' . $ext;
+
+        // Validate file extension
+        if (!array_key_exists($ext, $allowed)) die("Error: Please select a valid file format.");
+        // Validate file size - 10MB maximum
+        $maxsize = 10 * 1024 * 1024;
+        if ($filesize > $maxsize) die("Error: File size is larger than the allowed limit.");
+        // Validate type of the file
+        if (in_array($filetype, $allowed)) {
+            // Check whether file exists before uploading it
+            if (file_exists("uploads/" . $filename)) {
+                echo $filename . " is already exists.";
+            } else {
+                if (move_uploaded_file($_FILES[$fieldName]["tmp_name"], "uploads/" . $filename)) {
+                    $bucket = 'lifelink-storage';
+                    $file_Path = 'uploads/' . $filename;
+                    $key = basename($file_Path);
+                    try {
+                        $result = $s3Client->putObject([
+                            'Bucket' => $bucket,
+                            'Key'    => 'LOAN/' . $key,
+                            'Body'   => fopen($file_Path, 'r'),
+                            'ACL'    => 'public-read', // make file 'public'
+                        ]);
+                        $res = '<div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <h4><i class="fa fa-check-circle"></i> Image uploaded successfully. Image path is: ' . $result->get('ObjectURL') . ' .</h4>
+                                    </div>';
+                    } catch (Aws\S3\Exception\S3Exception $e) {
+                        $res = '<div class="alert alert-success alert-dismissable">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <h4><i class="fa fa-times"></i> There was an error uploading the file. ' . $e->getMessage() . ' .</h4>
+                                    </div>';
+                    }
+                } else {
+                }
+            }
+        } else {
+        }
+    } else {
+    }
+
+    return $filename;
+}
+
 function uploadAttachment($fieldName)
 {
     require 'vendor/autoload.php';
@@ -4233,25 +4493,18 @@ function uploadAttachment($fieldName)
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                         <h4><i class="fa fa-check-circle"></i> Image uploaded successfully. Image path is: ' . $result->get('ObjectURL') . ' .</h4>
                                     </div>';
-                        echo "Image uploaded successfully. Image path is: " . $result->get('ObjectURL');
                     } catch (Aws\S3\Exception\S3Exception $e) {
                         $res = '<div class="alert alert-success alert-dismissable">
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                                         <h4><i class="fa fa-times"></i> There was an error uploading the file. ' . $e->getMessage() . ' .</h4>
                                     </div>';
-                        // echo "There was an error uploading the file.\n";
-                        // echo $e->getMessage();
                     }
-                    // echo "Your file was uploaded successfully.";
                 } else {
-                    // echo "File is not uploaded";
                 }
             }
         } else {
-            // echo "Error: There was a problem uploading your file. Please try again.";
         }
     } else {
-        // echo "Error: " . $_FILES[$fieldName]["error"];
     }
 
     return $filename;
@@ -8413,6 +8666,14 @@ function check_if_department_exist($department, $company_id)
         return true;
     }
 }
+function check_if_group_exist($group_name, $company_id)
+{
+    $db = connect();
+    $sql = mysqli_query($db, "SELECT * FROM tbl_department_group WHERE name = '$group_name' AND company_id = '$company_id'");
+    if (mysqli_num_rows($sql) > 0) {
+        return true;
+    }
+}
 function check_if_job_grade_exist($job_grade, $company_id)
 {
     $db = connect();
@@ -8461,6 +8722,16 @@ function get_departments($company_id)
     }
     return $departments;
 }
+function get_groups($company_id)
+{
+    $db = connect();
+    $groups = array();
+    $sql = mysqli_query($db, "SELECT * FROM tbl_department_group WHERE company_id = '$company_id' ORDER BY ID DESC");
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $groups[] = array('id' => $row['id'], 'name' => $row['name']);
+    }
+    return $groups;
+}
 function get_job_grade_set($company_id)
 {
     $db = connect();
@@ -8480,6 +8751,21 @@ function get_job_grade($company_id)
         $job_grade[] = array('ID' => $row['ID'], 'job_grade' => $row['job_grade']);
     }
     return $job_grade;
+}
+function get_group($company_id)
+{
+    $db = connect();
+    $approvers = array();
+    $sql = mysqli_query($db, "SELECT t.*, t1.account_name FROM tbl_employment_information t
+    INNER JOIN tbl_personal_information t1
+    ON t.employee_number = t1.employee_number
+    WHERE t.company = '$company_id'
+    AND is_approver = '1'
+    ORDER BY ID DESC");
+    while ($row = mysqli_fetch_assoc($sql)) {
+        $approvers[] = array('employee_number' => $row['employee_number'], 'account_name' => $row['account_name']);
+    }
+    return $approvers;
 }
 function get_approvers($company_id)
 {

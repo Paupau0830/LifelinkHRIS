@@ -47,9 +47,9 @@ $max_loan = mysqli_fetch_assoc($get_max_loan);
             <li>
                 <a href="edit-company-job-grade-set?<?= md5('id') . '=' . $fid ?>"><i class="gi gi-show_thumbnails"></i> Job Grade Set</a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="edit-company-benefits?<?= md5('id') . '=' . $fid ?>"><i class="fa fa-exchange"></i> Benefits</a>
-            </li>
+            </li> -->
             <li class="active">
                 <a href="edit-company-maintenance?<?= md5('id') . '=' . $fid ?>"><i class="gi gi-settings"></i> Maintenance</a>
             </li>
@@ -60,14 +60,233 @@ $max_loan = mysqli_fetch_assoc($get_max_loan);
         <!-- Working Tabs Title -->
         <div class="block-title">
             <ul class="nav nav-tabs push" data-toggle="tabs" id="maintenance_cats">
-                <li class="active"><a href="#tab_maintenance"><i class="fa fa-cogs" style="margin-right: 3px;"></i> Company Maintenance</a></li>
-                <li><a href="#tab_loan"><i class="fa fa-money" style="margin-right: 3px;"></i> Loan Value</a></li>
-                <li><a href="#tab_leaves"><i class="fa fa-user-times" style="margin-right: 3px;"></i> Leave Balances</a></li>
-                <li><a href="#tab_benefits"><i class="fa fa-exchange" style="margin-right: 3px;"></i> Benefits Balances</a></li>
+                <li class="active"><a href="#tab_loan"><i class="fa fa-money" style="margin-right: 3px;"></i> Loan Records</a></li>
+                <!-- <li><a href="#tab_maintenance"><i class="fa fa-cogs" style="margin-right: 3px;"></i> Company Maintenance</a></li> -->
+                <!-- <li><a href="#tab_leaves"><i class="fa fa-user-times" style="margin-right: 3px;"></i> Leave Balances</a></li> -->
+                <!-- <li><a href="#tab_benefits"><i class="fa fa-exchange" style="margin-right: 3px;"></i> Benefits Balances</a></li> -->
             </ul>
         </div>
         <div class="tab-content">
-            <div class="tab-pane active" id="tab_maintenance">
+
+            <div class="tab-pane active" id="tab_loan">
+                <form method="post" enctype="multipart/form-data" class="form-horizontal form-bordered">
+                    <div class="container-fluid">
+                        <input type="hidden" name="company_id" value="<?= $rid ?>">
+                        <br>
+                        <!-- EDUCATIONAL Program -->
+                        <div class="col-md-12">
+                            <div class="block full">
+                                <div class="block-title">
+                                    <h2><strong>Educational Loan Program</strong></h2>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="univ-col" class="table table-vcenter table-condensed table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Employee Number</th>
+                                                <th class="text-center">Employee Name</th>
+                                                <th class="text-center">Loan Amount</th>
+                                                <th class="text-center">Date Availed</th>
+                                                <th class="text-center">Description</th>
+                                                <th class="text-center">Attachment</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $sql = mysqli_query($db, "SELECT * FROM tbl_loan_records WHERE loan_type = 'Educational Loan'");
+                                            while ($row = mysqli_fetch_assoc($sql)) {
+                                            ?>
+                                                <tr>
+                                                    <td class="text-center"><?= $row['employee_number'] ?></td>
+                                                    <td class="text-center"><?= $row['employee_name'] ?></td>
+                                                    <td class="text-center"><?= $row['loan_amount'] ?></td>
+                                                    <td class="text-center"><?= $row['date_availed'] ?></td>
+                                                    <td class="text-center"><?= $row['description'] ?></td>
+                                                    <td class="text-center"><?= $row['attachment'] ?></td>
+                                                    <td class="text-center">
+                                                        <div class="btn-group">
+                                                            <a href="loan-records-expand?<?= md5('id') . '=' . md5($row['id']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <?php
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                                <a href="javascript:void(0)" class="btn btn-success" style="width:80px" onclick="$('#modal-add-educational-loan').modal('show');">Add</a>&nbsp;
+                                <div id="modal-add-educational-loan" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header text-center">
+                                                <h2 class="modal-title"><i class="fa fa-sitemap"></i> Add Educational Loan</h2>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" enctype="multipart/form-data" class="form-horizontal form-bordered">
+                                                    <input type="hidden" name="company_id" value="<?= $rid ?>">
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label> Employee</label>&nbsp;<span style="color:red;font-weight:bold">*</span>
+                                                                <select name="selected_employee_educ" id="selected_employee_educ" class="form-control select-chosen">
+                                                                    <option value="null">Select one...</option>
+                                                                    <?php
+                                                                    $sql = mysqli_query($db, "SELECT * FROM tbl_personal_information");
+                                                                    while ($row_educ = mysqli_fetch_assoc($sql)) {
+                                                                    ?>
+                                                                        <option value="<?= $row_educ['employee_number'] ?>"><?= $row_educ['employee_number'] . ' - ' . $row_educ['account_name'] ?></option>
+
+                                                                    <?php
+                                                                    }
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label> Loan Amount</label>&nbsp;<span style="color:red;font-weight:bold">*</span>
+                                                                <input type="number" name="educ_loan_amount" class="form-control" step="any" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label> Description</label>&nbsp;<span style="color:red;font-weight:bold">*</span>
+                                                                <input type="text" name="educ_description" class="form-control" step="any" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label> Date Availed</label>&nbsp;<span style="color:red;font-weight:bold">*</span>
+                                                                <input type="date" name="educ_date_availed" class="form-control" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <label> Attachment</label>
+                                                                <input type="file" class="form-control" name="educ_attachment">
+                                                            </div>
+                                                        </div>
+                                                        <br>
+                                                        <button name="btn_educational_loan" class="btn btn-success btn-block">Proceed</button>
+
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- MEDICAL SUPPORT Program -->
+                        <div class="col-md-12">
+                            <div class="block full">
+                                <div class="block-title">
+                                    <h2><strong>Medical Support Program</strong></h2>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="supporting-documents" class="table table-vcenter table-condensed table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Employee Number</th>
+                                                <th class="text-center">Employee Name</th>
+                                                <th class="text-center">Loan Amount</th>
+                                                <th class="text-center">Date Availed</th>
+                                                <th class="text-center">Description</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $sql = mysqli_query($db, "SELECT * FROM tbl_loan_records WHERE loan_type = 'Medical Support'");
+                                            while ($row = mysqli_fetch_assoc($sql)) {
+                                            ?>
+                                                <tr>
+                                                    <td class="text-center"><?= $row['id'] ?></td>
+                                                    <td class="text-center"><?= $row['employee_number'] ?></td>
+                                                    <td class="text-center"><?= $row['employee_name'] ?></td>
+                                                    <td class="text-center"><?= $row['loan_amount'] ?></td>
+                                                    <td class="text-center"><?= $row['date_availed'] ?></td>
+                                                    <td class="text-center"><?= $row['description'] ?></td>
+                                                    <td class="text-center">
+                                                        <div class="btn-group">
+                                                            <a href="loan-records-expand?<?= md5('id') . '=' . md5($row['id']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <?php
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                                <button name="btn_medical_loan" class="btn btn-success">Add</button>
+
+                            </div>
+                        </div>
+
+                        <!-- OTHER Program -->
+                        <div class="col-md-12">
+                            <div class="block full">
+                                <div class="block-title">
+                                    <h2><strong>Other Loans</strong></h2>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="tbl-ids" class="table table-vcenter table-condensed table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Employee Number</th>
+                                                <th class="text-center">Employee Name</th>
+                                                <th class="text-center">Loan Amount</th>
+                                                <th class="text-center">Date Availed</th>
+                                                <th class="text-center">Description</th>
+                                                <th class="text-center">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $sql = mysqli_query($db, "SELECT * FROM tbl_loan_records WHERE loan_type = 'Other Loans'");
+                                            while ($row = mysqli_fetch_assoc($sql)) {
+                                            ?>
+                                                <tr>
+                                                    <td class="text-center"><?= $row['id'] ?></td>
+                                                    <td class="text-center"><?= $row['employee_number'] ?></td>
+                                                    <td class="text-center"><?= $row['employee_name'] ?></td>
+                                                    <td class="text-center"><?= $row['loan_amount'] ?></td>
+                                                    <td class="text-center"><?= $row['date_availed'] ?></td>
+                                                    <td class="text-center"><?= $row['description'] ?></td>
+                                                    <td class="text-center">
+                                                        <div class="btn-group">
+                                                            <a href="loan-records-expand?<?= md5('id') . '=' . md5($row['id']) ?>" data-toggle="tooltip" title="View" class="btn btn-xs btn-default"><i class="fa fa-eye"></i></a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <?php
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                                <button name="btn_other_loan" class="btn btn-success">Add</button>
+
+                            </div>
+                        </div>
+
+
+                        <!-- <button name="btn_maintenance_loan" class="btn btn-primary">Update</button> -->
+                    </div>
+                </form>
+            </div>
+
+            <!-- Company Maintenance -->
+            <!-- <div class="tab-pane" id="tab_maintenance">
                 <form method="post" enctype="multipart/form-data" class="form-horizontal form-bordered">
                     <div class="container-fluid">
                         <input type="hidden" name="company_id" value="<?= $rid ?>">
@@ -102,30 +321,8 @@ $max_loan = mysqli_fetch_assoc($get_max_loan);
                         <button name="btn_maintenance" class="btn btn-primary">Update</button>
                     </div>
                 </form>
-            </div>
-            <div class="tab-pane" id="tab_loan">
-                <form method="post" enctype="multipart/form-data" class="form-horizontal form-bordered">
-                    <div class="container-fluid">
-                        <input type="hidden" name="company_id" value="<?= $rid ?>">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Loan Max Value</label>
-                                    <input type="number" name="loan_max_value" class="form-control" value="<?= $max_loan['max_value'] ?>">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Loan Others Max Value</label>
-                                    <input type="number" name="loan_others_max_value" class="form-control" value="<?= $max_loan['others_max_value'] ?>">
-                                </div>
-                            </div>
-                        </div>
-                        <button name="btn_maintenance_loan" class="btn btn-primary">Update</button>
-                    </div>
-                </form>
-            </div>
-            <div class="tab-pane" id="tab_leaves">
+            </div> -->
+            <!-- <div class="tab-pane" id="tab_leaves">
                 <form method="post" enctype="multipart/form-data">
                     <div class="container-fluid">
                         <input type="hidden" name="company_id" value="<?= $rid ?>">
@@ -492,7 +689,7 @@ $max_loan = mysqli_fetch_assoc($get_max_loan);
                         <button name="btn_maintenance_benefits" id="btn_maintenance_benefits" class="btn btn-primary" disabled>Update</button>
                     </div>
                 </form>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

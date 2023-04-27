@@ -64,6 +64,10 @@ $em = '';
                 $sql = mysqli_query($db, "SELECT * FROM tbl_employment_information WHERE employee_number = '$employee_number'");
                 while ($row = mysqli_fetch_assoc($sql)) {
                     $cid = $row['company'];
+                    $group_name = $row['group_name'];
+                    $unit = $row['unit'];
+                    // $group_name = $row['group_name'];
+                    // $group_name = $row['group_name'];
                     $on_behalf = '';
                     $is_approver = '';
                     if ($row['filing'] == "1") {
@@ -203,40 +207,33 @@ $em = '';
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Group</label>
-                                    <!-- <select name="employment_status" class="select-chosen" data-placeholder="Choose an employment status..." style="width: 250px;">
-                                        <option></option>
+                                    <select name="group" id="group" class="select-chosen" data-placeholder="Choose a group..." style="width: 250px;">
                                         <?php
-                                        // added project based and Intern
-                                        $emp_stat = array('Intern', 'Project Based', 'Probationary', 'Regular', 'Consultant');
-                                        foreach ($emp_stat as $k => $v) {
-                                            if ($v == $row['employment_status']) {
-                                                echo '<option selected>' . $v . '</option>';
-                                            } else {
-                                                echo '<option>' . $v . '</option>';
-                                            }
+                                        $sql = mysqli_query($db, "SELECT * FROM tbl_department_group");
+                                        while ($row_group = mysqli_fetch_assoc($sql)) {
+                                        ?>
+                                            <option value="<?= $row_group['id'] ?>" <?php if ($group_name == $row_group['id']) echo 'selected="selected"'; ?>><?= $row_group['name'] ?></option>
+                                        <?php
                                         }
                                         ?>
-                                    </select> -->
-                                    <input type="text" name="group" class="form-control" value="<?= $row['group'] ?>">
+                                    </select>
+                                    <!-- <input type="text" name="group" class="form-control" value="<?= $row['group_name'] ?>"> -->
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Unit</label>
-                                    <!-- <select name="job_grade" id="job_grade" class="select-chosen" data-placeholder="Choose a job grade..." style="width: 250px;">
-                                        <option></option>
+                                    <select name="unit" id="unit" class="select-chosen" data-placeholder="Choose a unit..." style="width: 250px;">
                                         <?php
-                                        $jg = get_job_grade($cid);
-                                        foreach ($jg as $k => $v) {
-                                            if ($v['ID'] == $row['job_grade']) {
-                                                echo '<option value="' . $v['ID'] . '" selected>' . $v['job_grade'] . '</option>';
-                                            } else {
-                                                echo '<option value="' . $v['ID'] . '">' . $v['job_grade'] . '</option>';
-                                            }
+                                        $sql = mysqli_query($db, "SELECT * FROM tbl_department_unit");
+                                        while ($row_unit = mysqli_fetch_assoc($sql)) {
+                                        ?>
+                                            <option value="<?= $row_unit['id'] ?>" <?php if ($unit == $row_unit['id']) echo 'selected="selected"'; ?>><?= $row_unit['name'] ?></option>
+                                        <?php
                                         }
                                         ?>
-                                    </select> -->
-                                    <input type="text" name="unit" class="form-control" value="<?= $row['unit'] ?>">
+                                    </select>
+                                    <!-- <input type="text" name="unit" class="form-control" value="<?= $row['unit'] ?>"> -->
 
                                 </div>
                             </div>
@@ -249,7 +246,7 @@ $em = '';
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Rank</label>
-                                    <input type="text" name="rank" class="form-control" value="<?= $row['rank'] ?>">
+                                    <input type="text" name="rank" class="form-control" value="<?= $row['rank_name'] ?>">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -266,7 +263,7 @@ $em = '';
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Approver</label>
                                     <select name="approver" class="select-chosen" data-placeholder="Choose an approvers..." style="width: 250px;">
@@ -284,7 +281,7 @@ $em = '';
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Account Status</label>
                                     <select name="account_status" class="select-chosen" data-placeholder="Choose an account status..." style="width: 250px;">
@@ -302,7 +299,9 @@ $em = '';
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Reporting To</label>
                                     <select name="reporting_to" class="select-chosen" data-placeholder="Choose a superior..." style="width: 250px;">
@@ -320,9 +319,6 @@ $em = '';
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <!-- add -->
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Vendor ID</label>

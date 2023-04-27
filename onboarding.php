@@ -622,19 +622,35 @@ $company_id = $_SESSION['hris_company_id'];
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Group</label>
-                                <!-- <select name="group" class="select-chosen" data-placeholder="Choose a group..." style="width: 250px;">
-                                    <option></option>
-                                </select> -->
-                                <input type="text" name="group" class="form-control">
+                                <select name="group" class="select-chosen" data-placeholder="Choose a group..." style="width: 250px;">
+                                    <option value="null"> Select one...</option>
+                                    <?php
+                                    $sql = mysqli_query($db, "SELECT * FROM tbl_department_group");
+                                    while ($row = mysqli_fetch_assoc($sql)) {
+                                    ?>
+                                        <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                                <!-- <input type="text" name="group" class="form-control"> -->
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Unit</label>
-                                <!-- <select name="group" class="select-chosen" data-placeholder="Choose a group..." style="width: 250px;">
-                                    <option></option>
-                                </select> -->
-                                <input type="text" name="unit" class="form-control">
+                                <select name="unit" class="select-chosen" data-placeholder="Choose a unit..." style="width: 250px;">
+                                    <option value="null"> Select one...</option>
+                                    <?php
+                                    $sql = mysqli_query($db, "SELECT * FROM tbl_department_unit");
+                                    while ($row = mysqli_fetch_assoc($sql)) {
+                                    ?>
+                                        <option value="<?= $row['id'] ?>"><?= $row['name'] ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                                <!-- <input type="text" name="unit" class="form-control"> -->
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -653,6 +669,21 @@ $company_id = $_SESSION['hris_company_id'];
                                     <option></option>
                                 </select> -->
                                 <input type="text" name="rank" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>HMO Number</label>
+                                <input type="text" class="form-control" name="hmo_number">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Tenure</label>
+                                <input type="text" class="form-control" name="tenure">
                             </div>
                         </div>
                     </div>
@@ -703,20 +734,6 @@ $company_id = $_SESSION['hris_company_id'];
                             <div class="form-group">
                                 <label>Vendor ID</label>
                                 <input type="text" class="form-control" name="vendor_id" value="none">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>HMO Number</label>
-                                <input type="text" class="form-control" name="hmo_number">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Tenure</label>
-                                <input type="text" class="form-control" name="tenure">
                             </div>
                         </div>
                     </div>
