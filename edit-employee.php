@@ -152,6 +152,20 @@ $em = '';
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label>Suffix</label>
+                                    <input type="text" id="suffix" name="suffix" class="form-control" value="<?= $row['suffix'] ?>">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Initials</label>
+                                    <input type="text" name="initials" class="form-control" value="<?= $row['initials'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <label>Address</label>
                                     <textarea name="address" rows="6" class="form-control"><?= $row['address'] ?></textarea>
                                 </div>

@@ -775,7 +775,7 @@ $company_id = $_SESSION['hris_company_id'];
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label>Remarks</label>
-                                <textarea name="attachment_remarks[]" rows="5" class="form-control"></textarea>
+                                <textarea name="attachment_remarks" rows="5" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>

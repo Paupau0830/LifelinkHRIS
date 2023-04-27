@@ -202,6 +202,72 @@ $em = '';
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label>Group</label>
+                                    <!-- <select name="employment_status" class="select-chosen" data-placeholder="Choose an employment status..." style="width: 250px;">
+                                        <option></option>
+                                        <?php
+                                        // added project based and Intern
+                                        $emp_stat = array('Intern', 'Project Based', 'Probationary', 'Regular', 'Consultant');
+                                        foreach ($emp_stat as $k => $v) {
+                                            if ($v == $row['employment_status']) {
+                                                echo '<option selected>' . $v . '</option>';
+                                            } else {
+                                                echo '<option>' . $v . '</option>';
+                                            }
+                                        }
+                                        ?>
+                                    </select> -->
+                                    <input type="text" name="group" class="form-control" value="<?= $row['group'] ?>">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Unit</label>
+                                    <!-- <select name="job_grade" id="job_grade" class="select-chosen" data-placeholder="Choose a job grade..." style="width: 250px;">
+                                        <option></option>
+                                        <?php
+                                        $jg = get_job_grade($cid);
+                                        foreach ($jg as $k => $v) {
+                                            if ($v['ID'] == $row['job_grade']) {
+                                                echo '<option value="' . $v['ID'] . '" selected>' . $v['job_grade'] . '</option>';
+                                            } else {
+                                                echo '<option value="' . $v['ID'] . '">' . $v['job_grade'] . '</option>';
+                                            }
+                                        }
+                                        ?>
+                                    </select> -->
+                                    <input type="text" name="unit" class="form-control" value="<?= $row['unit'] ?>">
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Position</label>
+                                    <input type="text" name="position" class="form-control" value="<?= $row['position'] ?>">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Rank</label>
+                                    <input type="text" name="rank" class="form-control" value="<?= $row['rank'] ?>">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>HMO Number</label>
+                                    <input type="text" name="hmo_number" class="form-control" value="<?= $row['hmo_number'] ?>">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Tenure</label>
+                                    <input type="text" name="tenure" class="form-control" value="<?= $row['tenure'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
                                     <label>Approver</label>
                                     <select name="approver" class="select-chosen" data-placeholder="Choose an approvers..." style="width: 250px;">
                                         <option></option>
@@ -218,7 +284,7 @@ $em = '';
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Account Status</label>
                                     <select name="account_status" class="select-chosen" data-placeholder="Choose an account status..." style="width: 250px;">
@@ -236,9 +302,7 @@ $em = '';
                                     </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Reporting To</label>
                                     <select name="reporting_to" class="select-chosen" data-placeholder="Choose a superior..." style="width: 250px;">
@@ -256,7 +320,10 @@ $em = '';
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                        </div>
+                        <div class="row">
+                            <!-- add -->
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Vendor ID</label>
                                     <input type="text" class="form-control" name="vendor_id" value="<?= $row['vendor_id'] ?>">
