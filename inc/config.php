@@ -3022,7 +3022,7 @@ if (isset($_POST['btn_onboarding'])) {
     $gender = $_POST['gender'];
     $middle_name = $_POST['middle_name'];
     $citizenship = $_POST['citizenship'];
-    $address = $_POST['address'];
+    $address = str_replace("'", "\'", $_POST['address']);
     $civil_status = $_POST['civil_status'];
     $spouse_name = $_POST['spouse_name'];
     $personal_email = $_POST['personal_email'];
